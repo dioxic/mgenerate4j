@@ -1,0 +1,45 @@
+{
+  "_id": "$objectid",
+  "PhoneNumbers": {
+    "$array": {
+      "of": { "$number" :{ "min": 75000000, "max": 79000000}},
+      "number": { "$number" :{ "min": 0, "max": 3}}
+    }
+  },
+  "Madness": {
+    "$choose": {
+      "from": {
+        "$array": {
+          "of": "$city",
+          "number": 6
+        }
+      }
+    }
+  },
+  "ContactHistory": {
+    "Contact": {
+      "$array": {
+        "of": {
+          "$choose": {
+            "from": [
+              "$city",
+              {
+                "type": "phone",
+                "detail": "$number"
+              },
+              {
+                "type": "email",
+                "detail": "$email"
+              },
+              {
+                "type": "post",
+                "detail": "$postal"
+              }
+            ]
+          }
+        },
+        "number": 2
+      }
+    }
+  }
+}

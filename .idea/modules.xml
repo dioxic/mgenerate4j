@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mgenerate-annotations/mgenerate-annotations.iml" filepath="$PROJECT_DIR$/mgenerate-annotations/mgenerate-annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mgenerate-common/mgenerate-common.iml" filepath="$PROJECT_DIR$/mgenerate-common/mgenerate-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mgenerate-core/mgenerate-core.iml" filepath="$PROJECT_DIR$/mgenerate-core/mgenerate-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mgenerate-parent.iml" filepath="$PROJECT_DIR$/mgenerate-parent.iml" />
+    </modules>
+  </component>
+</project>
