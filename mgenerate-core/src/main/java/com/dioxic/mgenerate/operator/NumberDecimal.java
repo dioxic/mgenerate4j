@@ -4,26 +4,27 @@ import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
-import org.bson.types.MinKey;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 @OperatorClass
-public class NumberDecimal implements Operator {
+public class NumberDecimal implements Operator<BigDecimal> {
 
-    private static final BigDecimal DEFAULT_MIN = BigDecimal.ZERO;
-    private static final BigDecimal DEFAULT_MAX = BigDecimal.valueOf(1000);
-    private static final BigDecimal DEFAULT_FIXED = BigDecimal.valueOf(1000);
-
-    @OperatorProperty
-    Operator min = OperatorFactory.wrap(DEFAULT_MIN);
+    private static final Long DEFAULT_MIN = 0L;
+    private static final Long DEFAULT_MAX = 1000L;
+    private static final Operator<Integer> DEFAULT_FIXED = OperatorFactory.wrap(Integer.valueOf(2));
 
     @OperatorProperty
-    Operator max = OperatorFactory.wrap(DEFAULT_MAX);
+    Long min = DEFAULT_MIN;
+
+    @OperatorProperty
+    Long max = DEFAULT_MAX;
+
+    @OperatorProperty
+    Operator<Integer> fixed = DEFAULT_FIXED;
 
     @Override
-    public Integer resolve() {
-        return FakerUtil.instance().number().numberBetween((Integer) min.resolve(), (Integer) max.resolve());
+    public BigDecimal resolve() {
+        return FakerUtil.randomDecimal(min, max, fixed.resolve());
     }
 }

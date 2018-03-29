@@ -7,18 +7,17 @@ import com.dioxic.mgenerate.annotation.OperatorProperty;
 import java.util.List;
 
 @OperatorClass
-public class Join implements Operator<String> {
-
-    private static final String DEFAULT_SEP = "";
+public class Pick implements Operator<Object> {
 
     @OperatorProperty(required = true)
-    Operator<List<? extends CharSequence>> array;
+    Operator<List> array;
 
     @OperatorProperty
-    Operator<String> sep = OperatorFactory.wrap(DEFAULT_SEP);
+    Operator<Integer> element = OperatorFactory.wrap(Integer.valueOf(0));
 
     @Override
-    public String resolve() {
-        return String.join(sep.resolve(), array.resolve());
+    public Object resolve() {
+        return array.resolve().get(element.resolve());
     }
+
 }

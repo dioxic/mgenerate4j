@@ -3,8 +3,10 @@ package com.dioxic.mgenerate.annotation.processor;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.annotation.model.FieldModel;
+import com.dioxic.mgenerate.operator.Initializable;
 import com.dioxic.mgenerate.operator.Operator;
 import com.dioxic.mgenerate.operator.OperatorBuilder;
+import com.dioxic.mgenerate.operator.Wrapper;
 import com.squareup.javapoet.*;
 import org.bson.Document;
 
@@ -37,7 +39,7 @@ public class BuilderGenerator {
         return this.className;
     }
 
-    public TypeSpec generate(Appendable appendable) throws IOException {
+    public TypeSpec generate(Appendable appendable) throws IOException, ClassNotFoundException {
 
         ClassName builderInterface = ClassName.get(OperatorBuilder.class);
 
@@ -57,7 +59,7 @@ public class BuilderGenerator {
 
         MethodSpec validateMethod = addValidateMethod(classBuilder, properties);
 
-        addBuilderMethod(classBuilder, properties, validateMethod);
+        addBuildMethod(classBuilder, properties, validateMethod);
 
         TypeSpec classSpec = classBuilder.build();
 
@@ -69,7 +71,7 @@ public class BuilderGenerator {
 
     public void addFields(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         for (FieldModel field : properties) {
-            classBuilder.addField(Operator.class, field.getName(), Modifier.PRIVATE);
+            classBuilder.addField(field.getOperatorType(), field.getName(), Modifier.PRIVATE);
         }
     }
 
@@ -80,7 +82,7 @@ public class BuilderGenerator {
     public List<FieldModel> getProperties() {
         return typeElement
                 .getEnclosedElements().stream().filter(this::filterOperatorProperties)
-                .map(o -> new FieldModel(o.getSimpleName().toString(), o.getAnnotation(OperatorProperty.class).required()))
+                .map(FieldModel::new)
                 .collect(Collectors.toList());
     }
 
@@ -90,18 +92,33 @@ public class BuilderGenerator {
                 && el.getAnnotation(OperatorProperty.class) != null;
     }
 
-    public void addBuilderMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties, MethodSpec validate) {
+    public void addBuildMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties, MethodSpec validate) throws ClassNotFoundException {
 
-        CodeBlock.Builder blockBuilder = CodeBlock.builder();
+        CodeBlock.Builder requiredBlock = CodeBlock.builder();
 
         for (FieldModel property : properties) {
             if (!property.isRequired()) {
-                blockBuilder.beginControlFlow("if ($L != null)", property.getName());
+                requiredBlock.beginControlFlow("if ($L != null)", property.getName());
             }
-            blockBuilder.addStatement("obj.$L = $L", property.getName(), property.getName());
+
+            if (!property.isOperatorType()) {
+                requiredBlock.addStatement("obj.$L = $L.resolve()",
+                        property.getName(),
+                        property.getName());
+            }
+            else {
+                requiredBlock.addStatement("obj.$L = $L", property.getName(), property.getName());
+            }
+
             if (!property.isRequired()) {
-                blockBuilder.endControlFlow();
+                requiredBlock.endControlFlow();
             }
+        }
+
+        CodeBlock.Builder initBlock = CodeBlock.builder();
+
+        if (typeElement.getInterfaces().stream().filter(clazz -> Util.isSameType(clazz, Initializable.class)).count() > 0) {
+            initBlock.addStatement("obj.initialize()");
         }
 
         MethodSpec method = MethodSpec.methodBuilder("build")
@@ -109,7 +126,8 @@ public class BuilderGenerator {
                 .returns(this.thisType)
                 .addStatement("$N()", validate)
                 .addStatement("$T obj = new $T()", thisType, thisType)
-                .addCode(blockBuilder.build())
+                .addCode(requiredBlock.build())
+                .addCode(initBlock.build())
                 .addStatement("return obj")
                 .build();
 
@@ -165,14 +183,22 @@ public class BuilderGenerator {
 
     public void addPropertyMethods(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         for (FieldModel property : properties) {
-            MethodSpec.Builder builder = MethodSpec.methodBuilder(property.getName())
+            classBuilder.addMethod(MethodSpec.methodBuilder(property.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .returns(ClassName.get(packageName, className))
-                    .addParameter(Operator.class, property.getName())
+                    .addParameter(property.getOperatorType(), property.getName())
                     .addStatement("this.$L = $L", property.getName(), property.getName())
-                    .addStatement("return this");
+                    .addStatement("return this")
+                    .build());
 
-            classBuilder.addMethod(builder.build());
+            classBuilder.addMethod(MethodSpec.methodBuilder(property.getName())
+                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                    .returns(ClassName.get(packageName, className))
+                    .addParameter(property.getRootFieldType(), property.getName())
+                    .addStatement("this.$L = new $T($L)", property.getName(), Wrapper.class, property.getName())
+                    .addStatement("return this")
+                    .build());
+
         }
     }
 

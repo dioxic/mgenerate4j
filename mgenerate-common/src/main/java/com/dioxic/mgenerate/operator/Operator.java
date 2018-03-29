@@ -5,9 +5,9 @@ import java.util.List;
 
 import static org.bson.assertions.Assertions.notNull;
 
-public interface Operator {
+public interface Operator<T> {
 
-    Object resolve();
+    T resolve();
 
     static <T> T resolve(final Operator operator, final Class<T> clazz) {
         notNull("clazz", clazz);
@@ -16,6 +16,10 @@ public interface Operator {
 
     static Integer resolveInt(Operator operator) {
         return (Integer) operator.resolve();
+    }
+
+    static Long resolveLong(Operator operator) {
+        return (Long) operator.resolve();
     }
 
     static String resolveString(Operator operator) {
@@ -46,6 +50,10 @@ public interface Operator {
         return new Object[]{obj};
     }
 
+    static List<?> resolveList(Operator operator) {
+        return resolveList(operator, List.class);
+    }
+
     static <T> List<T> resolveList(Operator operator, Class<T> clazz) {
         Object obj = operator.resolve();
 
@@ -53,7 +61,7 @@ public interface Operator {
             return Arrays.asList((T[]) obj);
         }
         if (obj instanceof List<?>) {
-            return (List<T>) obj;
+            return  (List<T>) obj;
         }
         return Arrays.asList((T) obj);
     }

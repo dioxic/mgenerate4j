@@ -1,13 +1,12 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.annotation.OperatorClass;
-import org.bson.types.MinKey;
 
 @OperatorClass
-public class MaxKey implements Operator {
+public class MaxKey implements Operator<org.bson.types.MaxKey> {
 
     @Override
-    public MinKey resolve() {
+    public org.bson.types.MaxKey resolve() {
         return new org.bson.types.MaxKey();
     }
 }

@@ -3,28 +3,27 @@ package com.dioxic.mgenerate.operator;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
-import org.bson.types.MinKey;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 @OperatorClass
-public class Inc implements Operator, Initializable {
+public class Inc implements Operator<Integer>, Initializable {
 
     @OperatorProperty
-    Operator step = OperatorFactory.wrap(1);
+    Operator<Integer> step = OperatorFactory.wrap(1);
 
     @OperatorProperty
-    Operator start = OperatorFactory.wrap(0);
+    Integer start = 0;
 
     private AtomicInteger counter;
 
     @Override
-    public MinKey resolve() {
-        return counter.getAndUpdate(n -> n + Operator.resolveInt(step));
+    public Integer resolve() {
+        return counter.getAndUpdate(n -> n + step.resolve());
     }
 
     @Override
     public void initialize() {
-        counter = new AtomicInteger(Operator.resolveInt(start));
+        counter = new AtomicInteger(start);
     }
 }

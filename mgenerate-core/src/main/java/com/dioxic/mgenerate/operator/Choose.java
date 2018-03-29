@@ -1,55 +1,40 @@
 package com.dioxic.mgenerate.operator;
 
+import com.dioxic.mgenerate.FakerUtil;
+import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.OperatorProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dioxic.mgenerate.annotation.OperatorClass;
-import com.dioxic.mgenerate.annotation.OperatorProperty;
-import org.bson.Document;
-
-import com.dioxic.mgenerate.FakerUtil;
-import org.bson.types.MinKey;
-
-import static org.bson.assertions.Assertions.notNull;
-
 @OperatorClass
-public class Choose implements Operator {
+public class Choose implements Operator<Object> {
 
     @OperatorProperty(required = true)
-	Operator from;
+	Operator<List<?>> from;
 
     @OperatorProperty
-	Operator weights;
-
-    public Choose() {
-
-    }
-
-    public Choose(Document document) {
-        from = document.get("from", Operator.class);
-        weights = document.get("weights", Operator.class);
-        notNull("from", from);
-    }
+	Operator<List<Integer>> weights;
 
 	@Override
-	public MinKey resolve() {
-		Object[] from = Operator.resolveArray(this.from);
+	public Object resolve() {
+		List<?> from = this.from.resolve();
 
 		if (this.weights != null) {
-			Integer[] weights = Operator.resolveIntArray(this.weights);
-			if (from.length != weights.length) {
+			List<Integer> weights = this.weights.resolve();
+			if (from.size() != weights.size()) {
 				throw new IllegalArgumentException("length of array and weights must match");
 			}
 			List<Object> fromList = new ArrayList<>();
-			for (int i = 0; i < from.length; i++) {
-				for (int j = 0; j < weights[i]; j++) {
-					fromList.add(from[i]);
+			for (int i = 0; i < from.size(); i++) {
+				for (int j = 0; j < weights.get(i); j++) {
+					fromList.add(from.get(i));
 				}
 			}
-			from = fromList.toArray();
+			from = fromList;
 		}
 
-		Object result = from[FakerUtil.instance().random().nextInt(from.length)];
+		Object result = from.get(FakerUtil.instance().random().nextInt(from.size()));
 
 		return result instanceof Operator ? ((Operator)result).resolve() : result;
 

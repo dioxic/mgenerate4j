@@ -3,7 +3,7 @@ package com.dioxic.mgenerate.operator;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 
 @OperatorClass
-public class MinKey implements Operator {
+public class MinKey implements Operator<org.bson.types.MinKey> {
 
     @Override
     public org.bson.types.MinKey resolve() {
