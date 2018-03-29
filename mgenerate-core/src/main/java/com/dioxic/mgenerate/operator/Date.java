@@ -5,21 +5,23 @@ import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 
+import java.time.LocalDateTime;
+
 @OperatorClass
-public class Date implements Operator<java.util.Date> {
+public class Date implements Operator<LocalDateTime> {
 
-	private static final java.util.Date DEFAULT_MIN = new java.util.Date(0);
-	private static final java.util.Date DEFAULT_MAX = new java.util.Date();
-
-    @OperatorProperty
-	Operator<java.util.Date> min = OperatorFactory.wrap(DEFAULT_MIN);
+	private static final LocalDateTime DEFAULT_MIN = LocalDateTime.MIN;
+	private static final LocalDateTime DEFAULT_MAX = LocalDateTime.MAX;
 
     @OperatorProperty
-	Operator<java.util.Date> max = OperatorFactory.wrap(DEFAULT_MAX);
+	Operator<LocalDateTime> min = OperatorFactory.wrap(DEFAULT_MIN);
+
+    @OperatorProperty
+	Operator<LocalDateTime> max = OperatorFactory.wrap(DEFAULT_MAX);
 
 	@Override
-	public java.util.Date resolve() {
-		return FakerUtil.instance().date().between(min.resolve(), max.resolve());
+	public LocalDateTime resolve() {
+		return FakerUtil.randomDate(min.resolve(), max.resolve());
 	}
 
 }

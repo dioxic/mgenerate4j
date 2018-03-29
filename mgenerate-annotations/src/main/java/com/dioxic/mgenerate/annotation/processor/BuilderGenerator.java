@@ -132,25 +132,6 @@ public class BuilderGenerator {
         classBuilder.addMethod(method);
     }
 
-    @Deprecated
-    public void addKeyMethod(TypeSpec.Builder classBuilder) {
-        String operatorKey = typeElement.getAnnotation(OperatorClass.class).value();
-
-        if (operatorKey.isEmpty()) {
-            char[] key = typeElement.getSimpleName().toString().toCharArray();
-            key[0] = Character.toLowerCase(key[0]);
-            operatorKey = String.valueOf(key);
-        }
-
-        MethodSpec method = MethodSpec.methodBuilder("getKey")
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .returns(String.class)
-                .addStatement("return $S", operatorKey)
-                .build();
-
-        classBuilder.addMethod(method);
-    }
-
     private String getOperatorKey() {
         String operatorKey = typeElement.getAnnotation(OperatorClass.class).value();
 
@@ -202,6 +183,9 @@ public class BuilderGenerator {
                         property.getName(),
                         Operator.class)
                         .addStatement("$N = $L", property.getName(), enumWrapper);
+            }
+            else if (property.isDateRootType()) {
+                builder.addStatement("$L = new $T(document.get($S, $T.class))", property.getName(), DateWrapper.class, property.getName(), Operator.class);
             }
             else {
                 builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Operator.class);

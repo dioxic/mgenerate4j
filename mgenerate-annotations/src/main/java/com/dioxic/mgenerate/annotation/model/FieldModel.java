@@ -11,6 +11,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FieldModel {
@@ -77,5 +78,12 @@ public class FieldModel {
             return !typeParameters.isEmpty() && Util.isEnum(typeParameters.get(0));
         }
         return Util.isEnum(type);
+    }
+
+    public boolean isDateRootType() {
+        if (isOperatorType()) {
+            return !typeParameters.isEmpty() && Util.isSameType(typeParameters.get(0), LocalDateTime.class);
+        }
+        return Util.isSameType(type, LocalDateTime.class);
     }
 }
