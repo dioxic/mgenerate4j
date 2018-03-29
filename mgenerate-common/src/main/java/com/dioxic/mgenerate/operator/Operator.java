@@ -46,6 +46,18 @@ public interface Operator {
         return new Object[]{obj};
     }
 
+    static <T> List<T> resolveList(Operator operator, Class<T> clazz) {
+        Object obj = operator.resolve();
+
+        if (obj instanceof Object[]) {
+            return Arrays.asList((T[]) obj);
+        }
+        if (obj instanceof List<?>) {
+            return (List<T>) obj;
+        }
+        return Arrays.asList((T) obj);
+    }
+
 //    static Operator create(String operator) {
 //        return create(operator, null);
 //    }

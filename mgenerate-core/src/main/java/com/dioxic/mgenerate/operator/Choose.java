@@ -3,24 +3,36 @@ package com.dioxic.mgenerate.operator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dioxic.mgenerate.annotation.BuilderProperty;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import org.bson.Document;
 
 import com.dioxic.mgenerate.FakerUtil;
+import org.bson.types.MinKey;
+
+import static org.bson.assertions.Assertions.notNull;
 
 @OperatorClass
 public class Choose implements Operator {
 
     @OperatorProperty(required = true)
-	private Operator from;
+	Operator from;
 
     @OperatorProperty
-	private Operator weights;
+	Operator weights;
+
+    public Choose() {
+
+    }
+
+    public Choose(Document document) {
+        from = document.get("from", Operator.class);
+        weights = document.get("weights", Operator.class);
+        notNull("from", from);
+    }
 
 	@Override
-	public Object resolve() {
+	public MinKey resolve() {
 		Object[] from = Operator.resolveArray(this.from);
 
 		if (this.weights != null) {

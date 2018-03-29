@@ -1,5 +1,7 @@
 package com.dioxic.mgenerate.operator;
 
+import org.bson.types.MinKey;
+
 public class Wrapper implements Operator {
 
     private Object value;
@@ -9,7 +11,7 @@ public class Wrapper implements Operator {
     }
 
     @Override
-    public Object resolve() {
+    public MinKey resolve() {
         return value;
     }
 

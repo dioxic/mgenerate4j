@@ -1,13 +1,10 @@
 package com.dioxic.mgenerate.operator;
 
-import java.util.Optional;
-
+import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
-import org.bson.Document;
-
-import com.dioxic.mgenerate.FakerUtil;
+import org.bson.types.MinKey;
 
 @OperatorClass
 public class Date implements Operator {
@@ -22,7 +19,7 @@ public class Date implements Operator {
 	Operator max = OperatorFactory.wrap(DEFAULT_MAX);
 
 	@Override
-	public java.util.Date resolve() {
+	public MinKey resolve() {
 		return FakerUtil.instance().date().between((java.util.Date) min.resolve(), (java.util.Date) max.resolve());
 	}
 

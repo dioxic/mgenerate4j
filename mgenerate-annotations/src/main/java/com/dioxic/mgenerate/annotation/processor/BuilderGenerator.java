@@ -1,5 +1,6 @@
 package com.dioxic.mgenerate.annotation.processor;
 
+import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.annotation.model.FieldModel;
 import com.dioxic.mgenerate.operator.Operator;
@@ -11,12 +12,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import java.beans.Transient;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +37,7 @@ public class BuilderGenerator {
         return this.className;
     }
 
-    public TypeSpec generate() {
+    public TypeSpec generate(Appendable appendable) throws IOException {
 
         ClassName builderInterface = ClassName.get(OperatorBuilder.class);
 
@@ -53,6 +49,8 @@ public class BuilderGenerator {
 
         addFields(classBuilder, properties);
 
+        addKeyMethod(classBuilder);
+
         addPropertyMethods(classBuilder, properties);
 
         addDocumentMethod(classBuilder, properties);
@@ -62,6 +60,9 @@ public class BuilderGenerator {
         addBuilderMethod(classBuilder, properties, validateMethod);
 
         TypeSpec classSpec = classBuilder.build();
+
+        JavaFile javaFile = JavaFile.builder(this.packageName, classSpec).build();
+        javaFile.writeTo(appendable);
 
         return classSpec;
     }
@@ -89,28 +90,48 @@ public class BuilderGenerator {
                 && el.getAnnotation(OperatorProperty.class) != null;
     }
 
-    public MethodSpec addBuilderMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties, MethodSpec validate) {
-        MethodSpec.Builder builder = MethodSpec.methodBuilder("build")
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .returns(this.thisType)
-                .addStatement("$N()", validate)
-                .addStatement("$T obj = new $T()", thisType, thisType);
+    public void addBuilderMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties, MethodSpec validate) {
+
+        CodeBlock.Builder blockBuilder = CodeBlock.builder();
 
         for (FieldModel property : properties) {
-            if (property.isRequired()) {
-                builder.beginControlFlow("if ($L != null)", property.getName());
+            if (!property.isRequired()) {
+                blockBuilder.beginControlFlow("if ($L != null)", property.getName());
             }
-            builder.addStatement("obj.$L = $L", property.getName(), property.getName());
-            if (property.isRequired()) {
-                builder.endControlFlow();
+            blockBuilder.addStatement("obj.$L = $L", property.getName(), property.getName());
+            if (!property.isRequired()) {
+                blockBuilder.endControlFlow();
             }
         }
 
-        builder.addStatement("return obj");
+        MethodSpec method = MethodSpec.methodBuilder("build")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .returns(this.thisType)
+                .addStatement("$N()", validate)
+                .addStatement("$T obj = new $T()", thisType, thisType)
+                .addCode(blockBuilder.build())
+                .addStatement("return obj")
+                .build();
 
-        MethodSpec method = builder.build();
         classBuilder.addMethod(method);
-        return method;
+    }
+
+    public void addKeyMethod(TypeSpec.Builder classBuilder) {
+        String operatorKey = typeElement.getAnnotation(OperatorClass.class).value();
+
+        if (operatorKey.isEmpty()) {
+            char[] key = typeElement.getSimpleName().toString().toCharArray();
+            key[0] = Character.toLowerCase(key[0]);
+            operatorKey = String.valueOf(key);
+        }
+
+        MethodSpec method = MethodSpec.methodBuilder("getKey")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .returns(String.class)
+                .addStatement("return $S", operatorKey)
+                .build();
+
+        classBuilder.addMethod(method);
     }
 
     public MethodSpec addValidateMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
@@ -119,7 +140,7 @@ public class BuilderGenerator {
                 .returns(void.class);
 
         properties.stream().filter(FieldModel::isRequired).forEach(o ->
-            builder.addStatement("$T.notNull($S,$L)", org.bson.assertions.Assertions.class, o.getName(), o.getName())
+                builder.addStatement("$T.notNull($S,$L)", org.bson.assertions.Assertions.class, o.getName(), o.getName())
         );
 
         MethodSpec method = builder.build();
@@ -127,24 +148,19 @@ public class BuilderGenerator {
         return method;
     }
 
-    public MethodSpec addDocumentMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
-        if (!properties.isEmpty()) {
-            MethodSpec.Builder builder = MethodSpec.methodBuilder("document")
-                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                    .addParameter(Document.class, "document")
-                    .returns(ClassName.get(packageName, className));
+    public void addDocumentMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("document")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addParameter(Document.class, "document")
+                .returns(ClassName.get(packageName, className));
 
-            for (FieldModel property : properties) {
-                builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Operator.class);
-            }
-
-            builder.addStatement("return this");
-
-            MethodSpec method = builder.build();
-            classBuilder.addMethod(method);
-            return method;
+        for (FieldModel property : properties) {
+            builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Operator.class);
         }
-        return null;
+
+        builder.addStatement("return this");
+
+        classBuilder.addMethod(builder.build());
     }
 
     public void addPropertyMethods(TypeSpec.Builder classBuilder, List<FieldModel> properties) {

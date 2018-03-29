@@ -1,13 +1,11 @@
 package com.dioxic.mgenerate.operator;
 
-import java.util.Optional;
-
+import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import org.bson.Document;
-
-import com.dioxic.mgenerate.FakerUtil;
+import org.bson.types.MinKey;
 
 @OperatorClass
 public class Number implements Operator {

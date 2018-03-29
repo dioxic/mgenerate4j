@@ -1,7 +1,13 @@
 package com.dioxic.mgenerate.operator;
 
-public interface OperatorBuilder<T> {
+import org.bson.Document;
+
+public interface OperatorBuilder<T extends Operator> {
 
     T build();
+
+    OperatorBuilder<T> document(Document document);
+
+    String getKey();
 
 }
