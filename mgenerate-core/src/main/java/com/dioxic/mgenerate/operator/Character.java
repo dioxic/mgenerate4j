@@ -62,6 +62,7 @@ public class Character implements Operator<java.lang.Character>, Initializable {
                 sb.append(SYMBOLS);
                 sb.append(NUMERIC);
             }
+            pool = sb.toString();
         }
     }
 }

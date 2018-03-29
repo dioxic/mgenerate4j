@@ -1,0 +1,17 @@
+{
+    "type": {
+        "$choose": {
+            "from": ["fruit","vegetable"]
+        }
+    },
+    "name": {
+        "$choose": {
+            "from": ["apple", "orange","pear","cucumber","radish","tomato","banana","kiwi"]
+        }
+    },
+    "color": {
+        "$choose": {
+            "from": [ "red", "orange", "black", "yellow", "green","purple"]
+        }
+    }
+}
