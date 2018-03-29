@@ -8,11 +8,13 @@ import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.io.BasicOutputBuffer;
+import org.bson.json.JsonReader;
 import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
 import org.bson.codec.OperatorCodec;
 import org.bson.codec.OperatorCodecProvider;
 import org.bson.codec.OperatorTransformer;
+import org.bson.json.StrictJsonReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class BsonTest {
 
     @Test
     public void documentTest() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/template.json")), StandardCharsets.UTF_8);
+        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/date-test.json")), StandardCharsets.UTF_8);
 //        String json = "{ \"name\": \"$email\"}";
 
         CodecRegistry registry = CodecRegistries.fromProviders(asList(new ValueCodecProvider(),
@@ -57,7 +59,9 @@ public class BsonTest {
 
         DocumentCodec codec = new DocumentCodec(registry, new BsonTypeClassMap(), new OperatorTransformer());
 
-        Document doc = Document.parse(json, codec);
+//        Document doc = Document.parse(json, codec);
+        StrictJsonReader bsonReader = new StrictJsonReader(json);
+        Document doc = codec.decode(bsonReader, DecoderContext.builder().build());
 
         System.out.println(doc.toString());
 

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class ProviderGenerator {
 
     private final List<TypeSpec> builderSpecs;

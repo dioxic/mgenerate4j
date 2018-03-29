@@ -11,7 +11,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.naming.spi.ObjectFactory;
 import java.util.List;
 
 public class FieldModel {
@@ -54,16 +53,16 @@ public class FieldModel {
         return Util.isSameType(type, Operator.class);
     }
 
-    public TypeName getOperatorType() {
+    public TypeName getOperatorTypeName() {
         if (isOperatorType()) {
-            return ParameterizedTypeName.get(ClassName.get(Operator.class), getRootFieldType());
+            return ParameterizedTypeName.get(ClassName.get(Operator.class), getRootTypeName());
         }
         else {
             return ParameterizedTypeName.get(ClassName.get(Operator.class), TypeName.get(type));
         }
     }
 
-    public TypeName getRootFieldType() {
+    public TypeName getRootTypeName() {
         if (isOperatorType()) {
             if (!typeParameters.isEmpty()) {
                 return ClassName.get(typeParameters.get(0));
@@ -71,5 +70,12 @@ public class FieldModel {
             return ClassName.get(Object.class);
         }
         return TypeName.get(type);
+    }
+
+    public boolean isEnumRootType() {
+        if (isOperatorType()) {
+            return !typeParameters.isEmpty() && Util.isEnum(typeParameters.get(0));
+        }
+        return Util.isEnum(type);
     }
 }

@@ -1,0 +1,18 @@
+{
+  "childAge": {
+    "$age": {
+      "type": "child"
+    }
+  },
+  "seniorAge": {
+    "$age": {
+      "type": "senior"
+    }
+  },
+  "teenAge": {
+    "$age": {
+      "type": "teen"
+    }
+  },
+  "defaultAge": "$age"
+}

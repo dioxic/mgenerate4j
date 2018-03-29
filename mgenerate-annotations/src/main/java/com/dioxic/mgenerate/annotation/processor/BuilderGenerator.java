@@ -1,14 +1,13 @@
 package com.dioxic.mgenerate.annotation.processor;
 
+import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.annotation.model.FieldModel;
-import com.dioxic.mgenerate.operator.Initializable;
-import com.dioxic.mgenerate.operator.Operator;
-import com.dioxic.mgenerate.operator.OperatorBuilder;
-import com.dioxic.mgenerate.operator.Wrapper;
+import com.dioxic.mgenerate.operator.*;
 import com.squareup.javapoet.*;
 import org.bson.Document;
+import org.bson.assertions.Assertions;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -40,18 +39,17 @@ public class BuilderGenerator {
     }
 
     public TypeSpec generate(Appendable appendable) throws IOException, ClassNotFoundException {
-
         ClassName builderInterface = ClassName.get(OperatorBuilder.class);
-
         List<FieldModel> properties = getProperties();
 
         TypeSpec.Builder classBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .addSuperinterface(ParameterizedTypeName.get(builderInterface, this.thisType));
+                .addSuperinterface(ParameterizedTypeName.get(builderInterface, this.thisType))
+                .addAnnotation(AnnotationSpec.builder(OperatorBuilderClass.class)
+                        .addMember("value", "$S", getOperatorKey())
+                        .build());
 
         addFields(classBuilder, properties);
-
-        addKeyMethod(classBuilder);
 
         addPropertyMethods(classBuilder, properties);
 
@@ -71,7 +69,7 @@ public class BuilderGenerator {
 
     public void addFields(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         for (FieldModel field : properties) {
-            classBuilder.addField(field.getOperatorType(), field.getName(), Modifier.PRIVATE);
+            classBuilder.addField(field.getOperatorTypeName(), field.getName(), Modifier.PRIVATE);
         }
     }
 
@@ -134,6 +132,7 @@ public class BuilderGenerator {
         classBuilder.addMethod(method);
     }
 
+    @Deprecated
     public void addKeyMethod(TypeSpec.Builder classBuilder) {
         String operatorKey = typeElement.getAnnotation(OperatorClass.class).value();
 
@@ -152,13 +151,25 @@ public class BuilderGenerator {
         classBuilder.addMethod(method);
     }
 
+    private String getOperatorKey() {
+        String operatorKey = typeElement.getAnnotation(OperatorClass.class).value();
+
+        if (operatorKey.isEmpty()) {
+            char[] key = typeElement.getSimpleName().toString().toCharArray();
+            key[0] = Character.toLowerCase(key[0]);
+            operatorKey = String.valueOf(key);
+        }
+
+        return operatorKey;
+    }
+
     public MethodSpec addValidateMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder("validate")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .returns(void.class);
 
         properties.stream().filter(FieldModel::isRequired).forEach(o ->
-                builder.addStatement("$T.notNull($S,$L)", org.bson.assertions.Assertions.class, o.getName(), o.getName())
+                builder.addStatement("$T.notNull($S,$L)", Assertions.class, o.getName(), o.getName())
         );
 
         MethodSpec method = builder.build();
@@ -173,7 +184,28 @@ public class BuilderGenerator {
                 .returns(ClassName.get(packageName, className));
 
         for (FieldModel property : properties) {
-            builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Operator.class);
+            if (property.isEnumRootType()) {
+                TypeSpec enumWrapper = TypeSpec.anonymousClassBuilder("$N", property.getName() + "Name")
+                        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(EnumWrapper.class), property.getRootTypeName()))
+                        .addMethod(MethodSpec.methodBuilder("resolve")
+                                .addAnnotation(Override.class)
+                                .addModifiers(Modifier.PUBLIC)
+                                .returns(property.getRootTypeName())
+                                .addStatement("return $T.valueOf(name.resolve().toUpperCase())", property.getRootTypeName())
+                                .build())
+                        .build();
+
+
+                builder.addStatement("$T $N = document.get($S, $T.class)",
+                        ParameterizedTypeName.get(Operator.class, String.class),
+                        property.getName() + "Name",
+                        property.getName(),
+                        Operator.class)
+                        .addStatement("$N = $L", property.getName(), enumWrapper);
+            }
+            else {
+                builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Operator.class);
+            }
         }
 
         builder.addStatement("return this");
@@ -186,7 +218,7 @@ public class BuilderGenerator {
             classBuilder.addMethod(MethodSpec.methodBuilder(property.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .returns(ClassName.get(packageName, className))
-                    .addParameter(property.getOperatorType(), property.getName())
+                    .addParameter(property.getOperatorTypeName(), property.getName())
                     .addStatement("this.$L = $L", property.getName(), property.getName())
                     .addStatement("return this")
                     .build());
@@ -194,7 +226,7 @@ public class BuilderGenerator {
             classBuilder.addMethod(MethodSpec.methodBuilder(property.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .returns(ClassName.get(packageName, className))
-                    .addParameter(property.getRootFieldType(), property.getName())
+                    .addParameter(property.getRootTypeName(), property.getName())
                     .addStatement("this.$L = new $T($L)", property.getName(), Wrapper.class, property.getName())
                     .addStatement("return this")
                     .build());

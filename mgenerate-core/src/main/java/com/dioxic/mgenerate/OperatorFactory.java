@@ -1,5 +1,6 @@
 package com.dioxic.mgenerate;
 
+import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
 import com.dioxic.mgenerate.operator.Operator;
 import com.dioxic.mgenerate.operator.OperatorBuilder;
 import com.dioxic.mgenerate.operator.Wrapper;
@@ -16,12 +17,13 @@ public class OperatorFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(OperatorFactory.class);
 
-    private static final Map<String, OperatorBuilder> builderMap = new HashMap<>();
+    private static final Map<String, Class<OperatorBuilder>> builderMap = new HashMap<>();
 
     static {
         addBuilders("com.dioxic.mgenerate.operator");
     }
 
+    @Deprecated
     private static OperatorBuilder instantiate(Class<OperatorBuilder> clazz) {
         try {
             return clazz.newInstance();
@@ -32,15 +34,21 @@ public class OperatorFactory {
 
     public static void addBuilders(String packageName) {
         Reflections reflections = new Reflections(packageName);
-
         reflections.getSubTypesOf(OperatorBuilder.class).stream()
                 .map(o -> (Class<OperatorBuilder>) o)
-                .map(OperatorFactory::instantiate)
                 .forEach(OperatorFactory::addBuilder);
     }
 
-    public static void addBuilder(OperatorBuilder builder) {
-        builderMap.put(builder.getKey(), builder);
+    public static void addBuilder(Class<OperatorBuilder> builderClass) {
+        OperatorBuilderClass annotation = builderClass.getAnnotation(OperatorBuilderClass.class);
+
+        Assertions.notNull("operation builder class annoation", annotation);
+
+        addBuilder(annotation.value(), builderClass);
+    }
+
+    public static void addBuilder(String key, Class<OperatorBuilder> builderClass) {
+        builderMap.put(key, builderClass);
     }
 
     public static boolean contains(String operatorKey) {
@@ -48,7 +56,11 @@ public class OperatorFactory {
     }
 
     public static Operator create(String operatorKey) {
-        return contains(operatorKey) ? builderMap.get(operatorKey).build() : null;
+        try {
+            return contains(operatorKey) ? builderMap.get(operatorKey).newInstance().build() : null;
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Operator create(String operatorKey, Document doc) {
@@ -59,7 +71,11 @@ public class OperatorFactory {
                 entry.setValue(wrap(entry.getValue()));
             }
 
-            return builderMap.get(operatorKey).document(doc).build();
+            try {
+                return builderMap.get(operatorKey).newInstance().document(doc).build();
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return null;
@@ -69,6 +85,6 @@ public class OperatorFactory {
         if (object instanceof Operator) {
             return (Operator) object;
         }
-        return new Wrapper(object);
+        return new Wrapper<>(object);
     }
 }

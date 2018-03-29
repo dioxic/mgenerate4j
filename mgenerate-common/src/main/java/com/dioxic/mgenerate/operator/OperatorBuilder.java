@@ -8,6 +8,4 @@ public interface OperatorBuilder<T extends Operator> {
 
     OperatorBuilder<T> document(Document document);
 
-    String getKey();
-
 }

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes("com.dioxic.mgenerate.annotation.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedOptions({"operatorProviderClassName", "operatorProviderPackage"})
+//@SupportedOptions({"operatorProviderClassName", "operatorProviderPackage"})
 public class OperatorAnnotationProcessor extends AbstractProcessor {
 
     @Override
@@ -34,11 +34,11 @@ public class OperatorAnnotationProcessor extends AbstractProcessor {
             return false;
         }
 
-        String providerPackageName = this.processingEnv.getOptions().get("operatorProviderPackage");
-        String providerClassName = this.processingEnv.getOptions().get("operatorProviderClassName");
-        if (providerClassName == null) {
-            providerClassName = "DefaultOperatorProvider";
-        }
+//        String providerPackageName = this.processingEnv.getOptions().get("operatorProviderPackage");
+//        String providerClassName = this.processingEnv.getOptions().get("operatorProviderClassName");
+//        if (providerClassName == null) {
+//            providerClassName = "DefaultOperatorProvider";
+//        }
 
         Util.elementUtils = this.processingEnv.getElementUtils();
         Util.typeUtils = this.processingEnv.getTypeUtils();
@@ -71,24 +71,21 @@ public class OperatorAnnotationProcessor extends AbstractProcessor {
                         builderSpecs.add(builderSpec);
                     }
 
-                    if (providerPackageName == null){
-                        providerPackageName = builderGen.getPackageName();
-                    }
                 } catch (Exception e) {
                     this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
                 }
             }
         }
 
-        try {
-            ProviderGenerator providerGen = new ProviderGenerator(providerPackageName, providerClassName, builderSpecs);
-            JavaFileObject jfo = this.processingEnv.getFiler().createSourceFile(providerGen.getFullyQualifiedName());
-            try (Writer writer = jfo.openWriter()) {
-                providerGen.generate(writer);
-            }
-        } catch (Exception e) {
-            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
-        }
+//        try {
+//            ProviderGenerator providerGen = new ProviderGenerator(providerPackageName, providerClassName, builderSpecs);
+//            JavaFileObject jfo = this.processingEnv.getFiler().createSourceFile(providerGen.getFullyQualifiedName());
+//            try (Writer writer = jfo.openWriter()) {
+//                providerGen.generate(writer);
+//            }
+//        } catch (Exception e) {
+//            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
+//        }
 
         return true;
     }

@@ -3,6 +3,9 @@ package com.dioxic.mgenerate;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,5 +47,11 @@ public class FakerUtil {
 
     public static boolean randomBoolean() {
 	    return random().nextBoolean();
+    }
+
+    public static LocalDateTime randomDate(LocalDateTime min, LocalDateTime max) {
+	    long minEpoch = min.toInstant(ZoneOffset.UTC).toEpochMilli();
+	    long maxEpoch = max.toInstant(ZoneOffset.UTC).toEpochMilli();
+	    return LocalDateTime.ofInstant(Instant.ofEpochMilli(numberBetween(minEpoch, maxEpoch)), ZoneOffset.UTC);
     }
 }
