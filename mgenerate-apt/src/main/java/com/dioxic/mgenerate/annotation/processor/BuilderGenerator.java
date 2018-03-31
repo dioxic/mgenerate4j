@@ -1,5 +1,8 @@
 package com.dioxic.mgenerate.annotation.processor;
 
+import com.dioxic.mgenerate.Initializable;
+import com.dioxic.mgenerate.OperatorBuilder;
+import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
@@ -178,17 +181,17 @@ public class BuilderGenerator {
 
 
                 builder.addStatement("$T $N = document.get($S, $T.class)",
-                        ParameterizedTypeName.get(Operator.class, String.class),
+                        ParameterizedTypeName.get(Resolvable.class, String.class),
                         property.getName() + "Name",
                         property.getName(),
-                        Operator.class)
+                        Resolvable.class)
                         .addStatement("$N = $L", property.getName(), enumWrapper);
             }
             else if (property.isDateRootType()) {
-                builder.addStatement("$L = new $T(document.get($S, $T.class))", property.getName(), DateWrapper.class, property.getName(), Operator.class);
+                builder.addStatement("$L = new $T(document.get($S, $T.class))", property.getName(), DateWrapper.class, property.getName(), Resolvable.class);
             }
             else {
-                builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Operator.class);
+                builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Resolvable.class);
             }
         }
 

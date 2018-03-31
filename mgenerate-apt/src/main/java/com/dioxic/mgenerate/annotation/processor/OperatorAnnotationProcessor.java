@@ -1,12 +1,10 @@
 package com.dioxic.mgenerate.annotation.processor;
 
 import com.dioxic.mgenerate.annotation.OperatorClass;
-import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;

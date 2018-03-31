@@ -1,6 +1,6 @@
 package org.bson.codec;
 
-import com.dioxic.mgenerate.operator.Operator;
+import com.dioxic.mgenerate.Resolvable;
 import org.bson.Document;
 import org.bson.Transformer;
 import org.bson.codecs.BsonTypeClassMap;
@@ -60,7 +60,7 @@ public final class OperatorCodecProvider implements CodecProvider {
     @Override
     @SuppressWarnings("unchecked")
     public <T> Codec<T> get(final Class<T> clazz, final CodecRegistry registry) {
-        if (Operator.class.isAssignableFrom(clazz)) {
+        if (Resolvable.class.isAssignableFrom(clazz)) {
             return (Codec<T>) new OperatorCodec();
         }
 

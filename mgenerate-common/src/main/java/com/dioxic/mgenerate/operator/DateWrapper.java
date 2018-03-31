@@ -1,17 +1,18 @@
 package com.dioxic.mgenerate.operator;
 
-import java.time.LocalDate;
+import com.dioxic.mgenerate.Resolvable;
+
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
-public class DateWrapper implements Operator<LocalDateTime> {
+public class DateWrapper implements Resolvable<LocalDateTime> {
 
     private static final DateTimeFormatter DFT = DateTimeFormatter.ISO_DATE_TIME;
     //private static final DateTimeFormatter DFT = DateTimeFormatter.ISO;
 
-    private final Operator<String> operator;
+    private final Resolvable<String> operator;
 
-    public DateWrapper(Operator<String> operator) {
+    public DateWrapper(Resolvable<String> operator) {
         this.operator = operator;
     }
 

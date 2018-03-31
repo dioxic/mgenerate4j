@@ -1,16 +1,18 @@
 package com.dioxic.mgenerate.operator;
 
+import com.dioxic.mgenerate.Initializable;
 import com.dioxic.mgenerate.OperatorFactory;
+import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 @OperatorClass
-public class Inc implements Operator<Integer>, Initializable {
+public class Inc implements Resolvable<Integer>, Initializable {
 
     @OperatorProperty
-    Operator<Integer> step = OperatorFactory.wrap(1);
+    Resolvable<Integer> step = OperatorFactory.wrap(1);
 
     @OperatorProperty
     Integer start = 0;

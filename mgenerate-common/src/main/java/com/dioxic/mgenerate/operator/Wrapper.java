@@ -1,6 +1,8 @@
 package com.dioxic.mgenerate.operator;
 
-public class Wrapper<T> implements Operator<T> {
+import com.dioxic.mgenerate.Resolvable;
+
+public class Wrapper<T> implements Resolvable<T> {
 
     private final T value;
 

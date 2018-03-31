@@ -2,7 +2,7 @@ package com.dioxic.mgenerate.annotation.model;
 
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.annotation.processor.Util;
-import com.dioxic.mgenerate.operator.Operator;
+import com.dioxic.mgenerate.Resolvable;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -51,15 +51,15 @@ public class FieldModel {
     }
 
     public boolean isOperatorType() {
-        return Util.isSameType(type, Operator.class);
+        return Util.isSameType(type, Resolvable.class);
     }
 
     public TypeName getOperatorTypeName() {
         if (isOperatorType()) {
-            return ParameterizedTypeName.get(ClassName.get(Operator.class), getRootTypeName());
+            return ParameterizedTypeName.get(ClassName.get(Resolvable.class), getRootTypeName());
         }
         else {
-            return ParameterizedTypeName.get(ClassName.get(Operator.class), TypeName.get(type));
+            return ParameterizedTypeName.get(ClassName.get(Resolvable.class), TypeName.get(type));
         }
     }
 

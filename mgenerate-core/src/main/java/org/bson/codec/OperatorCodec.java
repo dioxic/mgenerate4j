@@ -1,7 +1,7 @@
 package org.bson.codec;
 
 import com.dioxic.mgenerate.OperatorFactory;
-import com.dioxic.mgenerate.operator.Operator;
+import com.dioxic.mgenerate.Resolvable;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
 import org.bson.codecs.*;
@@ -13,7 +13,7 @@ import static java.util.Arrays.asList;
 import static org.bson.assertions.Assertions.notNull;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 
-public class OperatorCodec implements Codec<Operator> {
+public class OperatorCodec implements Codec<Resolvable> {
 
     private static final CodecRegistry DEFAULT_REGISTRY = fromProviders(asList(new ValueCodecProvider(),
             new BsonValueCodecProvider(),
@@ -54,18 +54,18 @@ public class OperatorCodec implements Codec<Operator> {
     }
 
     @Override
-    public Operator decode(BsonReader reader, DecoderContext decoderContext) {
+    public Resolvable decode(BsonReader reader, DecoderContext decoderContext) {
         return OperatorFactory.create(reader.readString());
     }
 
     @Override
-    public void encode(BsonWriter writer, Operator value, EncoderContext encoderContext) {
+    public void encode(BsonWriter writer, Resolvable value, EncoderContext encoderContext) {
         writeValue(writer, encoderContext, value.resolve());
     }
 
     @Override
-    public Class<Operator> getEncoderClass() {
-        return Operator.class;
+    public Class<Resolvable> getEncoderClass() {
+        return Resolvable.class;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

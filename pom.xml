@@ -111,7 +111,7 @@
     </build>
 
     <modules>
-        <module>mgenerate-annotations</module>
+        <module>mgenerate-apt</module>
         <module>mgenerate-core</module>
         <module>mgenerate-common</module>
     </modules>

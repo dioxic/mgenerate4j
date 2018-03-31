@@ -1,8 +1,6 @@
 package com.dioxic.mgenerate;
 
 import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
-import com.dioxic.mgenerate.operator.Operator;
-import com.dioxic.mgenerate.operator.OperatorBuilder;
 import com.dioxic.mgenerate.operator.Wrapper;
 import org.bson.Document;
 import org.bson.assertions.Assertions;
@@ -21,15 +19,6 @@ public class OperatorFactory {
 
     static {
         addBuilders("com.dioxic.mgenerate.operator");
-    }
-
-    @Deprecated
-    private static OperatorBuilder instantiate(Class<OperatorBuilder> clazz) {
-        try {
-            return clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static void addBuilders(String packageName) {
@@ -55,7 +44,7 @@ public class OperatorFactory {
         return builderMap.containsKey(operatorKey);
     }
 
-    public static Operator create(String operatorKey) {
+    public static Resolvable create(String operatorKey) {
         try {
             return contains(operatorKey) ? builderMap.get(operatorKey).newInstance().build() : null;
         } catch (InstantiationException | IllegalAccessException e) {
@@ -63,7 +52,7 @@ public class OperatorFactory {
         }
     }
 
-    public static Operator create(String operatorKey, Document doc) {
+    public static Resolvable create(String operatorKey, Document doc) {
         Assertions.notNull("document", doc);
 
         if (contains(operatorKey)) {
@@ -81,9 +70,9 @@ public class OperatorFactory {
         return null;
     }
 
-    public static <T> Operator<T> wrap(T object) {
-        if (object instanceof Operator) {
-            return (Operator) object;
+    public static <T> Resolvable<T> wrap(T object) {
+        if (object instanceof Resolvable) {
+            return (Resolvable) object;
         }
         return new Wrapper<>(object);
     }

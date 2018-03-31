@@ -10,7 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mgenerate-annotations</artifactId>
+    <artifactId>mgenerate-apt</artifactId>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

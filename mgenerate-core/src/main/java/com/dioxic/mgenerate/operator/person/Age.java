@@ -4,13 +4,13 @@ import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
-import com.dioxic.mgenerate.operator.Operator;
+import com.dioxic.mgenerate.Resolvable;
 
 @OperatorClass
-public class Age implements Operator<Integer> {
+public class Age implements Resolvable<Integer> {
 
     @OperatorProperty
-    Operator<AgeType> type = OperatorFactory.wrap(AgeType.DEFAULT);
+    Resolvable<AgeType> type = OperatorFactory.wrap(AgeType.DEFAULT);
 
     @Override
     public Integer resolve() {

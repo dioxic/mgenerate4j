@@ -1,11 +1,6 @@
-package com.dioxic.mgenerate.operator;
+package com.dioxic.mgenerate;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.bson.assertions.Assertions.notNull;
-
-public interface Operator<T> {
+public interface Resolvable<T> {
 
     T resolve();
 

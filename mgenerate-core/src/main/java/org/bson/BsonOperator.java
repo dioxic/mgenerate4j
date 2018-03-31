@@ -1,13 +1,13 @@
 package org.bson;
 
-import com.dioxic.mgenerate.operator.Operator;
+import com.dioxic.mgenerate.Resolvable;
 
 @Deprecated
 public class BsonOperator extends BsonValue {
 
-    private Operator operator;
+    private Resolvable operator;
 
-    public BsonOperator(Operator operator) {
+    public BsonOperator(Resolvable operator) {
         this.operator = operator;
     }
 

@@ -1,15 +1,15 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.FakerUtil;
+import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
-import org.bson.Document;
 
 @OperatorClass
-public class Email implements Operator<String> {
+public class Email implements Resolvable<String> {
 
     @OperatorProperty
-	Operator<String> domain;
+    Resolvable<String> domain;
 
     @Override
 	public String resolve() {

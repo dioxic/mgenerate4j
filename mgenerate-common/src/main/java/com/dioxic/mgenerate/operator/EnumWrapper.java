@@ -1,10 +1,12 @@
 package com.dioxic.mgenerate.operator;
 
-public abstract class EnumWrapper<T extends Enum> implements Operator<T> {
+import com.dioxic.mgenerate.Resolvable;
 
-    protected final Operator<String> name;
+public abstract class EnumWrapper<T extends Enum> implements Resolvable<T> {
 
-    public EnumWrapper(Operator<String> name) {
+    protected final Resolvable<String> name;
+
+    public EnumWrapper(Resolvable<String> name) {
         this.name = name;
     }
 

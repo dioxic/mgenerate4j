@@ -1,6 +1,7 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.FakerUtil;
+import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 
@@ -8,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @OperatorClass
-public class Choose implements Operator<Object> {
+public class Choose implements Resolvable<Object> {
 
     @OperatorProperty(required = true)
-	Operator<List<?>> from;
+    Resolvable<List<?>> from;
 
     @OperatorProperty
-	Operator<List<Integer>> weights;
+    Resolvable<List<Integer>> weights;
 
 	@Override
 	public Object resolve() {
@@ -36,7 +37,7 @@ public class Choose implements Operator<Object> {
 
 		Object result = from.get(FakerUtil.instance().random().nextInt(from.size()));
 
-		return result instanceof Operator ? ((Operator)result).resolve() : result;
+		return result instanceof Resolvable ? ((Resolvable)result).resolve() : result;
 
 	}
 

@@ -1,7 +1,7 @@
 package com.dioxic.mgenerate.annotation.processor;
 
-import com.dioxic.mgenerate.operator.OperatorBuilder;
-import com.dioxic.mgenerate.operator.OperatorProvider;
+import com.dioxic.mgenerate.OperatorBuilder;
+import com.dioxic.mgenerate.OperatorProvider;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;

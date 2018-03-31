@@ -1,7 +1,6 @@
 package org.bson.codec;
 
 import com.dioxic.mgenerate.OperatorFactory;
-import com.dioxic.mgenerate.operator.Operator;
 import org.bson.Document;
 import org.bson.Transformer;
 
@@ -17,9 +16,9 @@ public class OperatorTransformer implements Transformer {
                 Map.Entry<String, Object> entry = doc.entrySet().iterator().next();
                 String key = entry.getKey();
                 if (entry.getValue() instanceof Document && key.startsWith("$")) {
-                    Operator op = OperatorFactory.create(key.substring(1), (Document) entry.getValue());
-                    if (op != null) {
-                        return op;
+                    key = key.substring(1);
+                    if (OperatorFactory.contains(key)) {
+                        return OperatorFactory.create(key, (Document) entry.getValue());
                     }
                 }
             }
@@ -27,9 +26,9 @@ public class OperatorTransformer implements Transformer {
         else if (objectToTransform instanceof String) {
             String value = (String) objectToTransform;
             if (value.startsWith("$")) {
-                Operator op = OperatorFactory.create(value.substring(1));
-                if (op != null) {
-                    return op;
+                value = value.substring(1);
+                if (OperatorFactory.contains(value)) {
+                    return OperatorFactory.create(value);
                 }
             }
         }

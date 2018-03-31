@@ -1,4 +1,4 @@
-package com.dioxic.mgenerate.operator;
+package com.dioxic.mgenerate;
 
 public interface Initializable {
 

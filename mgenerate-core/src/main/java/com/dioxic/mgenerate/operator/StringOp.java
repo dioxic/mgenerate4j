@@ -2,17 +2,18 @@ package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
+import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.OperatorClass;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 
 @OperatorClass("string")
-public class StringOp implements Operator<String> {
+public class StringOp implements Resolvable<String> {
 
     @OperatorProperty
     java.lang.String pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()[]";
 
     @OperatorProperty
-    Operator<Integer> length = OperatorFactory.wrap(5);
+    Resolvable<Integer> length = OperatorFactory.wrap(5);
 
     @Override
     public String resolve() {
