@@ -1,145 +1,151 @@
 {
-    "_id": "$objectid",
-    "Claimant": {
-        "NationalInsuranceNumber": "$ssn",
-        "Title": "$prefix",
-        "OtherNames": "$first",
-        "Surname": "$last",
-        "DateOfBirth": "$birthday",
-        "Address": {
-            "Line1": "$street",
-            "Line2": "$street",
-            "Line3": "$city",
-            "PostCode": "$postal"
-        },
-        "MaritalStatus": {
-            "$choose": {
-                "from": [
-                    "Single",
-                    "Married",
-                    "Civil Partner"
-                ],
-                "weights": [
-                    2,
-                    1,
-                    2
-                ]
+  "_id": "$objectid",
+  "Claimant": {
+    "NationalInsuranceNumber": "$ssn",
+    "Title": "$prefix",
+    "OtherNames": "$first",
+    "Surname": "$last",
+    "DateOfBirth": "$birthday",
+    "Address": {
+      "Line1": "$street",
+      "Line2": "$street",
+      "Line3": "$city",
+      "PostCode": "$postal"
+    },
+    "MaritalStatus": {
+      "$choose": {
+        "from": [
+          "Single",
+          "Married",
+          "Civil Partner"
+        ],
+        "weights": [
+          2,
+          1,
+          2
+        ]
+      }
+    },
+    "Phone": {
+      "Number": "$phone",
+      "Text": "$bool"
+    },
+    "Email": "$email"
+  },
+  "Caree": {
+    "Benefit": {
+      "QualifyingBenefit": {
+        "$choose": {
+          "from": [
+            {
+              "Line1": "$street",
+              "Line2": "$street",
+              "Line3": "$city",
+              "PostCode": "$postal"
             }
-        },
-        "Phone": {
-            "Number": "$phone",
-            "Text": "$bool"
-        },
-        "Email": "$email"
-    },
-    "Caree": {
-        "Benefit": {
-            "QualifyingBenefit": {
-                "$choose": {
-                    "from": [
-                        {
-                            "Line1": "$street",
-                            "Line2": "$street",
-                            "Line3": "$city",
-                            "PostCode": "$postal"
-                        }
-                    ]
-                }
-            },
-            "VerifiedDate": "$date"
-        },
-        "RelationToClaimant": "$string",
-        "NationalInsuranceNumber": "$ssn",
-        "Title": "$prefix",
-        "OtherNames": "$first",
-        "Surname": "$last",
-        "DateOfBirth": "$birthday",
-        "Address": {
-            "Line1": "$street",
-            "Line2": "$street",
-            "Line3": "$city",
-            "PostCode": "$postal"
-        },
-        "MaritalStatus": "$string",
-        "Phone": {
-            "Number": "$phone",
-            "Text": "$bool"
-        },
-        "Email": "$email"
-    },
-    "Partner": {
-        "NationalInsuranceNumber": "$ssn",
-        "Title": "$prefix",
-        "OtherNames": "$first",
-        "Surname": "$last",
-        "DateOfBirth": "$birthday",
-        "Nationality": "$country",
-        "Address": {
-            "Line1": "$street",
-            "Line2": "$street",
-            "Line3": "$city",
-            "PostCode": "$postal"
-        },
-        "SeperatedDate": "$date"
-    },
-    "Eligibility": {
-        "Employed": "$bool",
-        "EmploymentText": "$string",
-        "SelfEmployed": "$bool",
-        "SelfEmploymentText": "$string",
-        "OtherIncome": "$bool",
-        "OtherIncomeText": "$string",
-        "Education": "$bool",
-        "EducationText": "$string"
-    },
-    "WarningFlags": {
-        "RivalCarers": {
-            "$array": {
-                "of": "$objectid"
-            }
-        },
-        "GeographicChallenge": "$bool"
-    },
-    "AssistedDecision": "$string",
-    "CaringStartDate": "$date",
-    "DateOfReceipt": "$date",
-    "ClaimDate": "$date",
-    "ContactHistory": {
-        "Contact": {
-            "$array": {
-                "of": {
-                    "date": "$date",
-                    "Method": "$string",
-                    "who": "$string",
-                    "details": "$string"
-                },
-                "number": 2
-            }
+          ]
         }
+      },
+      "VerifiedDate": "$date"
     },
-    "Decisions": {
-        "Decision": {
-            "$array": {
-                "of": {
-                    "date": "$date",
-                    "MadeBy": "$objectid",
-                    "AllowedFrom": "$date"
-                },
-                "number": 1
-            }
-        }
+    "RelationToClaimant": "$string",
+    "NationalInsuranceNumber": "$ssn",
+    "Title": "$prefix",
+    "OtherNames": "$first",
+    "Surname": "$last",
+    "DateOfBirth": "$birthday",
+    "Address": {
+      "Line1": "$street",
+      "Line2": "$street",
+      "Line3": "$city",
+      "PostCode": "$postal"
     },
-    "BreaksInCare": {
-        "Break": {
-            "$array": {
-                "of": {
-                    "Who": "$name",
-                    "Where": "$string",
-                    "From": "$date",
-                    "To": "$date"
-                },
-                "number": 2
-            }
+    "MaritalStatus": "$string",
+    "Phone": {
+      "Number": "$phone",
+      "Text": "$bool"
+    },
+    "Email": "$email"
+  },
+  "Partner": {
+    "NationalInsuranceNumber": "$ssn",
+    "Title": "$prefix",
+    "OtherNames": "$first",
+    "Surname": "$last",
+    "DateOfBirth": "$birthday",
+    "Nationality": "$country",
+    "Address": {
+      "Line1": "$street",
+      "Line2": "$street",
+      "Line3": "$city",
+      "PostCode": "$postal"
+    },
+    "SeperatedDate": "$date"
+  },
+  "Eligibility": {
+    "Employed": "$bool",
+    "EmploymentText": "$string",
+    "SelfEmployed": "$bool",
+    "SelfEmploymentText": "$string",
+    "OtherIncome": "$bool",
+    "OtherIncomeText": "$string",
+    "Education": "$bool",
+    "EducationText": "$string"
+  },
+  "WarningFlags": {
+    "RivalCarers": {
+      "$array": {
+        "of": "$objectid",
+        "number": {
+          "$number": {
+            "min": 1,
+            "max": 5
+          }
         }
+      }
+    },
+    "GeographicChallenge": "$bool"
+  },
+  "AssistedDecision": "$string",
+  "CaringStartDate": "$date",
+  "DateOfReceipt": "$date",
+  "ClaimDate": "$date",
+  "ContactHistory": {
+    "Contact": {
+      "$array": {
+        "of": {
+          "date": "$date",
+          "Method": "$string",
+          "who": "$string",
+          "details": "$string"
+        },
+        "number": 2
+      }
     }
+  },
+  "Decisions": {
+    "Decision": {
+      "$array": {
+        "of": {
+          "date": "$date",
+          "MadeBy": "$objectid",
+          "AllowedFrom": "$date"
+        },
+        "number": 1
+      }
+    }
+  },
+  "BreaksInCare": {
+    "Break": {
+      "$array": {
+        "of": {
+          "Who": "$name",
+          "Where": "$string",
+          "From": "$date",
+          "To": "$date"
+        },
+        "number": 2
+      }
+    }
+  }
 }

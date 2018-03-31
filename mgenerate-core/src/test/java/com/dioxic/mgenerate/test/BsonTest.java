@@ -48,11 +48,11 @@ public class BsonTest {
 
     @Test
     public void documentTest() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/date-test.json")), StandardCharsets.UTF_8);
+        String json = new String(Files.readAllBytes(Paths.get("src/test/resources/bson-test.json")), StandardCharsets.UTF_8);
 //        String json = "{ \"name\": \"$email\"}";
 
         CodecRegistry registry = CodecRegistries.fromProviders(asList(new ValueCodecProvider(),
-                new BsonValueCodecProvider(),
+                //new BsonValueCodecProvider(),
                 new DocumentCodecProvider(new OperatorTransformer()),
                 new OperatorCodecProvider()));
 
