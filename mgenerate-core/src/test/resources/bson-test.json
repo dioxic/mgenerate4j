@@ -2,8 +2,29 @@
   "_id": "$objectid",
   "PhoneNumbers": {
     "$array": {
-      "of": { "$number" :{ "min": 75000000, "max": 79000000}},
-      "number": { "$number" :{ "min": 0, "max": 3}}
+      "of": {
+        "$number": {
+          "min": 75000000,
+          "max": 79000000
+        }
+      },
+      "number": {
+        "$number": {
+          "min": 0,
+          "max": 3
+        }
+      }
+    }
+  },
+  "Date": "$date",
+  "Age": {
+    "$age": {
+      "type": "child"
+    }
+  },
+  "Birthday": {
+    "$birthday": {
+      "type": "child"
     }
   },
   "Madness": {

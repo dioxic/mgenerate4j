@@ -1,6 +1,7 @@
 package com.dioxic.mgenerate;
 
-import com.dioxic.mgenerate.Transformer.DateTransformer;
+import com.dioxic.mgenerate.annotation.ValueTransformer;
+import com.dioxic.mgenerate.transformer.DateTransformer;
 import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
 import com.dioxic.mgenerate.operator.Wrapper;
 import org.bson.Document;
@@ -23,14 +24,39 @@ public class OperatorFactory {
 
     static {
         addBuilders("com.dioxic.mgenerate.operator");
-        transformerMap.put(LocalDateTime.class, new DateTransformer());
+        //transformerMap.put(LocalDateTime.class, new DateTransformer());
+        addTransformers("com.dioxic.mgenerate.transformer");
+        addTransformers("com.dioxic.mgenerate.operator");
     }
 
     public static void addBuilders(String packageName) {
         Reflections reflections = new Reflections(packageName);
-        reflections.getSubTypesOf(OperatorBuilder.class).stream()
+        reflections.getTypesAnnotatedWith(OperatorBuilderClass.class).stream()
+                .filter(OperatorBuilder.class::isAssignableFrom)
                 .map(o -> (Class<OperatorBuilder>) o)
                 .forEach(OperatorFactory::addBuilder);
+    }
+
+    public static void addTransformers(String packageName) {
+        Reflections reflections = new Reflections(packageName);
+        reflections.getTypesAnnotatedWith(ValueTransformer.class).stream()
+                .filter(Transformer.class::isAssignableFrom)
+                .map(OperatorFactory::instantiate)
+                .map(Transformer.class::cast)
+                .forEach(OperatorFactory::addTransformer);
+    }
+
+    private static <T> T instantiate(Class<T> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void addTransformer(Transformer transformer) {
+        ValueTransformer annotation = transformer.getClass().getAnnotation(ValueTransformer.class);
+        transformerMap.put(annotation.value(), transformer);
     }
 
     public static void addBuilder(Class<OperatorBuilder> builderClass) {
@@ -61,15 +87,7 @@ public class OperatorFactory {
         Assertions.notNull("document", doc);
 
         if (contains(operatorKey)) {
-//            for (Map.Entry<String, Object> entry : doc.entrySet()) {
-//                entry.setValue(wrap(entry.getValue()));
-//            }
-
-            try {
-                return builderMap.get(operatorKey).newInstance().document(doc).build();
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
+            return instantiate(builderMap.get(operatorKey)).document(doc).build();
         }
 
         return null;
@@ -78,7 +96,7 @@ public class OperatorFactory {
     public static <T> Resolvable<T> wrap(T object) {
         if (object != null) {
             if (object instanceof Resolvable) {
-                return (Resolvable) object;
+                return (Resolvable<T>) object;
             }
             return new Wrapper<>(object);
         }

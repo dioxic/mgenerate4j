@@ -119,7 +119,7 @@ public class BuilderGenerator {
 
         CodeBlock.Builder initBlock = CodeBlock.builder();
 
-        if (typeElement.getInterfaces().stream().filter(clazz -> Util.isSameType(clazz, Initializable.class)).count() > 0) {
+        if (typeElement.getInterfaces().stream().anyMatch(clazz -> Util.isSameType(clazz, Initializable.class))) {
             initBlock.addStatement("obj.initialize()");
         }
 
@@ -169,31 +169,31 @@ public class BuilderGenerator {
                 .returns(ClassName.get(packageName, className));
 
         for (FieldModel property : properties) {
-            if (property.isEnumRootType()) {
-                TypeSpec enumWrapper = TypeSpec.anonymousClassBuilder("$N", property.getName() + "Name")
-                        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(EnumWrapper.class), property.getRootTypeName()))
-                        .addMethod(MethodSpec.methodBuilder("resolve")
-                                .addAnnotation(Override.class)
-                                .addModifiers(Modifier.PUBLIC)
-                                .returns(property.getRootTypeName())
-                                .addStatement("return $T.valueOf(name.resolve().toUpperCase())", property.getRootTypeName())
-                                .build())
-                        .build();
-
-
-                builder.addStatement("$T $N = document.get($S, $T.class)",
-                        ParameterizedTypeName.get(Resolvable.class, String.class),
-                        property.getName() + "Name",
-                        property.getName(),
-                        Resolvable.class)
-                        .addStatement("$N = $L", property.getName(), enumWrapper);
-            }
+//            if (property.isEnumRootType()) {
+//                TypeSpec enumWrapper = TypeSpec.anonymousClassBuilder("$N", property.getName() + "Name")
+//                        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(EnumWrapper.class), property.getRootTypeName()))
+//                        .addMethod(MethodSpec.methodBuilder("resolve")
+//                                .addAnnotation(Override.class)
+//                                .addModifiers(Modifier.PUBLIC)
+//                                .returns(property.getRootTypeName())
+//                                .addStatement("return $T.valueOf(name.resolve().toUpperCase())", property.getRootTypeName())
+//                                .build())
+//                        .build();
+//
+//
+//                builder.addStatement("$T $N = document.get($S, $T.class)",
+//                        ParameterizedTypeName.get(Resolvable.class, String.class),
+//                        property.getName() + "Name",
+//                        property.getName(),
+//                        Resolvable.class)
+//                        .addStatement("$N = $L", property.getName(), enumWrapper);
+//            }
 //            else if (property.isDateRootType()) {
 //                builder.addStatement("$L = new $T(document.get($S, $T.class))", property.getName(), DateWrapper.class, property.getName(), Resolvable.class);
 //            }
-            else {
+//            else {
                 builder.addStatement("$L = $T.wrap(document.get($S),$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
-            }
+//            }
         }
 
         builder.addStatement("return this");

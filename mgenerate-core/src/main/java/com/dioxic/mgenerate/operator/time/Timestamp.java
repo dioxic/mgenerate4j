@@ -1,8 +1,9 @@
-package com.dioxic.mgenerate.operator;
+package com.dioxic.mgenerate.operator.time;
 
 import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
+import com.dioxic.mgenerate.operator.NumberBuilder;
 import org.bson.BsonTimestamp;
 
 @Operator

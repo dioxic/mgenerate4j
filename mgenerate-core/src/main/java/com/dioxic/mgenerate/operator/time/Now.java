@@ -1,4 +1,4 @@
-package com.dioxic.mgenerate.operator;
+package com.dioxic.mgenerate.operator.time;
 
 import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.Operator;

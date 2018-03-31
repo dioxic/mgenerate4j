@@ -1,5 +1,8 @@
 package com.dioxic.mgenerate.operator.person;
 
+import com.dioxic.mgenerate.annotation.ValueTransformer;
+import org.bson.Transformer;
+
 import java.time.LocalDateTime;
 
 public enum AgeType {
@@ -35,5 +38,21 @@ public enum AgeType {
 
     public LocalDateTime getMaxBirthday() {
         return maxBirthday;
+    }
+
+    @ValueTransformer(AgeType.class)
+    public static class AgeTypeTransformer implements Transformer {
+        @Override
+        public AgeType transform(Object objectToTransform) {
+            if (objectToTransform instanceof AgeType) {
+                return (AgeType) objectToTransform;
+            }
+
+            if (objectToTransform instanceof String) {
+                return AgeType.valueOf(((String) objectToTransform).toUpperCase());
+            }
+
+            throw new IllegalStateException("could not convert " + objectToTransform.getClass().getSimpleName() + " to LocalDateTime");
+        }
     }
 }

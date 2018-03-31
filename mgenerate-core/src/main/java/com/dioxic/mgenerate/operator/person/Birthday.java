@@ -14,8 +14,6 @@ import java.util.Date;
 @Operator
 public class Birthday implements Resolvable<Object> {
 
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ISO_DATE;
-
     @OperatorProperty
     Resolvable<AgeType> type = OperatorFactory.wrap(AgeType.DEFAULT);
 
@@ -26,10 +24,6 @@ public class Birthday implements Resolvable<Object> {
     public Object resolve() {
         AgeType ageType = type.resolve();
         Date date = Date.from(FakerUtil.randomDate(ageType.getMinBirthday(), ageType.getMaxBirthday()).toInstant(ZoneOffset.UTC));
-
-//        if (string.resolve()) {
-//            return date.format(DTF);
-//        }
 
         return date;
     }

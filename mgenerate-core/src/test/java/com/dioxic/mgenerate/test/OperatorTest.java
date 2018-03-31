@@ -2,9 +2,15 @@ package com.dioxic.mgenerate.test;
 
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.operator.*;
-import com.dioxic.mgenerate.operator.Character;
+import com.dioxic.mgenerate.operator.text.Character;
 import com.dioxic.mgenerate.operator.Number;
-import org.apache.commons.lang3.builder.ToStringExclude;
+import com.dioxic.mgenerate.operator.internet.Url;
+import com.dioxic.mgenerate.operator.internet.UrlBuilder;
+import com.dioxic.mgenerate.operator.text.CharacterBuilder;
+import com.dioxic.mgenerate.operator.text.StringOp;
+import com.dioxic.mgenerate.operator.text.StringOpBuilder;
+import com.dioxic.mgenerate.operator.time.*;
+import com.dioxic.mgenerate.operator.time.TimestampBuilder;
 import org.assertj.core.util.Lists;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
@@ -12,9 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.String;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -168,7 +172,53 @@ public class OperatorTest {
         for (char c :stringOp.resolve().toCharArray()) {
             assertThat(c).isIn(asCharacterList(pool));
         }
+    }
 
+    @Test
+    public void month() {
+        Month month = new MonthBuilder().build();
+        assertThat(month.resolve()).as("full month").isNotNull();
+        System.out.println(month.resolve());
+
+        month = new MonthBuilder().full(false).build();
+        assertThat(month.resolve()).as("short month").isNotNull();
+        System.out.println(month.resolve());
+    }
+
+    @Test
+    public void weekday() {
+        Weekday weekday = new WeekdayBuilder().build();
+        assertThat(weekday.resolve()).as("full weekday").isNotNull();
+        System.out.println(weekday.resolve());
+
+        weekday = new WeekdayBuilder().weekday_only(true).build();
+        assertThat(weekday.resolve()).as("short weekday").isNotNull();
+        System.out.println(weekday.resolve());
+    }
+
+    @Test
+    public void url() {
+        String domain = "www.socialradar.com";
+        String path = "images";
+        List<String> extensions = Lists.newArrayList("gif", "jpg", "png");
+
+        Choose choose = new ChooseBuilder().from(extensions).build();
+
+        Url url = new UrlBuilder().domain(domain).path(path).extension(choose).build();
+        assertThat(url.resolve()).as("all args").startsWith("http://" + domain).contains(path);
+        System.out.println(url.resolve());
+
+        url = new UrlBuilder().path(path).extension(choose).build();
+        assertThat(url.resolve()).as("all args").contains(path);
+        System.out.println(url.resolve());
+
+        url = new UrlBuilder().extension(choose).build();
+        assertThat(url.resolve()).as("all args").isNotNull();
+        System.out.println(url.resolve());
+
+        url = new UrlBuilder().build();
+        assertThat(url.resolve()).as("all args").isNotNull();
+        System.out.println(url.resolve());
     }
 
     private static List<java.lang.Character> asCharacterList(String s) {

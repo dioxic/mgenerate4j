@@ -1,4 +1,4 @@
-package com.dioxic.mgenerate.operator;
+package com.dioxic.mgenerate.operator.text;
 
 import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;

@@ -1,4 +1,4 @@
-package com.dioxic.mgenerate.Transformer;
+package com.dioxic.mgenerate.transformer;
 
 import com.dioxic.mgenerate.OperatorFactory;
 import org.bson.Document;

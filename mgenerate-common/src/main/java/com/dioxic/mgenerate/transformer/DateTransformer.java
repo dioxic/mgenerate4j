@@ -1,16 +1,18 @@
-package com.dioxic.mgenerate.Transformer;
+package com.dioxic.mgenerate.transformer;
 
+import com.dioxic.mgenerate.annotation.ValueTransformer;
 import org.bson.Transformer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@ValueTransformer(LocalDateTime.class)
 public class DateTransformer implements Transformer {
 
     private static final DateTimeFormatter DFT = DateTimeFormatter.ISO_DATE_TIME;
 
     @Override
-    public Object transform(Object objectToTransform) {
+    public LocalDateTime transform(Object objectToTransform) {
         if (objectToTransform instanceof LocalDateTime){
             return (LocalDateTime)objectToTransform;
         }

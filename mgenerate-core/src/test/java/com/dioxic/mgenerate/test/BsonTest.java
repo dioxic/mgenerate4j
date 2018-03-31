@@ -1,6 +1,6 @@
 package com.dioxic.mgenerate.test;
 
-import com.dioxic.mgenerate.operator.Email;
+import com.dioxic.mgenerate.operator.internet.Email;
 import org.bson.BsonBinaryReader;
 import org.bson.BsonBinaryWriter;
 import org.bson.Document;
@@ -12,7 +12,7 @@ import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
 import org.bson.codec.OperatorCodec;
 import org.bson.codec.OperatorCodecProvider;
-import com.dioxic.mgenerate.Transformer.OperatorTransformer;
+import com.dioxic.mgenerate.transformer.OperatorTransformer;
 import org.bson.json.StrictJsonReader;
 import org.junit.jupiter.api.Test;
 
