@@ -1,11 +1,11 @@
 {
   "_id": "$objectid",
-  "PhoneNumbers": {
+  "Numbers": {
     "$array": {
       "of": {
         "$number": {
-          "min": 75000000,
-          "max": 79000000
+          "min": 1,
+          "max": 300
         }
       },
       "number": {
@@ -16,6 +16,7 @@
       }
     }
   },
+  "Phone": "$phone",
   "Date": "$date",
   "Age": {
     "$age": {
