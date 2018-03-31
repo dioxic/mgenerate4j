@@ -2,9 +2,10 @@ package com.dioxic.mgenerate.annotation.processor;
 
 import com.dioxic.mgenerate.Initializable;
 import com.dioxic.mgenerate.OperatorBuilder;
+import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
-import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.annotation.model.FieldModel;
 import com.dioxic.mgenerate.operator.*;
@@ -136,7 +137,7 @@ public class BuilderGenerator {
     }
 
     private String getOperatorKey() {
-        String operatorKey = typeElement.getAnnotation(OperatorClass.class).value();
+        String operatorKey = typeElement.getAnnotation(Operator.class).value();
 
         if (operatorKey.isEmpty()) {
             char[] key = typeElement.getSimpleName().toString().toCharArray();
@@ -187,11 +188,11 @@ public class BuilderGenerator {
                         Resolvable.class)
                         .addStatement("$N = $L", property.getName(), enumWrapper);
             }
-            else if (property.isDateRootType()) {
-                builder.addStatement("$L = new $T(document.get($S, $T.class))", property.getName(), DateWrapper.class, property.getName(), Resolvable.class);
-            }
+//            else if (property.isDateRootType()) {
+//                builder.addStatement("$L = new $T(document.get($S, $T.class))", property.getName(), DateWrapper.class, property.getName(), Resolvable.class);
+//            }
             else {
-                builder.addStatement("$L = document.get($S, $T.class)", property.getName(), property.getName(), Resolvable.class);
+                builder.addStatement("$L = $T.wrap(document.get($S),$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
             }
         }
 

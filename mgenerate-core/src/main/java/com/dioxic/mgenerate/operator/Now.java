@@ -1,11 +1,11 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.Resolvable;
-import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.Operator;
 
 import java.util.Date;
 
-@OperatorClass
+@Operator
 public class Now implements Resolvable<Date> {
 
 	@Override

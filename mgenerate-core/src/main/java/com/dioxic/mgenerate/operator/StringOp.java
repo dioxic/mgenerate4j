@@ -3,10 +3,10 @@ package com.dioxic.mgenerate.operator;
 import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.Resolvable;
-import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 
-@OperatorClass("string")
+@Operator("string")
 public class StringOp implements Resolvable<String> {
 
     @OperatorProperty

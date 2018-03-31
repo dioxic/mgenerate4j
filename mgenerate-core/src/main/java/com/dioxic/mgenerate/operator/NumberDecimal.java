@@ -3,12 +3,12 @@ package com.dioxic.mgenerate.operator;
 import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.Resolvable;
-import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 
 import java.math.BigDecimal;
 
-@OperatorClass
+@Operator
 public class NumberDecimal implements Resolvable<BigDecimal> {
 
     private static final Long DEFAULT_MIN = 0L;

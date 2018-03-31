@@ -8,12 +8,11 @@ import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.io.BasicOutputBuffer;
-import org.bson.json.JsonReader;
 import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
 import org.bson.codec.OperatorCodec;
 import org.bson.codec.OperatorCodecProvider;
-import org.bson.codec.OperatorTransformer;
+import com.dioxic.mgenerate.Transformer.OperatorTransformer;
 import org.bson.json.StrictJsonReader;
 import org.junit.jupiter.api.Test;
 

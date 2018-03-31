@@ -6,6 +6,7 @@ import org.bson.Transformer;
 import org.bson.codecs.BsonTypeClassMap;
 import org.bson.codecs.CodeWithScopeCodec;
 import org.bson.codecs.Codec;
+import org.bson.codecs.DocumentCodec;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.types.CodeWithScope;
@@ -69,7 +70,7 @@ public final class OperatorCodecProvider implements CodecProvider {
         }
 
         if (clazz == Document.class) {
-            return (Codec<T>) new OperatorDocumentCodec(registry, bsonTypeClassMap, valueTransformer);
+            return (Codec<T>) new DocumentCodec(registry, bsonTypeClassMap, valueTransformer);
         }
 
         return null;

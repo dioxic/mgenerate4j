@@ -1,23 +1,37 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.Resolvable;
+import org.bson.Transformer;
 
 public class Wrapper<T> implements Resolvable<T> {
 
-    private final T value;
+    private T value;
+    private Resolvable resolvable;
+    private Transformer transformer;
 
     public Wrapper(T value) {
         this.value = value;
     }
 
-    @Override
-    public T resolve() {
-        return value;
+    public Wrapper(Object value, Transformer transformer) {
+
+        if (value instanceof Resolvable){
+            this.resolvable = (Resolvable)value;
+        }
+        else{
+            this.value = (T)transformer.transform(value);
+        }
+
+        this.transformer = transformer;
     }
 
     @Override
-    public String toString() {
-        return value.toString();
+    public T resolve() {
+        if (value != null) {
+            return value;
+        }
+
+        return (T)transformer.transform(resolvable.resolve());
     }
 
 }

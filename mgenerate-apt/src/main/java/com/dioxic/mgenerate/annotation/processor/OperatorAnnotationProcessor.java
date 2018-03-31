@@ -1,6 +1,6 @@
 package com.dioxic.mgenerate.annotation.processor;
 
-import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.Operator;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.*;
@@ -49,7 +49,7 @@ public class OperatorAnnotationProcessor extends AbstractProcessor {
         Set<TypeElement> triggeringAnnotations = hierarchyUtil
                 .filterTriggeringAnnotations(annotations,
                         this.processingEnv.getElementUtils()
-                                .getTypeElement(OperatorClass.class.getCanonicalName()));
+                                .getTypeElement(Operator.class.getCanonicalName()));
 
         for (TypeElement annotation : triggeringAnnotations) {
             Set<TypeElement> typeElements = roundEnv

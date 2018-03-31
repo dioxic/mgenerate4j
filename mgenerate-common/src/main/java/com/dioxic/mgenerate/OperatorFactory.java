@@ -1,13 +1,16 @@
 package com.dioxic.mgenerate;
 
+import com.dioxic.mgenerate.Transformer.DateTransformer;
 import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
 import com.dioxic.mgenerate.operator.Wrapper;
 import org.bson.Document;
+import org.bson.Transformer;
 import org.bson.assertions.Assertions;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +19,11 @@ public class OperatorFactory {
     private static final Logger logger = LoggerFactory.getLogger(OperatorFactory.class);
 
     private static final Map<String, Class<OperatorBuilder>> builderMap = new HashMap<>();
+    private static final Map<Class, Transformer> transformerMap = new HashMap<>();
 
     static {
         addBuilders("com.dioxic.mgenerate.operator");
+        transformerMap.put(LocalDateTime.class, new DateTransformer());
     }
 
     public static void addBuilders(String packageName) {
@@ -56,9 +61,9 @@ public class OperatorFactory {
         Assertions.notNull("document", doc);
 
         if (contains(operatorKey)) {
-            for (Map.Entry<String, Object> entry : doc.entrySet()) {
-                entry.setValue(wrap(entry.getValue()));
-            }
+//            for (Map.Entry<String, Object> entry : doc.entrySet()) {
+//                entry.setValue(wrap(entry.getValue()));
+//            }
 
             try {
                 return builderMap.get(operatorKey).newInstance().document(doc).build();
@@ -71,9 +76,22 @@ public class OperatorFactory {
     }
 
     public static <T> Resolvable<T> wrap(T object) {
-        if (object instanceof Resolvable) {
-            return (Resolvable) object;
+        if (object != null) {
+            if (object instanceof Resolvable) {
+                return (Resolvable) object;
+            }
+            return new Wrapper<>(object);
         }
-        return new Wrapper<>(object);
+        return null;
+    }
+
+    public static Resolvable wrap(Object object, Class desiredType) {
+        if (object != null) {
+            if (transformerMap.containsKey(desiredType)) {
+                return new Wrapper<>(object, transformerMap.get(desiredType));
+            }
+            return wrap(object);
+        }
+        return null;
     }
 }

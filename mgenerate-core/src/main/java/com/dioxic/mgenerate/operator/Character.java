@@ -3,10 +3,10 @@ package com.dioxic.mgenerate.operator;
 import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.Initializable;
 import com.dioxic.mgenerate.Resolvable;
-import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 
-@OperatorClass
+@Operator
 public class Character implements Resolvable<java.lang.Character>, Initializable {
 
     private static final String SYMBOLS = "!@#$%^&*()";

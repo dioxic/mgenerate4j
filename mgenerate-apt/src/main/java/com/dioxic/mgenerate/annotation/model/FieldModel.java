@@ -73,6 +73,16 @@ public class FieldModel {
         return TypeName.get(type);
     }
 
+    public TypeName getRootTypeNameErasure(){
+        if (isOperatorType()) {
+            if (!typeParameters.isEmpty()) {
+                return ClassName.get(Util.erasure(typeParameters.get(0)));
+            }
+            return ClassName.get(Object.class);
+        }
+        return TypeName.get(Util.erasure(type));
+    }
+
     public boolean isEnumRootType() {
         if (isOperatorType()) {
             return !typeParameters.isEmpty() && Util.isEnum(typeParameters.get(0));

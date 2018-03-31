@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
-public @interface OperatorClass {
+@Retention(RetentionPolicy.RUNTIME)
+public @interface WrapperBuilderClass {
 
-    String value() default "";
+    Class value();
 }

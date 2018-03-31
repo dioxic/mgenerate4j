@@ -1,9 +1,9 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.Resolvable;
-import com.dioxic.mgenerate.annotation.OperatorClass;
+import com.dioxic.mgenerate.annotation.Operator;
 
-@OperatorClass("objectid")
+@Operator("objectid")
 public class ObjectId implements Resolvable<org.bson.types.ObjectId> {
 
 	@Override
