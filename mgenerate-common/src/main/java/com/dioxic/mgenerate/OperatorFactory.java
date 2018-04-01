@@ -51,6 +51,7 @@ public class OperatorFactory {
 
     public static void addTransformer(Transformer transformer) {
         ValueTransformer annotation = transformer.getClass().getAnnotation(ValueTransformer.class);
+        logger.debug("adding [{}] to transformer registry", annotation.value());
         transformerMap.put(annotation.value(), transformer);
     }
 
@@ -63,6 +64,7 @@ public class OperatorFactory {
     }
 
     public static void addBuilder(String key, Class<ResolvableBuilder> builderClass) {
+        logger.debug("adding [{}] to operator registry", key);
         builderMap.put(key, builderClass);
     }
 
@@ -107,7 +109,7 @@ public class OperatorFactory {
                 return wrap((T)object);
             }
             if (object instanceof Resolvable) {
-                return (Resolvable)object;
+                return (Resolvable<T>)object;
             }
             throw new IllegalStateException("cannot wrap " + object.getClass().getSimpleName() + " to the desired type of " + desiredType.getSimpleName());
         }

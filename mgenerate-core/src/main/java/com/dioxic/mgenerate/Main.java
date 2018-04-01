@@ -1,55 +1,28 @@
 package com.dioxic.mgenerate;
 
-import com.dioxic.mgenerate.codec.OperatorTransformer;
 import org.bson.Document;
-import com.dioxic.mgenerate.codec.OperatorCodecProvider;
-import org.bson.codecs.*;
-import org.bson.codecs.configuration.CodecRegistries;
-import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.json.JsonWriterSettings;
-import org.bson.json.StrictJsonReader;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
+import static com.dioxic.mgenerate.JsonUtil.parse;
+import static com.dioxic.mgenerate.JsonUtil.toJson;
 
 public class Main {
-
-    private static CodecRegistry registry = CodecRegistries.fromProviders(asList(new ValueCodecProvider(),
-            new DocumentCodecProvider(new OperatorTransformer()),
-            new OperatorCodecProvider()));
-
-    private static DocumentCodec codec = new DocumentCodec(registry, new BsonTypeClassMap(), new OperatorTransformer());
-
-    private static JsonWriterSettings jws = JsonWriterSettings.builder()
-            .indent(true)
-            .build();
-
-    private static Document parse(String file) {
-        try {
-            String json = new String(Files.readAllBytes(Paths.get(file)), StandardCharsets.UTF_8);
-            StrictJsonReader bsonReader = new StrictJsonReader(json);
-            return codec.decode(bsonReader, DecoderContext.builder().build());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static void main(String[] args) {
         Integer ITERATIONS = args.length > 1 ? Integer.valueOf(args[1]) : 100;
 
         Document doc = parse(args[0]);
 
-        // System.out.println(Faker.instance(Locale.UK).address().zipCode());
         Long start = System.currentTimeMillis();
 
         try (PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Paths.get("output.json")))) {
-            Stream.generate(() -> doc.toJson(jws, codec))
+            Stream.generate(() -> toJson(doc))
                     .limit(ITERATIONS)
                     .parallel()
                     .forEach(pw::println);

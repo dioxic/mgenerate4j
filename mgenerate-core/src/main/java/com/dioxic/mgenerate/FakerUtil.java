@@ -1,7 +1,8 @@
 package com.dioxic.mgenerate;
 
+import com.github.javafaker.Faker;
+
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -9,9 +10,6 @@ import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
-
-import com.github.javafaker.Faker;
 
 public class FakerUtil {
 
