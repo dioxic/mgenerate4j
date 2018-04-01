@@ -6,6 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="org.reflections.Reflections" level="WARN"/>
         <Root level="info">
             <AppenderRef ref="Console" />
         </Root>

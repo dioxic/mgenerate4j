@@ -16,16 +16,11 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.dioxic.mgenerate</groupId>-->
-            <!--<artifactId>mgenerate-common</artifactId>-->
-            <!--<version>${project.version}</version>-->
-            <!--<scope>compile</scope>-->
-        <!--</dependency>-->
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
+            <groupId>com.dioxic.mgenerate</groupId>
+            <artifactId>mgenerate-common</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

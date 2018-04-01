@@ -1,7 +1,6 @@
 package com.dioxic.mgenerate;
 
 import org.bson.Document;
-import org.bson.json.JsonWriterSettings;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,15 +8,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-import static com.dioxic.mgenerate.JsonUtil.parse;
+import static com.dioxic.mgenerate.JsonUtil.parseFile;
 import static com.dioxic.mgenerate.JsonUtil.toJson;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Integer ITERATIONS = args.length > 1 ? Integer.valueOf(args[1]) : 100;
 
-        Document doc = parse(args[0]);
+        Document doc = parseFile(args[0]);
 
         Long start = System.currentTimeMillis();
 
@@ -26,13 +25,13 @@ public class Main {
                     .limit(ITERATIONS)
                     .parallel()
                     .forEach(pw::println);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         Long end = System.currentTimeMillis();
+
         Double avg = (end.doubleValue() - start.doubleValue()) / ITERATIONS.doubleValue();
-        System.out.printf("Producting %s documents took %sms (%sms per record)%n", ITERATIONS, end - start, avg);
+        Long speed = ITERATIONS / ((end - start) / 1000);
+        System.out.printf("Producting %s documents took %sms (%s docs/s)%n", ITERATIONS, end - start, speed);
 
     }
 

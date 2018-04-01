@@ -1,0 +1,30 @@
+sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
+language: java
+
+jdk:
+  - oraclejdk8
+
+#script:
+#  - chmod 700 ./mvnw
+#  - ./mvnw clean install
+#  - cd test
+#  - ../mvnw clean test
+
+env:
+  global:
+  - SONATYPE_USERNAME=dioxic
+
+#after_success:
+#  - cd ..
+#  - python addsettings.py
+#  - cd bsoncodec-apt
+#  - mvn clean deploy -DskipTests=true --settings ~/.m2/mySettings.xml
+
+#cache:
+#  directories:
+#  - $HOME/.m2
