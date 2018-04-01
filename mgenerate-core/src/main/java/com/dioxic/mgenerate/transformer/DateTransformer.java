@@ -1,18 +1,20 @@
 package com.dioxic.mgenerate.transformer;
 
+import com.dioxic.mgenerate.Transformer;
 import com.dioxic.mgenerate.annotation.ValueTransformer;
-import org.bson.Transformer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @ValueTransformer(LocalDateTime.class)
-public class DateTransformer implements Transformer {
+public class DateTransformer implements Transformer<LocalDateTime> {
 
-    private static final DateTimeFormatter DFT = DateTimeFormatter.ISO_DATE_TIME;
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ISO_DATE_TIME;
+    private static final DateTimeFormatter DT = DateTimeFormatter.ISO_DATE;
 
     @Override
     public LocalDateTime transform(Object objectToTransform) {
+
         if (objectToTransform instanceof LocalDateTime){
             return (LocalDateTime)objectToTransform;
         }
@@ -20,10 +22,10 @@ public class DateTransformer implements Transformer {
         if (objectToTransform instanceof String) {
             String dateString = (String)objectToTransform;
             if (dateString.contains("T")) {
-                return LocalDateTime.parse(dateString, DFT);
+                return LocalDateTime.parse(dateString, DTF);
             }
 
-            return LocalDateTime.now();
+            return LocalDateTime.parse(dateString, DT);
         }
 
         throw new IllegalStateException("could not convert " + objectToTransform.getClass().getSimpleName() + " to LocalDateTime");

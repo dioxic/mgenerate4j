@@ -1,25 +1,25 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.Resolvable;
-import org.bson.Transformer;
+import com.dioxic.mgenerate.Transformer;
 
 public class Wrapper<T> implements Resolvable<T> {
 
     private T value;
     private Resolvable resolvable;
-    private Transformer transformer;
+    private Transformer<T> transformer;
 
     public Wrapper(T value) {
         this.value = value;
     }
 
-    public Wrapper(Object value, Transformer transformer) {
+    public Wrapper(Object value, Transformer<T> transformer) {
 
         if (value instanceof Resolvable){
             this.resolvable = (Resolvable)value;
         }
         else{
-            this.value = (T)transformer.transform(value);
+            this.value = transformer.transform(value);
         }
 
         this.transformer = transformer;
@@ -31,7 +31,7 @@ public class Wrapper<T> implements Resolvable<T> {
             return value;
         }
 
-        return (T)transformer.transform(resolvable.resolve());
+        return transformer.transform(resolvable.resolve());
     }
 
 }

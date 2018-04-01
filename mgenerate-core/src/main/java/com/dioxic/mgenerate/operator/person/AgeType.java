@@ -40,19 +40,4 @@ public enum AgeType {
         return maxBirthday;
     }
 
-    @ValueTransformer(AgeType.class)
-    public static class AgeTypeTransformer implements Transformer {
-        @Override
-        public AgeType transform(Object objectToTransform) {
-            if (objectToTransform instanceof AgeType) {
-                return (AgeType) objectToTransform;
-            }
-
-            if (objectToTransform instanceof String) {
-                return AgeType.valueOf(((String) objectToTransform).toUpperCase());
-            }
-
-            throw new IllegalStateException("could not convert " + objectToTransform.getClass().getSimpleName() + " to LocalDateTime");
-        }
-    }
 }

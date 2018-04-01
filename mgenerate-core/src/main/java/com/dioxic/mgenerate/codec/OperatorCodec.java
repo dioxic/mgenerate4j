@@ -1,4 +1,4 @@
-package org.bson.codec;
+package com.dioxic.mgenerate.codec;
 
 import com.dioxic.mgenerate.Resolvable;
 import org.bson.BsonReader;

@@ -50,8 +50,12 @@ public class FakerUtil {
     }
 
     public static LocalDateTime randomDate(LocalDateTime min, LocalDateTime max) {
-	    long minEpoch = min.toInstant(ZoneOffset.UTC).toEpochMilli();
-	    long maxEpoch = max.toInstant(ZoneOffset.UTC).toEpochMilli();
-	    return LocalDateTime.ofInstant(Instant.ofEpochMilli(numberBetween(minEpoch, maxEpoch)), ZoneOffset.UTC);
+        Instant minInstant = min.toInstant(ZoneOffset.UTC);
+        Instant maxInstant = max.toInstant(ZoneOffset.UTC);
+	    return LocalDateTime.ofInstant(randomInstant(minInstant, maxInstant), ZoneOffset.UTC);
+    }
+
+    public static Instant randomInstant(Instant min, Instant max) {
+	    return Instant.ofEpochMilli(numberBetween(min.toEpochMilli(), max.toEpochMilli()));
     }
 }

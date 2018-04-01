@@ -83,6 +83,10 @@ public class FieldModel {
         return TypeName.get(Util.erasure(type));
     }
 
+    public boolean isRootTypeNameParameterized() {
+        return !getRootTypeName().equals(getRootTypeNameErasure());
+    }
+
     public boolean isEnumRootType() {
         if (isOperatorType()) {
             return !typeParameters.isEmpty() && Util.isEnum(typeParameters.get(0));

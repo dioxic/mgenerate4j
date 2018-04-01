@@ -1,9 +1,11 @@
 package com.dioxic.mgenerate.annotation.processor;
 
 import com.dioxic.mgenerate.annotation.Operator;
-import com.squareup.javapoet.TypeSpec;
 
-import javax.annotation.processing.*;
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -11,14 +13,11 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes("com.dioxic.mgenerate.annotation.*")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-//@SupportedOptions({"operatorProviderClassName", "operatorProviderPackage"})
 public class OperatorAnnotationProcessor extends AbstractProcessor {
 
     @Override
@@ -32,19 +31,11 @@ public class OperatorAnnotationProcessor extends AbstractProcessor {
             return false;
         }
 
-//        String providerPackageName = this.processingEnv.getOptions().get("operatorProviderPackage");
-//        String providerClassName = this.processingEnv.getOptions().get("operatorProviderClassName");
-//        if (providerClassName == null) {
-//            providerClassName = "DefaultOperatorProvider";
-//        }
-
         Util.elementUtils = this.processingEnv.getElementUtils();
         Util.typeUtils = this.processingEnv.getTypeUtils();
         Util.messager = this.processingEnv.getMessager();
 
         AnnotationHierarchyUtil hierarchyUtil = new AnnotationHierarchyUtil(this.processingEnv.getTypeUtils());
-
-        List<TypeSpec> builderSpecs = new ArrayList<>();
 
         Set<TypeElement> triggeringAnnotations = hierarchyUtil
                 .filterTriggeringAnnotations(annotations,
@@ -65,8 +56,7 @@ public class OperatorAnnotationProcessor extends AbstractProcessor {
 
                     JavaFileObject jfo = this.processingEnv.getFiler().createSourceFile(builderGen.getFullyQualifiedName());
                     try (Writer writer = jfo.openWriter()) {
-                        TypeSpec builderSpec = builderGen.generate(writer);
-                        builderSpecs.add(builderSpec);
+                        builderGen.generate(writer);
                     }
 
                 } catch (Exception e) {
@@ -74,16 +64,6 @@ public class OperatorAnnotationProcessor extends AbstractProcessor {
                 }
             }
         }
-
-//        try {
-//            ProviderGenerator providerGen = new ProviderGenerator(providerPackageName, providerClassName, builderSpecs);
-//            JavaFileObject jfo = this.processingEnv.getFiler().createSourceFile(providerGen.getFullyQualifiedName());
-//            try (Writer writer = jfo.openWriter()) {
-//                providerGen.generate(writer);
-//            }
-//        } catch (Exception e) {
-//            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
-//        }
 
         return true;
     }

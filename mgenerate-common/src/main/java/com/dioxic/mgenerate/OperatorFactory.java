@@ -1,17 +1,14 @@
 package com.dioxic.mgenerate;
 
 import com.dioxic.mgenerate.annotation.ValueTransformer;
-import com.dioxic.mgenerate.transformer.DateTransformer;
-import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
+import com.dioxic.mgenerate.annotation.OperatorBuilder;
 import com.dioxic.mgenerate.operator.Wrapper;
 import org.bson.Document;
-import org.bson.Transformer;
 import org.bson.assertions.Assertions;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,21 +16,19 @@ public class OperatorFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(OperatorFactory.class);
 
-    private static final Map<String, Class<OperatorBuilder>> builderMap = new HashMap<>();
+    private static final Map<String, Class<ResolvableBuilder>> builderMap = new HashMap<>();
     private static final Map<Class, Transformer> transformerMap = new HashMap<>();
 
     static {
         addBuilders("com.dioxic.mgenerate.operator");
-        //transformerMap.put(LocalDateTime.class, new DateTransformer());
         addTransformers("com.dioxic.mgenerate.transformer");
-        addTransformers("com.dioxic.mgenerate.operator");
     }
 
     public static void addBuilders(String packageName) {
         Reflections reflections = new Reflections(packageName);
-        reflections.getTypesAnnotatedWith(OperatorBuilderClass.class).stream()
-                .filter(OperatorBuilder.class::isAssignableFrom)
-                .map(o -> (Class<OperatorBuilder>) o)
+        reflections.getTypesAnnotatedWith(OperatorBuilder.class).stream()
+                .filter(ResolvableBuilder.class::isAssignableFrom)
+                .map(o -> (Class<ResolvableBuilder>) o)
                 .forEach(OperatorFactory::addBuilder);
     }
 
@@ -59,15 +54,15 @@ public class OperatorFactory {
         transformerMap.put(annotation.value(), transformer);
     }
 
-    public static void addBuilder(Class<OperatorBuilder> builderClass) {
-        OperatorBuilderClass annotation = builderClass.getAnnotation(OperatorBuilderClass.class);
+    public static void addBuilder(Class<ResolvableBuilder> builderClass) {
+        OperatorBuilder annotation = builderClass.getAnnotation(OperatorBuilder.class);
 
         Assertions.notNull("operation builder class annoation", annotation);
 
         addBuilder(annotation.value(), builderClass);
     }
 
-    public static void addBuilder(String key, Class<OperatorBuilder> builderClass) {
+    public static void addBuilder(String key, Class<ResolvableBuilder> builderClass) {
         builderMap.put(key, builderClass);
     }
 
@@ -103,12 +98,18 @@ public class OperatorFactory {
         return null;
     }
 
-    public static Resolvable wrap(Object object, Class desiredType) {
+    public static <T> Resolvable<T> wrap(Object object, Class<T> desiredType) {
         if (object != null) {
             if (transformerMap.containsKey(desiredType)) {
                 return new Wrapper<>(object, transformerMap.get(desiredType));
             }
-            return wrap(object);
+            if (desiredType.isAssignableFrom(object.getClass())) {
+                return wrap((T)object);
+            }
+            if (object instanceof Resolvable) {
+                return (Resolvable)object;
+            }
+            throw new IllegalStateException("cannot wrap " + object.getClass().getSimpleName() + " to the desired type of " + desiredType.getSimpleName());
         }
         return null;
     }

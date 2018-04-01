@@ -1,14 +1,14 @@
 package com.dioxic.mgenerate.annotation.processor;
 
 import com.dioxic.mgenerate.Initializable;
-import com.dioxic.mgenerate.OperatorBuilder;
-import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.Resolvable;
-import com.dioxic.mgenerate.annotation.OperatorBuilderClass;
+import com.dioxic.mgenerate.ResolvableBuilder;
+import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.Operator;
+import com.dioxic.mgenerate.annotation.OperatorBuilder;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.annotation.model.FieldModel;
-import com.dioxic.mgenerate.operator.*;
+import com.dioxic.mgenerate.operator.Wrapper;
 import com.squareup.javapoet.*;
 import org.bson.Document;
 import org.bson.assertions.Assertions;
@@ -21,35 +21,35 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BuilderGenerator {
+class BuilderGenerator {
 
     private final TypeElement typeElement;
     private final String packageName;
     private final String className;
     private final ClassName thisType;
 
-    public BuilderGenerator(TypeElement typeElement) {
+    BuilderGenerator(TypeElement typeElement) {
         this.typeElement = typeElement;
         this.packageName = Util.elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
         this.className = typeElement.getSimpleName() + "Builder";
         this.thisType = ClassName.get(typeElement);
     }
 
-    public CharSequence getFullyQualifiedName() {
+    CharSequence getFullyQualifiedName() {
         if (this.packageName != null && this.packageName.trim().length() > 0) {
             return this.packageName + "." + this.className;
         }
         return this.className;
     }
 
-    public TypeSpec generate(Appendable appendable) throws IOException, ClassNotFoundException {
-        ClassName builderInterface = ClassName.get(OperatorBuilder.class);
+    void generate(Appendable appendable) throws IOException {
+        ClassName builderInterface = ClassName.get(ResolvableBuilder.class);
         List<FieldModel> properties = getProperties();
 
         TypeSpec.Builder classBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addSuperinterface(ParameterizedTypeName.get(builderInterface, this.thisType))
-                .addAnnotation(AnnotationSpec.builder(OperatorBuilderClass.class)
+                .addAnnotation(AnnotationSpec.builder(OperatorBuilder.class)
                         .addMember("value", "$S", getOperatorKey())
                         .build());
 
@@ -67,21 +67,15 @@ public class BuilderGenerator {
 
         JavaFile javaFile = JavaFile.builder(this.packageName, classSpec).build();
         javaFile.writeTo(appendable);
-
-        return classSpec;
     }
 
-    public void addFields(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+    private void addFields(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         for (FieldModel field : properties) {
             classBuilder.addField(field.getOperatorTypeName(), field.getName(), Modifier.PRIVATE);
         }
     }
 
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public List<FieldModel> getProperties() {
+    private List<FieldModel> getProperties() {
         return typeElement
                 .getEnclosedElements().stream().filter(this::filterOperatorProperties)
                 .map(FieldModel::new)
@@ -94,7 +88,7 @@ public class BuilderGenerator {
                 && el.getAnnotation(OperatorProperty.class) != null;
     }
 
-    public void addBuildMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties, MethodSpec validate) throws ClassNotFoundException {
+    private void addBuildMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties, MethodSpec validate) {
 
         CodeBlock.Builder requiredBlock = CodeBlock.builder();
 
@@ -126,6 +120,7 @@ public class BuilderGenerator {
         MethodSpec method = MethodSpec.methodBuilder("build")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .returns(this.thisType)
+                .addAnnotation(Override.class)
                 .addStatement("$N()", validate)
                 .addStatement("$T obj = new $T()", thisType, thisType)
                 .addCode(requiredBlock.build())
@@ -148,7 +143,7 @@ public class BuilderGenerator {
         return operatorKey;
     }
 
-    public MethodSpec addValidateMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+    private MethodSpec addValidateMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder("validate")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .returns(void.class);
@@ -162,9 +157,10 @@ public class BuilderGenerator {
         return method;
     }
 
-    public void addDocumentMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+    private void addDocumentMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder("document")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addAnnotation(Override.class)
                 .addParameter(Document.class, "document")
                 .returns(ClassName.get(packageName, className));
 
@@ -192,8 +188,16 @@ public class BuilderGenerator {
 //                builder.addStatement("$L = new $T(document.get($S, $T.class))", property.getName(), DateWrapper.class, property.getName(), Resolvable.class);
 //            }
 //            else {
-                builder.addStatement("$L = $T.wrap(document.get($S),$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
+                //builder.addStatement("$L = $T.wrap(document.get($S),$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
 //            }
+
+            if (property.isRootTypeNameParameterized()) {
+                builder.addStatement("$L = ($T)$T.wrap(document.get($S),$T.class)", property.getName(), Resolvable.class, OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
+            }
+            else {
+                builder.addStatement("$L = $T.wrap(document.get($S),$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeName());
+            }
+
         }
 
         builder.addStatement("return this");
@@ -201,7 +205,7 @@ public class BuilderGenerator {
         classBuilder.addMethod(builder.build());
     }
 
-    public void addPropertyMethods(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+    private void addPropertyMethods(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
         for (FieldModel property : properties) {
             classBuilder.addMethod(MethodSpec.methodBuilder(property.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)

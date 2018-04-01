@@ -1,9 +1,8 @@
 package com.dioxic.mgenerate;
 
-import com.dioxic.mgenerate.transformer.OperatorTransformer;
-import com.github.javafaker.Faker;
+import com.dioxic.mgenerate.codec.OperatorTransformer;
 import org.bson.Document;
-import org.bson.codec.OperatorCodecProvider;
+import com.dioxic.mgenerate.codec.OperatorCodecProvider;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -15,10 +14,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;

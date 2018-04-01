@@ -1,26 +1,21 @@
 package com.dioxic.mgenerate.test;
 
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.operator.internet.Email;
-import org.bson.BsonBinaryReader;
-import org.bson.BsonBinaryWriter;
 import org.bson.Document;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.io.BasicOutputBuffer;
 import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
-import org.bson.codec.OperatorCodec;
-import org.bson.codec.OperatorCodecProvider;
-import com.dioxic.mgenerate.transformer.OperatorTransformer;
+import com.dioxic.mgenerate.codec.OperatorCodec;
+import com.dioxic.mgenerate.codec.OperatorCodecProvider;
+import com.dioxic.mgenerate.codec.OperatorTransformer;
 import org.bson.json.StrictJsonReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -78,7 +73,7 @@ public class BsonTest {
         Document doc = parse("src/test/resources/bson-test.json");
 
         List<String> results = Stream.generate(() -> doc.toJson(jws, codec))
-                .limit(1000)
+                .limit(100)
                 .parallel()
                 .collect(Collectors.toList());
 

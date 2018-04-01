@@ -1,18 +1,14 @@
-package org.bson.codec;
+package com.dioxic.mgenerate.codec;
 
+import ch.rasc.bsoncodec.time.InstantInt64Codec;
 import ch.rasc.bsoncodec.time.LocalDateTimeDateCodec;
 import com.dioxic.mgenerate.Resolvable;
-import org.bson.Document;
-import org.bson.Transformer;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.types.CodeWithScope;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.bson.assertions.Assertions.notNull;
 
 public final class OperatorCodecProvider implements CodecProvider {
 
@@ -37,6 +33,7 @@ public final class OperatorCodecProvider implements CodecProvider {
 
     private void addCodecs() {
         addCodec(new LocalDateTimeDateCodec());
+        addCodec(new InstantInt64Codec());
     }
 
     private <T> void addCodec(final Codec<T> codec) {
