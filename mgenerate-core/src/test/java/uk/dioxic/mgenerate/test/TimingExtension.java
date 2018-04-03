@@ -1,4 +1,4 @@
-package com.dioxic.mgenerate.test;
+package uk.dioxic.mgenerate.test;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;

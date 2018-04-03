@@ -1,4 +1,4 @@
-package com.dioxic.mgenerate.operator;
+package uk.dioxic.mgenerate.operator;
 
 import uk.dioxic.mgenerate.OperatorFactory;
 import uk.dioxic.mgenerate.operator.*;

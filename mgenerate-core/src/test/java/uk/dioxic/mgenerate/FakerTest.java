@@ -1,4 +1,4 @@
-package com.dioxic.mgenerate;
+package uk.dioxic.mgenerate;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
