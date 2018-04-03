@@ -1,27 +1,19 @@
 package uk.dioxic.mgenerate.operator;
 
-import uk.dioxic.mgenerate.OperatorFactory;
-import uk.dioxic.mgenerate.operator.*;
-import uk.dioxic.mgenerate.operator.Number;
-import uk.dioxic.mgenerate.operator.operator.*;
-import uk.dioxic.mgenerate.operator.text.Character;
-import uk.dioxic.mgenerate.operator.internet.Url;
-import com.dioxic.mgenerate.operator.internet.UrlBuilder;
-import com.dioxic.mgenerate.operator.text.CharacterBuilder;
-import uk.dioxic.mgenerate.operator.text.StringOp;
-import com.dioxic.mgenerate.operator.text.StringOpBuilder;
-import com.dioxic.mgenerate.operator.time.*;
-import com.dioxic.mgenerate.operator.time.TimestampBuilder;
 import org.assertj.core.util.Lists;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.mgenerate.operator.time.Month;
-import uk.dioxic.mgenerate.operator.time.Timestamp;
-import uk.dioxic.mgenerate.operator.time.Weekday;
+import uk.dioxic.mgenerate.OperatorFactory;
+import uk.dioxic.mgenerate.operator.internet.Url;
+import uk.dioxic.mgenerate.operator.internet.UrlBuilder;
+import uk.dioxic.mgenerate.operator.text.Character;
+import uk.dioxic.mgenerate.operator.text.CharacterBuilder;
+import uk.dioxic.mgenerate.operator.text.StringOp;
+import uk.dioxic.mgenerate.operator.text.StringOpBuilder;
+import uk.dioxic.mgenerate.operator.time.*;
 
-import java.lang.String;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
