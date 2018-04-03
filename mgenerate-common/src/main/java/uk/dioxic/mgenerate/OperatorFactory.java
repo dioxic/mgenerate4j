@@ -22,8 +22,8 @@ public class OperatorFactory {
     private static final Map<Class, Transformer> transformerMap = new HashMap<>();
 
     static {
-        addBuilders("com.dioxic.mgenerate.operator");
-        addTransformers("com.dioxic.mgenerate.transformer");
+        addBuilders("uk.dioxic.mgenerate.operator");
+        addTransformers("uk.dioxic.mgenerate.transformer");
     }
 
     public static void addBuilders(String packageName) {

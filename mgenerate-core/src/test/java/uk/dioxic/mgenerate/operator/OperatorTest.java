@@ -5,7 +5,6 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.mgenerate.OperatorFactory;
 import uk.dioxic.mgenerate.operator.internet.Url;
 import uk.dioxic.mgenerate.operator.internet.UrlBuilder;
 import uk.dioxic.mgenerate.operator.text.Character;
@@ -81,7 +80,7 @@ public class OperatorTest {
 
     @Test
     public void objectId() {
-        assertThat(OperatorFactory.create("objectid").resolve()).isInstanceOf(ObjectId.class);
+        assertThat(new ObjectIdBuilder().build().resolve()).isInstanceOf(ObjectId.class);
     }
 
     @Test
