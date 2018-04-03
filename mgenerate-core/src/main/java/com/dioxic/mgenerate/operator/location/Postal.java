@@ -1,15 +1,15 @@
 package com.dioxic.mgenerate.operator.location;
 
 import com.dioxic.mgenerate.FakerUtil;
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.Operator;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 @Operator
 public class Postal implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-		return FakerUtil.instance().address().zipCode();
+		return FakerUtil.getFake("address.postcode");
 	}
 
 }

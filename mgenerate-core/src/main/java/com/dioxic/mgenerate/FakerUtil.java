@@ -1,6 +1,7 @@
 package com.dioxic.mgenerate;
 
-import com.github.javafaker.Faker;
+import uk.dioxic.faker.Faker;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,11 +14,19 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FakerUtil {
 
-	private static final Faker faker = Faker.instance(Locale.UK, random());
+	private static final Faker faker = Faker.instance(Locale.UK);
 
 	public static Faker instance() {
 		return faker;
 	}
+
+	public static String getFake(String fakerKey) {
+	    return faker.get(fakerKey);
+    }
+
+    public static Resolvable getFakeResolvable(String fakerKey){
+	 return faker.getResolvable(fakerKey);
+    }
 
 	public static Random random() {
         return ThreadLocalRandom.current();

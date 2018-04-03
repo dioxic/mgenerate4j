@@ -2,10 +2,10 @@ package com.dioxic.mgenerate.codec;
 
 import ch.rasc.bsoncodec.time.InstantInt64Codec;
 import ch.rasc.bsoncodec.time.LocalDateTimeDateCodec;
-import com.dioxic.mgenerate.Resolvable;
-import org.bson.codecs.*;
+import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 import java.util.HashMap;
 import java.util.Map;

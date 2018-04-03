@@ -2,10 +2,10 @@ package com.dioxic.mgenerate.annotation.model;
 
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.annotation.processor.Util;
-import com.dioxic.mgenerate.Resolvable;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.DeclaredType;

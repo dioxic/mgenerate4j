@@ -1,9 +1,9 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.OperatorFactory;
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 import java.util.List;
 

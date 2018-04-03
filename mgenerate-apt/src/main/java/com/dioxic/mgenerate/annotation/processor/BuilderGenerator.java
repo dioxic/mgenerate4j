@@ -1,7 +1,6 @@
 package com.dioxic.mgenerate.annotation.processor;
 
 import com.dioxic.mgenerate.Initializable;
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.ResolvableBuilder;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.Operator;
@@ -12,6 +11,7 @@ import com.dioxic.mgenerate.operator.Wrapper;
 import com.squareup.javapoet.*;
 import org.bson.Document;
 import org.bson.assertions.Assertions;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;

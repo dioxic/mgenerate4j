@@ -4,19 +4,17 @@ import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
-import com.dioxic.mgenerate.Resolvable;
+import uk.dioxic.faker.resolvable.Resolvable;
 
-import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Operator
-public class Word implements Resolvable<List<String>> {
-
-    @OperatorProperty
-    Resolvable<Integer> number = OperatorFactory.wrap(1);
+public class Word implements Resolvable<String> {
 
     @Override
-    public List<String> resolve() {
-        return FakerUtil.instance().lorem().words(number.resolve());
+    public String resolve() {
+        return FakerUtil.getFake("lorem.words");
     }
 
 }

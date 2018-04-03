@@ -10,7 +10,7 @@
         }
     },
     "color": {
-        "$CHOOSE": {
+        "$choose": {
             "from": [ "red", "orange", "black", "yellow", "green","purple"]
         }
     }

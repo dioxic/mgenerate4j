@@ -172,11 +172,13 @@ public class OperatorTest {
 
         StringOp stringOp = new StringOpBuilder().pool(pool).length(length).build();
 
-        assertThat(stringOp.resolve()).hasSize(length);
+        assertThat(stringOp.resolve()).as("size").hasSize(length);
 
         for (char c :stringOp.resolve().toCharArray()) {
             assertThat(c).isIn(asCharacterList(pool));
         }
+
+        logger.debug(stringOp.resolve());
     }
 
     @Test
@@ -205,19 +207,16 @@ public class OperatorTest {
     public void url() {
         String domain = "www.socialradar.com";
         String path = "images";
-        List<String> extensions = Lists.newArrayList("gif", "jpg", "png");
 
-        Choose choose = new ChooseBuilder().from(extensions).build();
-
-        Url url = new UrlBuilder().domain(domain).path(path).extension(choose).build();
+        Url url = new UrlBuilder().domain(domain).path(path).extension(true).build();
         assertThat(url.resolve()).as("all args").startsWith("http://" + domain).contains(path);
         logger.debug(url.resolve());
 
-        url = new UrlBuilder().path(path).extension(choose).build();
+        url = new UrlBuilder().path(path).extension(true).build();
         assertThat(url.resolve()).as("all args").contains(path);
         logger.debug(url.resolve());
 
-        url = new UrlBuilder().extension(choose).build();
+        url = new UrlBuilder().extension(true).build();
         assertThat(url.resolve()).as("all args").isNotNull();
         logger.debug(url.resolve());
 

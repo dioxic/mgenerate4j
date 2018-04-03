@@ -1,9 +1,9 @@
 package com.dioxic.mgenerate.operator;
 
 import com.dioxic.mgenerate.FakerUtil;
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class Choose implements Resolvable<Object> {
 			from = fromList;
 		}
 
-		Object result = from.get(FakerUtil.instance().random().nextInt(from.size()));
+		Object result = from.get(FakerUtil.random().nextInt(from.size()));
 
 		return result instanceof Resolvable ? ((Resolvable)result).resolve() : result;
 

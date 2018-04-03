@@ -1,47 +1,36 @@
 package com.dioxic.mgenerate.operator.internet;
 
 import com.dioxic.mgenerate.FakerUtil;
-import com.dioxic.mgenerate.Resolvable;
+import com.dioxic.mgenerate.OperatorFactory;
 import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
+import com.dioxic.mgenerate.operator.text.Word;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 @Operator
 public class Url implements Resolvable<String> {
 
     @OperatorProperty
-    Resolvable<String> domain;
+    Resolvable<String> domain = new Domain();
 
     @OperatorProperty
-    Resolvable<String> path;
+    Resolvable<String> path = new Word();
 
     @OperatorProperty
-    Resolvable<Object> extension;
+    Resolvable<Boolean> extension = OperatorFactory.wrap(Boolean.FALSE);
 
     @Override
     public String resolve() {
         StringBuilder sb = new StringBuilder("http://");
-
-        if (domain != null){
-            sb.append(domain.resolve());
-        }
-        else {
-            sb.append(FakerUtil.instance().internet().url());
-        }
-
+        sb.append(domain.resolve());
         sb.append('/');
-
-        if (path != null) {
-            sb.append(path.resolve());
-        }
-        else{
-            sb.append(FakerUtil.instance().lorem().word());
-        }
+        sb.append(path.resolve());
 
         if (extension != null) {
             sb.append('/');
-            sb.append(FakerUtil.instance().lorem().word());
+            sb.append(FakerUtil.getFake("lorem.words"));
             sb.append('.');
-            sb.append(extension.resolve());
+            sb.append(FakerUtil.getFake("file.extension"));
         }
 
         return sb.toString();

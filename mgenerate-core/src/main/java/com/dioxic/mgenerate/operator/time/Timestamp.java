@@ -1,10 +1,10 @@
 package com.dioxic.mgenerate.operator.time;
 
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
 import com.dioxic.mgenerate.operator.NumberBuilder;
 import org.bson.BsonTimestamp;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 @Operator
 public class Timestamp implements Resolvable<BsonTimestamp> {

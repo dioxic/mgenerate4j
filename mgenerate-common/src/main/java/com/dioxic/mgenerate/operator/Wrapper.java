@@ -1,7 +1,7 @@
 package com.dioxic.mgenerate.operator;
 
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.Transformer;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 public class Wrapper<T> implements Resolvable<T> {
 

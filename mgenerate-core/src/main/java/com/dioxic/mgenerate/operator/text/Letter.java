@@ -2,9 +2,9 @@ package com.dioxic.mgenerate.operator.text;
 
 import com.dioxic.mgenerate.FakerUtil;
 import com.dioxic.mgenerate.Initializable;
-import com.dioxic.mgenerate.Resolvable;
 import com.dioxic.mgenerate.annotation.Operator;
 import com.dioxic.mgenerate.annotation.OperatorProperty;
+import uk.dioxic.faker.resolvable.Resolvable;
 
 @Operator
 public class Letter implements Resolvable<java.lang.Character>, Initializable {

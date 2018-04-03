@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import static com.dioxic.mgenerate.JsonUtil.parse;
 import static com.dioxic.mgenerate.JsonUtil.parseFile;
 import static com.dioxic.mgenerate.JsonUtil.toJson;
 
@@ -16,7 +17,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Integer ITERATIONS = args.length > 1 ? Integer.valueOf(args[1]) : 100;
 
-        Document doc = parseFile(args[0]);
+        Document doc = (args[0].startsWith("{") & args[0].endsWith("}"))? parse(args[0]) : parseFile(args[0]);
+
+        toJson(doc);
 
         Long start = System.currentTimeMillis();
 
@@ -30,7 +33,7 @@ public class Main {
         Long end = System.currentTimeMillis();
 
         Double avg = (end.doubleValue() - start.doubleValue()) / ITERATIONS.doubleValue();
-        Long speed = ITERATIONS / ((end - start) / 1000);
+        Long speed = Double.valueOf(ITERATIONS.doubleValue()*1000 / (end - start)).longValue();
         System.out.printf("Producting %s documents took %sms (%s docs/s)%n", ITERATIONS, end - start, speed);
 
     }
