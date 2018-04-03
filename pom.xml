@@ -26,9 +26,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/dioxic/faker4j.git</connection>
-        <developerConnection>scm:git:git@github.com:dioxic/faker4j.git</developerConnection>
-        <url>git://github.com/dioxic/faker4j.git</url>
+        <connection>scm:git:git://github.com/dioxic/mgenerate4j.git</connection>
+        <developerConnection>scm:git:git@github.com:dioxic/mgenerate4j.git</developerConnection>
+        <url>git://github.com/dioxic/mgenerate4j.git</url>
     </scm>
     <developers>
         <developer>
