@@ -1,7 +1,8 @@
 package com.dioxic.mgenerate;
 
-import com.dioxic.mgenerate.codec.OperatorCodec;
-import com.dioxic.mgenerate.operator.internet.Email;
+import uk.dioxic.mgenerate.JsonUtil;
+import uk.dioxic.mgenerate.codec.OperatorCodec;
+import uk.dioxic.mgenerate.operator.internet.Email;
 import com.dioxic.mgenerate.test.TimingExtension;
 import org.bson.Document;
 import org.bson.codecs.Codec;

@@ -98,7 +98,7 @@
                 <configuration>
                     <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
                     <annotationProcessors>
-                        <annotationProcessor>com.dioxic.mgenerate.annotation.processor.OperatorAnnotationProcessor</annotationProcessor>
+                        <annotationProcessor>uk.dioxic.mgenerate.apt.processor.OperatorAnnotationProcessor</annotationProcessor>
                     </annotationProcessors>
                 </configuration>
             </plugin>
@@ -117,7 +117,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.dioxic.mgenerate.Main</mainClass>
+                                    <mainClass>uk.dioxic.mgenerate.Main</mainClass>
                                 </transformer>
                             </transformers>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
