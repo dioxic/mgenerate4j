@@ -9,7 +9,7 @@ public class MartialStatus implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return FakerUtil.getFake("demographic.marital_status");
+        return FakerUtil.getValue("demographic.marital_status");
     }
 
 }

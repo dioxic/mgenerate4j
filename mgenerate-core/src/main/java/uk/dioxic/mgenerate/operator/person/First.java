@@ -9,7 +9,7 @@ public class First implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return FakerUtil.getFake("name.first_name");
+        return FakerUtil.getValue("name.first_name");
     }
 
 }

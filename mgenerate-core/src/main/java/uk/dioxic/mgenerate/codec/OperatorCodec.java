@@ -5,6 +5,7 @@ import org.bson.BsonWriter;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
 import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.DocumentValueCache;
 
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class OperatorCodec implements Codec<Resolvable> {
 
     @Override
     public void encode(BsonWriter writer, Resolvable value, EncoderContext encoderContext) {
-        writeValue(writer, encoderContext, value.resolve());
+        writeValue(writer, encoderContext, DocumentValueCache.get(value));
     }
 
     @Override

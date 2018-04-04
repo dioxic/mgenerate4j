@@ -1,14 +1,14 @@
 package uk.dioxic.mgenerate;
 
-import uk.dioxic.mgenerate.annotation.ValueTransformer;
-import uk.dioxic.mgenerate.annotation.OperatorBuilder;
-import uk.dioxic.mgenerate.operator.Wrapper;
 import org.bson.Document;
 import org.bson.assertions.Assertions;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.annotation.OperatorBuilder;
+import uk.dioxic.mgenerate.annotation.ValueTransformer;
+import uk.dioxic.mgenerate.operator.Wrapper;
 import uk.dioxic.mgenerate.transformer.Transformer;
 
 import java.util.HashMap;
@@ -70,13 +70,21 @@ public class OperatorFactory {
         builderMap.put(key, builderClass);
     }
 
-    public static boolean contains(String operatorKey) {
-        return builderMap.containsKey(operatorKey);
+    public static boolean canHandle(String operatorKey) {
+        return isOperatorKey(operatorKey) && builderMap.containsKey(getOperatorKey(operatorKey));
+    }
+
+    private static boolean isOperatorKey(String key) {
+        return key.startsWith("$");
+    }
+
+    private static String getOperatorKey(String key) {
+        return key.substring(1);
     }
 
     public static Resolvable create(String operatorKey) {
         try {
-            return contains(operatorKey) ? builderMap.get(operatorKey).newInstance().build() : null;
+            return canHandle(operatorKey) ? builderMap.get(getOperatorKey(operatorKey)).newInstance().build() : null;
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -85,8 +93,8 @@ public class OperatorFactory {
     public static Resolvable create(String operatorKey, Document doc) {
         Assertions.notNull("document", doc);
 
-        if (contains(operatorKey)) {
-            return instantiate(builderMap.get(operatorKey)).document(doc).build();
+        if (canHandle(operatorKey)) {
+            return instantiate(builderMap.get(getOperatorKey(operatorKey))).document(doc).build();
         }
 
         return null;

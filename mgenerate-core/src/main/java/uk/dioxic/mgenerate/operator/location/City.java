@@ -9,7 +9,7 @@ public class City implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-		return FakerUtil.getFake("address.city");
+		return FakerUtil.getValue("address.city");
 	}
 
 }

@@ -9,7 +9,7 @@ public class Longitude implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-		return FakerUtil.getFake("address.longitude");
+		return FakerUtil.getValue("address.longitude");
 	}
 
 }

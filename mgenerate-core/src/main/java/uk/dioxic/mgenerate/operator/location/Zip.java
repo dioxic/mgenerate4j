@@ -9,7 +9,7 @@ public class Zip implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-		return FakerUtil.getFake("address.postcode");
+		return FakerUtil.getValue("address.postcode");
 	}
 
 }

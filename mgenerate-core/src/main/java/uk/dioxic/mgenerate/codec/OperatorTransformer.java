@@ -1,8 +1,10 @@
 package uk.dioxic.mgenerate.codec;
 
-import uk.dioxic.mgenerate.OperatorFactory;
 import org.bson.Document;
 import org.bson.Transformer;
+import uk.dioxic.mgenerate.FakerUtil;
+import uk.dioxic.mgenerate.OperatorFactory;
+import uk.dioxic.mgenerate.StringResolver;
 
 import java.util.Map;
 
@@ -15,21 +17,18 @@ public class OperatorTransformer implements Transformer {
             if (doc.size() == 1) {
                 Map.Entry<String, Object> entry = doc.entrySet().iterator().next();
                 String key = entry.getKey();
-                if (entry.getValue() instanceof Document && key.startsWith("$")) {
-                    key = key.substring(1);
-                    if (OperatorFactory.contains(key)) {
-                        return OperatorFactory.create(key, (Document) entry.getValue());
-                    }
+                if (entry.getValue() instanceof Document && OperatorFactory.canHandle(key)) {
+                    return OperatorFactory.create(key, (Document) entry.getValue());
                 }
             }
         }
         else if (objectToTransform instanceof String) {
             String value = (String) objectToTransform;
-            if (value.startsWith("$")) {
-                value = value.substring(1);
-                if (OperatorFactory.contains(value)) {
-                    return OperatorFactory.create(value);
-                }
+            if (OperatorFactory.canHandle(value)) {
+                return OperatorFactory.create(value);
+            }
+            else if (StringResolver.canHandle(value)) {
+                return new StringResolver(value, FakerUtil.instance());
             }
         }
 

@@ -9,7 +9,7 @@ public class Gender implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return FakerUtil.getFake("demographic.sex");
+        return FakerUtil.getValue("demographic.sex");
     }
 
 }

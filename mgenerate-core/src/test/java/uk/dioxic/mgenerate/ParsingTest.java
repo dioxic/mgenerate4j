@@ -1,8 +1,5 @@
 package uk.dioxic.mgenerate;
 
-import uk.dioxic.mgenerate.codec.OperatorCodec;
-import uk.dioxic.mgenerate.operator.internet.Email;
-import uk.dioxic.mgenerate.test.TimingExtension;
 import org.bson.Document;
 import org.bson.codecs.Codec;
 import org.bson.codecs.EncoderContext;
@@ -12,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.dioxic.mgenerate.codec.OperatorCodec;
+import uk.dioxic.mgenerate.operator.internet.Email;
+import uk.dioxic.mgenerate.test.TimingExtension;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -39,19 +39,19 @@ public class ParsingTest {
 
     @Test
     public void documentTest() throws IOException {
-        Document doc = JsonUtil.parseFile("src/test/resources/template.json");
+        Document doc = BsonUtil.parseFile("src/test/resources/template.json");
         logger.debug(doc.toString());
 
-        String outJson = JsonUtil.toJson(doc, jws);
+        String outJson = BsonUtil.toJson(doc, jws);
         logger.debug(outJson);
     }
 
     @Test
     @ExtendWith(TimingExtension.class)
     public void performanceTest() throws IOException {
-        Document doc = JsonUtil.parseFile("src/test/resources/bson-test.json");
+        Document doc = BsonUtil.parseFile("src/test/resources/bson-test.json");
 
-        List<String> results = Stream.generate(() -> JsonUtil.toJson(doc))
+        List<String> results = Stream.generate(() -> BsonUtil.toJson(doc))
                 .limit(100)
                 .parallel()
                 .collect(Collectors.toList());

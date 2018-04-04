@@ -9,7 +9,7 @@ public class Latitude implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-		return FakerUtil.getFake("address.latitude");
+		return FakerUtil.getValue("address.latitude");
 	}
 
 }

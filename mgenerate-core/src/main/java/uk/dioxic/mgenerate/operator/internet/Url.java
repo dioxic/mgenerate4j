@@ -28,9 +28,9 @@ public class Url implements Resolvable<String> {
 
         if (extension != null) {
             sb.append('/');
-            sb.append(FakerUtil.getFake("lorem.words"));
+            sb.append(FakerUtil.getValue("lorem.words"));
             sb.append('.');
-            sb.append(FakerUtil.getFake("file.extension"));
+            sb.append(FakerUtil.getValue("file.extension"));
         }
 
         return sb.toString();

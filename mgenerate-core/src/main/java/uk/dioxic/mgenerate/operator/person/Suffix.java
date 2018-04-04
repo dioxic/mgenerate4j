@@ -9,7 +9,7 @@ public class Suffix implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return FakerUtil.getFake("name.suffix");
+        return FakerUtil.getValue("name.suffix");
     }
 
 }

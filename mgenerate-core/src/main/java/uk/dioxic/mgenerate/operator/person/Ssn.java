@@ -9,7 +9,7 @@ public class Ssn implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return FakerUtil.getFake("id_number.valid");
+        return FakerUtil.getValue("id_number.valid");
     }
 
 }

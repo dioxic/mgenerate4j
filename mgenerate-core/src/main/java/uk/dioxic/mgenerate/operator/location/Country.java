@@ -14,7 +14,7 @@ public class Country implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-        return full.resolve() ? FakerUtil.getFake("address.country_code"): FakerUtil.getFake("address.country");
+        return full.resolve() ? FakerUtil.getValue("address.country_code"): FakerUtil.getValue("address.country");
 
 	}
 

@@ -9,7 +9,7 @@ public class Phone implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-		return FakerUtil.getFake("phone_number.formats");
+		return FakerUtil.getValue("phone_number.formats");
 	}
 
 }

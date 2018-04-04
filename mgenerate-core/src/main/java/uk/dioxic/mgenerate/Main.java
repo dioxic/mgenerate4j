@@ -8,9 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-import static uk.dioxic.mgenerate.JsonUtil.parse;
-import static uk.dioxic.mgenerate.JsonUtil.parseFile;
-import static uk.dioxic.mgenerate.JsonUtil.toJson;
+import static uk.dioxic.mgenerate.BsonUtil.parse;
+import static uk.dioxic.mgenerate.BsonUtil.parseFile;
+import static uk.dioxic.mgenerate.BsonUtil.toJson;
 
 public class Main {
 

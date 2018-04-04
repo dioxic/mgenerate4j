@@ -9,7 +9,7 @@ public class Street implements Resolvable<String> {
 
 	@Override
 	public String resolve() {
-		return FakerUtil.getFake("address.street_name");
+		return FakerUtil.getValue("address.street_name");
 	}
 
 }

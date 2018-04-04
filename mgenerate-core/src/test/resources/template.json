@@ -42,6 +42,12 @@
               "Line2": "$street",
               "Line3": "$city",
               "PostCode": "$postal"
+            },
+            {
+              "Line1": "$street",
+              "Line2": "$street",
+              "City": "$city",
+              "PostCode": "$postal"
             }
           ]
         }

@@ -20,11 +20,11 @@ public class FakerUtil {
 		return faker;
 	}
 
-	public static String getFake(String fakerKey) {
+	public static String getValue(String fakerKey) {
 	    return faker.get(fakerKey);
     }
 
-    public static Resolvable getFakeResolvable(String fakerKey){
+    public static Resolvable getResolvable(String fakerKey){
 	 return faker.getResolvable(fakerKey);
     }
 

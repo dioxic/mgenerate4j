@@ -1,6 +1,5 @@
 package uk.dioxic.mgenerate.transformer;
 
-import uk.dioxic.mgenerate.transformer.Transformer;
 import uk.dioxic.mgenerate.annotation.ValueTransformer;
 
 import java.time.LocalDateTime;

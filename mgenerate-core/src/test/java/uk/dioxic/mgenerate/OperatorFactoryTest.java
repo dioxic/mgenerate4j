@@ -1,15 +1,19 @@
 package uk.dioxic.mgenerate;
 
-import org.assertj.core.api.Assertions;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import uk.dioxic.faker.resolvable.Resolvable;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class OperatorFactoryTest {
 
     @Test
-    public void create() {
-        Resolvable resolvable = OperatorFactory.create("objectid");
+    public void createOperator() {
+        Resolvable resolvable = OperatorFactory.create("$objectid");
 
-        Assertions.assertThat(resolvable).as("objectid operator").isNotNull();
+        assertThat(resolvable).as("not null").isNotNull();
+        assertThat(resolvable.resolve()).as("objectid result").isInstanceOf(ObjectId.class);
     }
+
 }

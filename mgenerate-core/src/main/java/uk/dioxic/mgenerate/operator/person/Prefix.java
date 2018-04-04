@@ -9,7 +9,7 @@ public class Prefix implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return FakerUtil.getFake("name.prefix");
+        return FakerUtil.getValue("name.prefix");
     }
 
 }

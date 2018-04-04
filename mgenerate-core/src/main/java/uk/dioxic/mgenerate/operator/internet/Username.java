@@ -10,7 +10,7 @@ public class Username implements Resolvable<String> {
     @Override
     public String resolve() {
         return String.join(".",
-                FakerUtil.getFake("name.first_name").replaceAll("'", "").toLowerCase(),
-                FakerUtil.getFake("name.last_name").replaceAll("'", "").toLowerCase());
+                FakerUtil.getValue("name.first_name").replaceAll("'", "").toLowerCase(),
+                FakerUtil.getValue("name.last_name").replaceAll("'", "").toLowerCase());
     }
 }

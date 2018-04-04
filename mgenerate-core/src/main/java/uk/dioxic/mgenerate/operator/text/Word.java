@@ -9,7 +9,7 @@ public class Word implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return FakerUtil.getFake("lorem.words");
+        return FakerUtil.getValue("lorem.words");
     }
 
 }

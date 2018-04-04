@@ -17,7 +17,7 @@ public class Sentence implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return Stream.generate(() -> FakerUtil.getFake("lorem.word"))
+        return Stream.generate(() -> FakerUtil.getValue("lorem.word"))
                 .limit(words.resolve())
                 .collect(Collectors.joining(" ","","."));
     }

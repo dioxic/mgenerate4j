@@ -11,8 +11,8 @@ public class Domain implements Resolvable<String> {
     public String resolve() {
         return String.join(".",
                 "www",
-                FakerUtil.getFake("name.last_name").replace("'", "").toLowerCase(),
-                FakerUtil.getFake("internet.domain_suffix"));
+                FakerUtil.getValue("name.last_name").replace("'", "").toLowerCase(),
+                FakerUtil.getValue("internet.domain_suffix"));
     }
 
 }

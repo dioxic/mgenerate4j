@@ -98,7 +98,6 @@ public class OperatorTest {
         assertThat(inc.resolve()).as("check starting value").isEqualTo(start + step + step);
     }
 
-
     @Test
     public void join() {
         String sep = "|";

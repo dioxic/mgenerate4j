@@ -1,3 +1,5 @@
 {
-  "email": "$email"
+  "firstName": "$first",
+  "lastName": "$last",
+  "email": "${firstName}.${lastName}@#{internet.free_email}"
 }

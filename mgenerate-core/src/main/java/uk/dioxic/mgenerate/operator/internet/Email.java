@@ -9,7 +9,7 @@ import uk.dioxic.faker.resolvable.Resolvable;
 public class Email implements Resolvable<String> {
 
     @OperatorProperty
-    Resolvable<String> domain = FakerUtil.getFakeResolvable("internet.free_email");
+    Resolvable<String> domain = FakerUtil.getResolvable("internet.free_email");
 
     private Username username = new Username();
 
