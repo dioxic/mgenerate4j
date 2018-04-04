@@ -23,8 +23,9 @@ public class StringResolverTest {
         DocumentValueCache.mapDocument(document);
         DocumentValueCache.setEncodingContext(document);
 
+        assertThat(lookup.resolve()).as("string").isInstanceOf(String.class);
         assertThat(lookup.resolve().toString()).as("equal").startsWith("123 fish");
 
-        logger.info(lookup.resolve().toString());
+        logger.debug(lookup.resolve().toString());
     }
 }
