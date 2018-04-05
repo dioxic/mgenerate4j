@@ -44,8 +44,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>uk.dioxic.faker</groupId>
-            <artifactId>faker</artifactId>
+            <groupId>uk.dioxic.faker4j</groupId>
+            <artifactId>faker4j</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>

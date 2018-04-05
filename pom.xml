@@ -65,9 +65,9 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>uk.dioxic.faker</groupId>
-                <artifactId>faker</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <groupId>uk.dioxic.faker4j</groupId>
+                <artifactId>faker4j</artifactId>
+                <version>0.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.mongodb</groupId>
