@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.dioxic.mgenerate</groupId>
+            <groupId>uk.dioxic.mgenerate</groupId>
             <artifactId>mgenerate-common</artifactId>
             <version>${project.version}</version>
         </dependency>

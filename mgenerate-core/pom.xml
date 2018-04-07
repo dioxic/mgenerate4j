@@ -11,13 +11,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.dioxic.mgenerate</groupId>
+            <groupId>uk.dioxic.mgenerate</groupId>
             <artifactId>mgenerate-apt</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.dioxic.mgenerate</groupId>
+            <groupId>uk.dioxic.mgenerate</groupId>
             <artifactId>mgenerate-common</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
