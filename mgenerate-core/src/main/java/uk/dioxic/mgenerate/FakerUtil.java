@@ -24,7 +24,7 @@ public class FakerUtil {
 	    return faker.get(fakerKey);
     }
 
-    public static Resolvable getResolvable(String fakerKey){
+    public static Resolvable<String> getResolvable(String fakerKey){
 	 return faker.getResolvable(fakerKey);
     }
 

@@ -158,9 +158,14 @@ class BuilderGenerator {
     }
 
     private void addDocumentMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+        AnnotationSpec suppressUnchecked = AnnotationSpec.builder(SuppressWarnings.class)
+                .addMember("value", "$S", "unchecked")
+                .build();
+
         MethodSpec.Builder builder = MethodSpec.methodBuilder("document")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addAnnotation(Override.class)
+                .addAnnotation(suppressUnchecked)
                 .addParameter(Document.class, "document")
                 .returns(ClassName.get(packageName, className));
 
@@ -192,7 +197,7 @@ class BuilderGenerator {
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .returns(ClassName.get(packageName, className))
                     .addParameter(property.getRootTypeName(), property.getName())
-                    .addStatement("this.$L = new $T($L)", property.getName(), Wrapper.class, property.getName())
+                    .addStatement("this.$L = new $T<>($L)", property.getName(), Wrapper.class, property.getName())
                     .addStatement("return this")
                     .build());
 

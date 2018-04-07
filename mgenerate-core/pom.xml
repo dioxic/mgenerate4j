@@ -52,6 +52,11 @@
             <artifactId>bson</artifactId>
         </dependency>
         <dependency>
+            <groupId>ch.rasc</groupId>
+            <artifactId>bsoncodec</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
         </dependency>

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.codec.OperatorCodec;
 import uk.dioxic.mgenerate.operator.internet.Email;
 import uk.dioxic.mgenerate.test.TimingExtension;
@@ -29,7 +30,7 @@ public class ParsingTest {
 
     @Test
     public void encoderTest() {
-        Codec codec = new OperatorCodec();
+        Codec<Resolvable> codec = new OperatorCodec();
         Email email = new Email();
 
         String output = encode(email, codec);

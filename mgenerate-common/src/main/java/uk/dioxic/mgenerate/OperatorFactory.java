@@ -1,7 +1,6 @@
 package uk.dioxic.mgenerate;
 
 import org.bson.Document;
-import org.bson.assertions.Assertions;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,8 @@ import uk.dioxic.mgenerate.transformer.Transformer;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.bson.assertions.Assertions.notNull;
 
 public class OperatorFactory {
 
@@ -26,6 +27,7 @@ public class OperatorFactory {
         addTransformers("uk.dioxic.mgenerate.transformer");
     }
 
+    @SuppressWarnings("unchecked")
     public static void addBuilders(String packageName) {
         Reflections reflections = new Reflections(packageName);
         reflections.getTypesAnnotatedWith(OperatorBuilder.class).stream()
@@ -60,7 +62,7 @@ public class OperatorFactory {
     public static void addBuilder(Class<ResolvableBuilder> builderClass) {
         OperatorBuilder annotation = builderClass.getAnnotation(OperatorBuilder.class);
 
-        Assertions.notNull("operation builder class annoation", annotation);
+        notNull("operation builder class annoation", annotation);
 
         addBuilder(annotation.value(), builderClass);
     }
@@ -71,6 +73,7 @@ public class OperatorFactory {
     }
 
     public static boolean canHandle(String operatorKey) {
+        notNull("operatorKey", operatorKey);
         return isOperatorKey(operatorKey) && builderMap.containsKey(getOperatorKey(operatorKey));
     }
 
@@ -91,7 +94,8 @@ public class OperatorFactory {
     }
 
     public static Resolvable create(String operatorKey, Document doc) {
-        Assertions.notNull("document", doc);
+        notNull("document", doc);
+        notNull("operatorKey", operatorKey);
 
         if (canHandle(operatorKey)) {
             return instantiate(builderMap.get(getOperatorKey(operatorKey))).document(doc).build();
@@ -100,6 +104,7 @@ public class OperatorFactory {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Resolvable<T> wrap(T object) {
         if (object != null) {
             if (object instanceof Resolvable) {
@@ -110,6 +115,7 @@ public class OperatorFactory {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Resolvable<T> wrap(Object object, Class<T> desiredType) {
         if (object != null) {
             if (transformerMap.containsKey(desiredType)) {

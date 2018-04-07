@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringResolver implements Resolvable {
-    private final static Pattern LOOKUP_PATTERN = Pattern.compile("([#$])\\{([a-z0-9A-Z_.]+)\\s*\\}");
+    private final static Pattern LOOKUP_PATTERN = Pattern.compile("([#$])\\{([a-z0-9A-Z_.]+)\\s*}");
 
     private final List<String> parts;
     private final List<Resolvable> lookups;

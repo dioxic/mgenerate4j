@@ -15,9 +15,9 @@ import java.util.Set;
 public class DocumentValueCache {
 
     private static Logger logger = LoggerFactory.getLogger(DocumentValueCache.class);
-    private static ThreadLocal<Map<Resolvable, Object>> resolverCache = ThreadLocal.withInitial(() -> new HashMap<>());
+    private static ThreadLocal<Map<Resolvable, Object>> resolverCache = ThreadLocal.withInitial(HashMap::new);
     private static Map<Document, Map<String, Object>> documentMap = new HashMap<>();
-    private static ThreadLocal<Map<String, Object>> encodingContext = ThreadLocal.withInitial(() -> new HashMap<>());
+    private static ThreadLocal<Map<String, Object>> encodingContext = ThreadLocal.withInitial(HashMap::new);
 
     /**
      * Returns the cached value of the input {@link Resolvable} or, if
@@ -131,6 +131,7 @@ public class DocumentValueCache {
         return flatMap;
     }
 
+    @SuppressWarnings("unchecked")
     private static void map(Map<String, Object> flatMap, String key, Object o) {
         if (o instanceof Map) {
             Map<String, Object> localMap = ((Map) o);
