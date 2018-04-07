@@ -218,6 +218,19 @@ public class OperatorTest {
         logger.debug(url.resolve());
     }
 
+    @Test
+    public void hash() {
+        Hash hash = new HashBuilder().input("canibal halibuts").build();
+        assertThat(hash.resolve()).as("INT32").isEqualTo(-855357176);
+
+        hash = new HashBuilder().input("canibal halibuts").output(Hash.HashOutput.INT64).build();
+        assertThat(hash.resolve()).as("INT64").isEqualTo(-3673731096897361255L);
+
+        hash = new HashBuilder().input("canibal halibuts").output(Hash.HashOutput.HEX).build();
+        assertThat(hash.resolve()).as("HEX").isEqualTo("cd04490819206a990ed5b165a35598a4");
+
+    }
+
     private static List<java.lang.Character> asCharacterList(String s) {
         List<java.lang.Character> chars = new ArrayList<>();
         for (char c : s.toCharArray()) {

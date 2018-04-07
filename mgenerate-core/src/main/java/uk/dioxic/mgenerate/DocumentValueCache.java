@@ -88,7 +88,7 @@ public class DocumentValueCache {
      * @return resolved/cached valued
      */
     public static Object get(String coordinates) {
-        return get(encodingContext.get().get(coordinates));
+        return get(encodingContext.get(),coordinates);
     }
 
     /**
@@ -105,16 +105,17 @@ public class DocumentValueCache {
      * @param coordinates dot-notation coordinates
      * @return resolved/cached valued
      */
-    public static Object get(Document document, String coordinates) {
-        return get(getFlatMap(document).get(coordinates));
+    public static Object get(Document document, String coordinates) throws DocumentNotMappedException {
+        return get(getFlatMap(document),coordinates);
     }
 
-    private static Object get(Object object) {
+    private static Object get(Map<String, Object> map, String coordinates) {
+        Object object = map.get(coordinates);
         if (object instanceof Resolvable) {
             return get((Resolvable)object);
         }
         if (object == null) {
-            logger.warn("coordinates [{}] could not be resolved - has the document been mapped?");
+            logger.warn("coordinates [{}] could not be resolved - has the document been mapped?", coordinates);
         }
         return object;
     }
@@ -137,6 +138,7 @@ public class DocumentValueCache {
             Map<String, Object> localMap = ((Map) o);
 
             localMap.entrySet().forEach(m -> map(flatMap, key, m));
+            flatMap.put(key, o);
         }
         else if (o instanceof Map.Entry) {
             Map.Entry entry = ((Map.Entry) o);

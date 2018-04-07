@@ -44,7 +44,7 @@ public class ParsingTest {
         logger.debug(doc.toString());
 
         String outJson = BsonUtil.toJson(doc, jws);
-        logger.debug(outJson);
+        logger.info(outJson);
     }
 
     @Test

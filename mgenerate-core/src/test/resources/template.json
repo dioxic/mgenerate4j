@@ -1,5 +1,42 @@
 {
   "_id": "$objectid",
+  "oidHashes": {
+    "hexHash": {
+      "$hash": {
+        "input": "${_id}",
+        "alogrithm": "md5",
+        "output": "hex"
+      }
+    },
+    "intHash": {
+      "$hash": {
+        "input": "${_id}"
+      }
+    },
+    "int64Hash": {
+      "$hash": {
+        "input": "${_id}",
+        "alogrithm": "md5",
+        "output": "int64"
+      }
+    }
+  },
+  "hashMod" :{
+    "$mod": {
+      "input": {
+        "$hash": {
+          "input": "${_id}"
+        }
+      },
+      "mod": 50
+    }
+  },
+  "claimantHash":{
+    "$hash": {
+      "input": "${Claimant}"
+    }
+  },
+  "qualBenAddress": "${Caree.Benefit.QualifyingBenefit}",
   "Claimant": {
     "NationalInsuranceNumber": "$ssn",
     "Title": "$prefix",
