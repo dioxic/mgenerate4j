@@ -89,7 +89,18 @@
           ]
         }
       },
-      "VerifiedDate": "$date"
+      "VerifiedDate": "$date",
+      "VerifiedDateEpoch" : {
+        "$epoch": {
+          "input": "${Caree.Benefit.VerifiedDate}"
+        }
+      },
+      "VerifiedDateDayOfYear" : {
+        "$epoch": {
+          "input": "${Caree.Benefit.VerifiedDate}",
+          "chronoField": "DAY_OF_YEAR"
+        }
+      }
     },
     "RelationToClaimant": "$string",
     "NationalInsuranceNumber": "$ssn",
