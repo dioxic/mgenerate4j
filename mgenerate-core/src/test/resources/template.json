@@ -215,5 +215,12 @@
         20
       ]
     }
-  }
+  },
+  "polygon":{
+    "$polygon" :{
+      "corners": 5
+    }
+  },
+  "point": "$point",
+  "lineString": "$lineString"
 }
