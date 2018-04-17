@@ -261,7 +261,7 @@ public final class FlsUtil {
         }
 
         public String toString() {
-            return x + " " + y;
+            return "[" + x + "," + y + "]";
         }
     }
 
