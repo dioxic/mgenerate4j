@@ -21,7 +21,7 @@
       }
     }
   },
-  "hashMod" :{
+  "hashMod": {
     "$mod": {
       "input": {
         "$hash": {
@@ -31,7 +31,7 @@
       "mod": 50
     }
   },
-  "claimantHash":{
+  "claimantHash": {
     "$hash": {
       "input": "${Claimant}"
     }
@@ -90,12 +90,12 @@
         }
       },
       "VerifiedDate": "$date",
-      "VerifiedDateEpoch" : {
+      "VerifiedDateEpoch": {
         "$epoch": {
           "input": "${Caree.Benefit.VerifiedDate}"
         }
       },
-      "VerifiedDateDayOfYear" : {
+      "VerifiedDateDayOfYear": {
         "$epoch": {
           "input": "${Caree.Benefit.VerifiedDate}",
           "chronoField": "DAY_OF_YEAR"
@@ -200,6 +200,20 @@
         },
         "number": 2
       }
+    }
+  },
+  "lat": "$latitude",
+  "long": "$longitude",
+  "coordinates": {
+    "$coordinates": {
+      "long_lim": [
+        -10,
+        10
+      ],
+      "lat_lim": [
+        -20,
+        20
+      ]
     }
   }
 }

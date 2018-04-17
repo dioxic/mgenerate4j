@@ -42,9 +42,16 @@ public class FakerUtil {
         //return Double.valueOf(random().nextDouble() * (max - min)).longValue() + min;
     }
 
+    public static double randomDouble(Number min, Number max) {
+        return random().doubles(min.doubleValue(), max.doubleValue()).findFirst().getAsDouble();
+    }
+
     public static double randomDouble(double min, double max) {
 	    return random().doubles(min, max).findFirst().getAsDouble();
-//        return random().nextDouble() * (max - min +1) + min;
+    }
+
+    public static double randomDouble(int min, int max) {
+	    return random().doubles(min, max).findFirst().getAsDouble();
     }
 
     public static BigDecimal randomDecimal(long min, long max, int scale) {

@@ -5,11 +5,11 @@ import uk.dioxic.mgenerate.annotation.Operator;
 import uk.dioxic.faker.resolvable.Resolvable;
 
 @Operator
-public class Longitude implements Resolvable<String> {
+public class Longitude implements Resolvable<Double> {
 
 	@Override
-	public String resolve() {
-		return FakerUtil.getValue("address.longitude");
+	public Double resolve() {
+		return FakerUtil.randomDouble(-180,180);
 	}
 
 }
