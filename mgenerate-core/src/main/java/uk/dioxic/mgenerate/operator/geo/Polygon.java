@@ -10,6 +10,7 @@ import uk.dioxic.mgenerate.operator.location.Coordinates;
 import uk.dioxic.mgenerate.operator.location.CoordinatesBuilder;
 import uk.dioxic.mgenerate.util.FlsUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -42,9 +43,13 @@ public class Polygon implements Resolvable<Document>, Initializable {
             FlsUtil.optimise(polygon);
         }
 
+        List<FlsUtil.Point> polygonList = new ArrayList(polygon.length+1);
+        polygonList.addAll(asList(polygon));
+        polygonList.add(polygonList.get(0));
+
         Document doc = new Document();
         doc.put("type", "Polygon");
-        doc.put("coordinates", asList(asList(polygon)));
+        doc.put("coordinates", asList(polygonList));
 
         return doc;
     }
