@@ -1,14 +1,19 @@
 package uk.dioxic.mgenerate;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.operator.location.Coordinates;
 import uk.dioxic.mgenerate.operator.location.CoordinatesBuilder;
 import uk.dioxic.mgenerate.util.FlsUtil;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FastLocalSearchTest {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
     public void randomPoints() {
@@ -17,11 +22,11 @@ public class FastLocalSearchTest {
                 .limit(5)
                 .toArray(FlsUtil.Point[]::new);
 
-        Arrays.stream(points).forEach(System.out::println);
+        logger.debug("before: {}", Arrays.stream(points).map(FlsUtil.Point::toString).collect(Collectors.joining(" ")));
 
         FlsUtil.optimise(points);
 
-        Arrays.stream(points).forEach(System.out::println);
+        logger.debug("after: {}", Arrays.stream(points).map(FlsUtil.Point::toString).collect(Collectors.joining(" ")));
     }
 
 }
