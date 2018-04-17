@@ -1,10 +1,11 @@
-package uk.dioxic.mgenerate.operator;
+package uk.dioxic.mgenerate;
 
 import org.assertj.core.util.Lists;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.dioxic.mgenerate.operator.*;
 import uk.dioxic.mgenerate.operator.geo.*;
 import uk.dioxic.mgenerate.operator.internet.Url;
 import uk.dioxic.mgenerate.operator.internet.UrlBuilder;
@@ -239,7 +240,7 @@ public class OperatorTest {
     @Test
     @SuppressWarnings("unchecked")
     public void polygon() {
-        int corners = 100;
+        int corners = 5;
         List<Number> long_lim = asList(0d, 100d);
         List<Number> lat_lim = asList(-200, 0);
         Polygon polygon = new PolygonBuilder()
@@ -248,13 +249,17 @@ public class OperatorTest {
                 .lat_lim(lat_lim)
                 .build();
 
-        logger.debug(BsonUtil.toJson(polygon.resolve()));
+        logger.info(BsonUtil.toJson(polygon.resolve()));
 
         assertThat(polygon.resolve().get("type")).as("geo type").isEqualTo("Polygon");
         assertThat(polygon.resolve().get("coordinates")).as("coordinates class").isInstanceOf(List.class);
         assertThat((List) polygon.resolve().get("coordinates")).hasSize(1);
-        assertThat((List<FlsUtil.Point>) ((List) polygon.resolve().get("coordinates")).get(0)).hasSize(corners);
-        assertBounds((List<FlsUtil.Point>) ((List) polygon.resolve().get("coordinates")).get(0), long_lim, lat_lim);
+
+        List<FlsUtil.Point> polygonPoints = (List<FlsUtil.Point>) ((List) polygon.resolve().get("coordinates")).get(0);
+
+        assertThat(polygonPoints).hasSize(corners+1);
+        assertThat(polygonPoints.get(0)).as("first and last points equivalent").isEqualTo(polygonPoints.get(polygonPoints.size()-1));
+        assertBounds(polygonPoints, long_lim, lat_lim);
     }
 
     @Test
