@@ -64,7 +64,9 @@ public class OperatorFactory {
 
         notNull("operation builder class annoation", annotation);
 
-        addBuilder(annotation.value(), builderClass);
+        for(String key : annotation.value()) {
+            addBuilder(key, builderClass);
+        }
     }
 
     public static void addBuilder(String key, Class<ResolvableBuilder> builderClass) {

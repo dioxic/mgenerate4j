@@ -205,7 +205,7 @@
   "lat": "$latitude",
   "long": "$longitude",
   "coordinates": {
-    "$coordinates": {
+    "$coord": {
       "long_lim": [
         -10,
         10

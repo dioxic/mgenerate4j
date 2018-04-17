@@ -2,7 +2,7 @@ package uk.dioxic.mgenerate.codec;
 
 import org.bson.Document;
 import org.bson.Transformer;
-import uk.dioxic.mgenerate.FakerUtil;
+import uk.dioxic.mgenerate.util.FakerUtil;
 import uk.dioxic.mgenerate.OperatorFactory;
 import uk.dioxic.mgenerate.StringResolver;
 

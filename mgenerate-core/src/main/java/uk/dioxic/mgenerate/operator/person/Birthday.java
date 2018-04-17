@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.operator.person;
 
-import uk.dioxic.mgenerate.FakerUtil;
+import uk.dioxic.mgenerate.util.FakerUtil;
 import uk.dioxic.mgenerate.OperatorFactory;
 import uk.dioxic.mgenerate.annotation.Operator;
 import uk.dioxic.mgenerate.annotation.OperatorProperty;

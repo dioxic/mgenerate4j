@@ -13,6 +13,7 @@ import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.codec.OperatorCodec;
 import uk.dioxic.mgenerate.operator.internet.Email;
 import uk.dioxic.mgenerate.test.TimingExtension;
+import uk.dioxic.mgenerate.util.BsonUtil;
 
 import java.io.IOException;
 import java.io.StringWriter;

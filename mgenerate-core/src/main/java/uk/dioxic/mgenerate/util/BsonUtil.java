@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate;
+package uk.dioxic.mgenerate.util;
 
 import org.bson.Document;
 import org.bson.codecs.BsonTypeClassMap;
@@ -10,10 +10,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
 import org.bson.json.StrictJsonReader;
-import uk.dioxic.mgenerate.codec.DocumentCacheCodec;
-import uk.dioxic.mgenerate.codec.DocumentCacheCodecProvider;
-import uk.dioxic.mgenerate.codec.OperatorCodecProvider;
-import uk.dioxic.mgenerate.codec.OperatorTransformer;
+import uk.dioxic.mgenerate.codec.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -26,11 +23,12 @@ import static java.util.Arrays.asList;
 public class BsonUtil {
 
     private static final DocumentCacheCodec DEFAULT_CODEC = getDocumentCodec();
-    private static final JsonWriterSettings DEFAULT_JWS = JsonWriterSettings.builder().build();
+    private static final JsonWriterSettings DEFAULT_JWS = JsonWriterSettings.builder().indent(true).build();
 
     public static CodecRegistry getRegistry() {
         return CodecRegistries.fromProviders(asList(new ValueCodecProvider(),
                 new DocumentCacheCodecProvider(new OperatorTransformer()),
+                new ExtendedCodecProvider(),
                 new OperatorCodecProvider()));
     }
 

@@ -127,7 +127,7 @@ public class DocumentValueCache {
     private static Map<String, Object> getFlatMap(Document document) {
         Map<String, Object> flatMap = documentMap.get(document);
         if (flatMap == null) {
-            throw new DocumentNotMappedException();
+            //throw new DocumentNotMappedException();
         }
         return flatMap;
     }

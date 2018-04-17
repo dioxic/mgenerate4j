@@ -1,17 +1,18 @@
 package uk.dioxic.mgenerate.apt.processor;
 
+import com.squareup.javapoet.*;
+import org.bson.Document;
+import org.bson.assertions.Assertions;
+import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.Initializable;
-import uk.dioxic.mgenerate.ResolvableBuilder;
 import uk.dioxic.mgenerate.OperatorFactory;
+import uk.dioxic.mgenerate.ResolvableBuilder;
+import uk.dioxic.mgenerate.StringUtil;
 import uk.dioxic.mgenerate.annotation.Operator;
 import uk.dioxic.mgenerate.annotation.OperatorBuilder;
 import uk.dioxic.mgenerate.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.apt.model.FieldModel;
 import uk.dioxic.mgenerate.operator.Wrapper;
-import com.squareup.javapoet.*;
-import org.bson.Document;
-import org.bson.assertions.Assertions;
-import uk.dioxic.faker.resolvable.Resolvable;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -46,12 +47,16 @@ class BuilderGenerator {
         ClassName builderInterface = ClassName.get(ResolvableBuilder.class);
         List<FieldModel> properties = getProperties();
 
+        AnnotationSpec.Builder annotationBuilder = AnnotationSpec.builder(OperatorBuilder.class);
+
+        for (String key : getOperatorKeys()) {
+            annotationBuilder.addMember("value", "$S", key);
+        }
+
         TypeSpec.Builder classBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addSuperinterface(ParameterizedTypeName.get(builderInterface, this.thisType))
-                .addAnnotation(AnnotationSpec.builder(OperatorBuilder.class)
-                        .addMember("value", "$S", getOperatorKey())
-                        .build());
+                .addAnnotation(annotationBuilder.build());
 
         addFields(classBuilder, properties);
 
@@ -131,16 +136,14 @@ class BuilderGenerator {
         classBuilder.addMethod(method);
     }
 
-    private String getOperatorKey() {
-        String operatorKey = typeElement.getAnnotation(Operator.class).value();
+    private String[] getOperatorKeys() {
+        String[] operatorKeys = typeElement.getAnnotation(Operator.class).value();
 
-        if (operatorKey.isEmpty()) {
-            char[] key = typeElement.getSimpleName().toString().toCharArray();
-            key[0] = Character.toLowerCase(key[0]);
-            operatorKey = String.valueOf(key);
+        if (operatorKeys.length == 1 && operatorKeys[0].isEmpty()) {
+            return new String[]{StringUtil.lowerCaseFirstLetter(typeElement.getSimpleName().toString())};
         }
 
-        return operatorKey;
+        return operatorKeys;
     }
 
     private MethodSpec addValidateMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {

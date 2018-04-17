@@ -17,6 +17,7 @@ public class OperatorCodec implements Codec<Resolvable> {
 
     private static final CodecRegistry DEFAULT_REGISTRY = fromProviders(asList(new ValueCodecProvider(),
             new BsonValueCodecProvider(),
+            new ExtendedCodecProvider(),
             new OperatorCodecProvider()));
 
     private final CodecRegistry registry;

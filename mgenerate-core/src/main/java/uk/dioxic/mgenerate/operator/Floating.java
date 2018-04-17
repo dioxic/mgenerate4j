@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.operator;
 
-import uk.dioxic.mgenerate.FakerUtil;
+import uk.dioxic.mgenerate.util.FakerUtil;
 import uk.dioxic.mgenerate.annotation.Operator;
 import uk.dioxic.mgenerate.annotation.OperatorProperty;
 import uk.dioxic.faker.resolvable.Resolvable;

@@ -5,19 +5,25 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.dioxic.mgenerate.operator.geo.*;
 import uk.dioxic.mgenerate.operator.internet.Url;
 import uk.dioxic.mgenerate.operator.internet.UrlBuilder;
+import uk.dioxic.mgenerate.operator.location.Coordinates;
+import uk.dioxic.mgenerate.operator.location.CoordinatesBuilder;
 import uk.dioxic.mgenerate.operator.text.Character;
 import uk.dioxic.mgenerate.operator.text.CharacterBuilder;
 import uk.dioxic.mgenerate.operator.text.StringOp;
 import uk.dioxic.mgenerate.operator.text.StringOpBuilder;
 import uk.dioxic.mgenerate.operator.time.*;
+import uk.dioxic.mgenerate.util.BsonUtil;
+import uk.dioxic.mgenerate.util.FlsUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.*;
 
 public class OperatorTest {
 
@@ -56,7 +62,7 @@ public class OperatorTest {
     public void arrayChoose() {
         List<String> from = Lists.newArrayList("fish", "bread", "turnip");
 
-        Number number = new NumberBuilder()
+        NumberOp number = new NumberOpBuilder()
                 .min(0)
                 .max(5)
                 .build();
@@ -167,7 +173,7 @@ public class OperatorTest {
 
         assertThat(stringOp.resolve()).as("size").hasSize(length);
 
-        for (char c :stringOp.resolve().toCharArray()) {
+        for (char c : stringOp.resolve().toCharArray()) {
             assertThat(c).isIn(asCharacterList(pool));
         }
 
@@ -228,7 +234,76 @@ public class OperatorTest {
 
         hash = new HashBuilder().input("canibal halibuts").output(Hash.HashOutput.HEX).build();
         assertThat(hash.resolve()).as("HEX").isEqualTo("cd04490819206a990ed5b165a35598a4");
+    }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void polygon() {
+        int corners = 100;
+        List<Number> long_lim = asList(0d, 100d);
+        List<Number> lat_lim = asList(-200, 0);
+        Polygon polygon = new PolygonBuilder()
+                .corners(corners)
+                .long_lim(long_lim)
+                .lat_lim(lat_lim)
+                .build();
+
+        logger.debug(BsonUtil.toJson(polygon.resolve()));
+
+        assertThat(polygon.resolve().get("type")).as("geo type").isEqualTo("Polygon");
+        assertThat(polygon.resolve().get("coordinates")).as("coordinates class").isInstanceOf(List.class);
+        assertThat((List) polygon.resolve().get("coordinates")).hasSize(1);
+        assertThat((List<FlsUtil.Point>) ((List) polygon.resolve().get("coordinates")).get(0)).hasSize(corners);
+        assertBounds((List<FlsUtil.Point>) ((List) polygon.resolve().get("coordinates")).get(0), long_lim, lat_lim);
+    }
+
+    @Test
+    public void coordinates() {
+        List<Number> long_lim = asList(0d, 10d);
+        List<Number> lat_lim = asList(-20, 0);
+
+        Coordinates coordinates = new CoordinatesBuilder().long_lim(long_lim).lat_lim(lat_lim).build();
+
+        assertThat(coordinates.resolve()).isNotNull();
+        assertBounds(coordinates.resolve(), long_lim, lat_lim);
+    }
+
+    @Test
+    public void point() {
+        List<Number> long_lim = asList(0d, 10d);
+        List<Number> lat_lim = asList(-20, 0);
+
+        Point point = new PointBuilder().long_lim(long_lim).lat_lim(lat_lim).build();
+
+        assertThat(point.resolve()).isNotNull();
+        assertThat(point.resolve().get("type")).as("geo type").isEqualTo("Point");
+        assertThat(point.resolve().get("coordinates")).as("coordinates class type").isInstanceOf(FlsUtil.Point.class);
+
+        assertBounds((FlsUtil.Point)point.resolve().get("coordinates"), long_lim, lat_lim);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void lineString() {
+        List<Number> long_lim = asList(0d, 10d);
+        List<Number> lat_lim = asList(-20, 0);
+
+        LineString lineString = new LineStringBuilder().long_lim(long_lim).lat_lim(lat_lim).build();
+
+        assertThat(lineString.resolve()).isNotNull();
+        assertThat(lineString.resolve().get("type")).as("geo type").isEqualTo("LineString");
+        assertThat(lineString.resolve().get("coordinates")).as("coordinates class type").isInstanceOf(List.class);
+
+        assertBounds((List)lineString.resolve().get("coordinates"), long_lim, lat_lim);
+    }
+
+    private static void assertBounds(List<FlsUtil.Point> points, List<Number> longBounds, List<Number> latBounds) {
+        points.forEach(point -> assertBounds(point, longBounds, latBounds));
+    }
+
+    private static void assertBounds(FlsUtil.Point point, List<Number> longBounds, List<Number> latBounds) {
+        assertThat(point.getX()).as("longitude").isBetween(longBounds.get(0).doubleValue(), longBounds.get(1).doubleValue());
+        assertThat(point.getY()).as("latitude").isBetween(latBounds.get(0).doubleValue(), latBounds.get(1).doubleValue());
     }
 
     private static List<java.lang.Character> asCharacterList(String s) {

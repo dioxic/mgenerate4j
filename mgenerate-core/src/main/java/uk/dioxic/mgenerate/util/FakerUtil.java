@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate;
+package uk.dioxic.mgenerate.util;
 
 import uk.dioxic.faker.Faker;
 import uk.dioxic.faker.resolvable.Resolvable;

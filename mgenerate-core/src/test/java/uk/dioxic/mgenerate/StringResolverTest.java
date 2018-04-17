@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.util.FakerUtil;
 
 import static org.assertj.core.api.Assertions.*;
 
