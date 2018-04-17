@@ -7,7 +7,7 @@
     <parent>
         <artifactId>mgenerate-parent</artifactId>
         <groupId>uk.dioxic.mgenerate</groupId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>mgenerate-apt</artifactId>

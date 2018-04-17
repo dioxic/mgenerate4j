@@ -6,7 +6,7 @@
 
     <groupId>uk.dioxic.mgenerate</groupId>
     <artifactId>mgenerate-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
 	
     <packaging>pom</packaging>
 
