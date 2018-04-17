@@ -6,8 +6,12 @@
     <parent>
         <artifactId>mgenerate-parent</artifactId>
         <groupId>uk.dioxic.mgenerate</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
+
+    <name>mgenerate-core</name>
+    <description>Core code for mgenerate4j project</description>
+    <url>https://github.com/dioxic/mgenerate4j</url>
 
     <dependencies>
         <dependency>

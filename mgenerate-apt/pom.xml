@@ -7,10 +7,14 @@
     <parent>
         <artifactId>mgenerate-parent</artifactId>
         <groupId>uk.dioxic.mgenerate</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>mgenerate-apt</artifactId>
+
+    <name>mgenerate-apt</name>
+    <description>Annotation processing for mgenerate4j</description>
+    <url>https://github.com/dioxic/mgenerate4j</url>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
