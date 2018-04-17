@@ -43,7 +43,7 @@ public class Polygon implements Resolvable<Document>, Initializable {
             FlsUtil.optimise(polygon);
         }
 
-        List<FlsUtil.Point> polygonList = new ArrayList(polygon.length+1);
+        List<FlsUtil.Point> polygonList = new ArrayList<>(polygon.length+1);
         polygonList.addAll(asList(polygon));
         polygonList.add(polygonList.get(0));
 
