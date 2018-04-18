@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.codec.DocumentCacheCodec;
 import uk.dioxic.mgenerate.exception.DocumentNotMappedException;
+import uk.dioxic.mgenerate.util.BsonUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,11 +67,7 @@ public class DocumentValueCache {
      * @param document the document to map
      */
     public static void mapDocument(Document document) {
-        Map<String, Object> flatMap = new HashMap<>();
-
-        map(flatMap, null, document);
-
-        documentMap.put(document, flatMap);
+        documentMap.put(document, BsonUtil.flatMap(document));
     }
 
     /**
@@ -130,37 +126,6 @@ public class DocumentValueCache {
             //throw new DocumentNotMappedException();
         }
         return flatMap;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void map(Map<String, Object> flatMap, String key, Object o) {
-        if (o instanceof Map) {
-            Map<String, Object> localMap = ((Map) o);
-
-            localMap.entrySet().forEach(m -> map(flatMap, key, m));
-            flatMap.put(key, o);
-        }
-        else if (o instanceof Map.Entry) {
-            Map.Entry entry = ((Map.Entry) o);
-            map(flatMap, getNewKey(key, entry), entry.getValue());
-        }
-        else if (o instanceof List) {
-            int counter = 0;
-            for (Object item : (List)o) {
-                map(flatMap, key + "." + counter++, item);
-            }
-        }
-        else {
-            if (key != null) {
-                flatMap.put(key, o);
-            }
-        }
-    }
-
-    private static String getNewKey(String key, Map.Entry<String, Object> entry) {
-        String newKey = key == null ? entry.getKey() : key + "." + entry.getKey();
-
-        return newKey.replace('-', '_');
     }
 
 }
