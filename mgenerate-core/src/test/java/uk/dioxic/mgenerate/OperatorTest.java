@@ -11,10 +11,8 @@ import uk.dioxic.mgenerate.operator.internet.Url;
 import uk.dioxic.mgenerate.operator.internet.UrlBuilder;
 import uk.dioxic.mgenerate.operator.location.Coordinates;
 import uk.dioxic.mgenerate.operator.location.CoordinatesBuilder;
+import uk.dioxic.mgenerate.operator.text.*;
 import uk.dioxic.mgenerate.operator.text.Character;
-import uk.dioxic.mgenerate.operator.text.CharacterBuilder;
-import uk.dioxic.mgenerate.operator.text.StringOp;
-import uk.dioxic.mgenerate.operator.text.StringOpBuilder;
 import uk.dioxic.mgenerate.operator.time.*;
 import uk.dioxic.mgenerate.util.BsonUtil;
 import uk.dioxic.mgenerate.util.FlsUtil;
@@ -300,6 +298,14 @@ public class OperatorTest {
         assertThat(lineString.resolve().get("coordinates")).as("coordinates class type").isInstanceOf(List.class);
 
         assertBounds((List)lineString.resolve().get("coordinates"), long_lim, lat_lim);
+    }
+
+    @Test
+    public void sentence() {
+        Sentence sentence = new SentenceBuilder().build();
+
+        assertThat(sentence.resolve()).isNotNull();
+        assertThat(sentence.resolve()).isInstanceOf(String.class);
     }
 
     private static void assertBounds(List<FlsUtil.Point> points, List<Number> longBounds, List<Number> latBounds) {

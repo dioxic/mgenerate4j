@@ -18,7 +18,7 @@ public class Paragraph implements Resolvable<String> {
     @Override
     public String resolve() {
         return Stream.generate(() ->
-                Stream.generate(() -> FakerUtil.getValue("lorem.word"))
+                Stream.generate(() -> FakerUtil.getValue("lorem.words"))
                         .limit(FakerUtil.numberBetween(12, 18))
                         .collect(Collectors.joining(" ", "", ".")))
                 .limit(sentences.resolve())
