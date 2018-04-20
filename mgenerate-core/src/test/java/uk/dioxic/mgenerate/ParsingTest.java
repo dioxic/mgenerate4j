@@ -42,6 +42,7 @@ public class ParsingTest {
     @Test
     public void documentTest() throws IOException {
         Document doc = BsonUtil.parseFile("src/test/resources/template.json");
+        DocumentValueCache.mapDocument(doc);
         logger.debug(doc.toString());
 
         String outJson = BsonUtil.toJson(doc, jws);
@@ -52,7 +53,7 @@ public class ParsingTest {
     @ExtendWith(TimingExtension.class)
     public void performanceTest() throws IOException {
         Document doc = BsonUtil.parseFile("src/test/resources/bson-test.json");
-
+        DocumentValueCache.mapDocument(doc);
         List<String> results = Stream.generate(() -> BsonUtil.toJson(doc))
                 .limit(100)
                 .parallel()

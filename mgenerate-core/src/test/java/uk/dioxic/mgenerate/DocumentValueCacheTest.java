@@ -21,7 +21,7 @@ public class DocumentValueCacheTest {
     @Test
     public void documentTest() throws IOException {
         Document doc = BsonUtil.parseFile("src/test/resources/lookup-test.json");
-
+        DocumentValueCache.mapDocument(doc);
         DocumentValueCache.getKeys(doc).forEach(logger::debug);
 
         String outJson = BsonUtil.toJson(doc, jws);

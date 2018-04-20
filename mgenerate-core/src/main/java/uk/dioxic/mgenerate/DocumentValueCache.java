@@ -58,7 +58,7 @@ public class DocumentValueCache {
      * @param document the document being encoding
      */
     public static void setEncodingContext(Document document) {
-        encodingContext.set(getFlatMap(document));
+        encodingContext.set(documentMap.get(document));
         resolverCache.get().clear();
     }
 
@@ -83,7 +83,7 @@ public class DocumentValueCache {
      * @param coordinates dot-notation coordinates
      * @return resolved/cached valued
      */
-    public static Object get(String coordinates) {
+    public static Object get(String coordinates) throws DocumentNotMappedException {
         return get(encodingContext.get(),coordinates);
     }
 
@@ -102,10 +102,14 @@ public class DocumentValueCache {
      * @return resolved/cached valued
      */
     public static Object get(Document document, String coordinates) throws DocumentNotMappedException {
-        return get(getFlatMap(document),coordinates);
+        return get(documentMap.get(document),coordinates);
     }
 
-    private static Object get(Map<String, Object> map, String coordinates) {
+    private static Object get(Map<String, Object> map, String coordinates) throws DocumentNotMappedException {
+        if (map == null) {
+            throw new DocumentNotMappedException("coordinates [" + coordinates + "] could not be resolved");
+        }
+
         Object object = map.get(coordinates);
         if (object instanceof Resolvable) {
             return get((Resolvable)object);
@@ -117,15 +121,11 @@ public class DocumentValueCache {
     }
 
     public static Set<String> getKeys(Document document) {
-        return getFlatMap(document).keySet();
-    }
-
-    private static Map<String, Object> getFlatMap(Document document) {
-        Map<String, Object> flatMap = documentMap.get(document);
-        if (flatMap == null) {
-            //throw new DocumentNotMappedException();
+        Map<String, Object> docMap = documentMap.get(document);
+        if (docMap == null) {
+            throw new DocumentNotMappedException();
         }
-        return flatMap;
+        return docMap.keySet();
     }
 
 }

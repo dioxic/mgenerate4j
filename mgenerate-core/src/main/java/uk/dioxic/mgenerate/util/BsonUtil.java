@@ -41,7 +41,7 @@ public class BsonUtil {
 
     public static Document parse(String json) {
         StrictJsonReader bsonReader = new StrictJsonReader(json);
-        return DEFAULT_CODEC.decodeAndMap(bsonReader, DecoderContext.builder().build());
+        return DEFAULT_CODEC.decode(bsonReader, DecoderContext.builder().build());
     }
 
     public static Document parseFile(String file) throws IOException {
