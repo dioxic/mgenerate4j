@@ -18,6 +18,7 @@ public class DocumentValueCache {
     private static ThreadLocal<Map<Resolvable, Object>> resolverCache = ThreadLocal.withInitial(HashMap::new);
     private static Map<Document, Map<String, Object>> documentMap = new HashMap<>();
     private static ThreadLocal<Map<String, Object>> encodingContext = ThreadLocal.withInitial(HashMap::new);
+    private static ThreadLocal<Document> encodingContextDoc = new ThreadLocal();
 
     /**
      * Returns the cached value of the input {@link Resolvable} or, if
@@ -38,8 +39,9 @@ public class DocumentValueCache {
      * Clears all stored data for the current thread.
      */
     public static void clearThread() {
-        resolverCache.get().clear();
-        encodingContext.get().clear();
+        resolverCache.remove();
+        encodingContext.remove();
+        encodingContextDoc.remove();
     }
 
     /**
@@ -58,7 +60,14 @@ public class DocumentValueCache {
      * @param document the document being encoding
      */
     public static void setEncodingContext(Document document) {
-        encodingContext.set(documentMap.get(document));
+        Document currentContextDoc = encodingContextDoc.get();
+
+        // micro-optimisation to avoid hash calculation on document during map.get
+        if (currentContextDoc != document) {
+            encodingContext.set(documentMap.get(document));
+            encodingContextDoc.set(document);
+        }
+
         resolverCache.get().clear();
     }
 
@@ -115,7 +124,7 @@ public class DocumentValueCache {
             return get((Resolvable)object);
         }
         if (object == null) {
-            logger.warn("coordinates [{}] could not be resolved - has the document been mapped?", coordinates);
+            logger.warn("coordinates [{}] could not be resolved", coordinates);
         }
         return object;
     }
