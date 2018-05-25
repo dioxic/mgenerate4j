@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.annotation.OperatorBuilder;
 import uk.dioxic.mgenerate.annotation.ValueTransformer;
+import uk.dioxic.mgenerate.exception.TransformerException;
+import uk.dioxic.mgenerate.exception.WrapException;
 import uk.dioxic.mgenerate.operator.Wrapper;
 import uk.dioxic.mgenerate.transformer.Transformer;
 
@@ -48,7 +50,8 @@ public class OperatorFactory {
     private static <T> T instantiate(Class<T> clazz) {
         try {
             return clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+        }
+        catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -64,7 +67,7 @@ public class OperatorFactory {
 
         notNull("operation builder class annoation", annotation);
 
-        for(String key : annotation.value()) {
+        for (String key : annotation.value()) {
             addBuilder(key, builderClass);
         }
     }
@@ -90,7 +93,8 @@ public class OperatorFactory {
     public static Resolvable create(String operatorKey) {
         try {
             return canHandle(operatorKey) ? builderMap.get(getOperatorKey(operatorKey)).newInstance().build() : null;
-        } catch (InstantiationException | IllegalAccessException e) {
+        }
+        catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -124,13 +128,22 @@ public class OperatorFactory {
                 return new Wrapper<>(object, transformerMap.get(desiredType));
             }
             if (desiredType.isAssignableFrom(object.getClass())) {
-                return wrap((T)object);
+                return wrap((T) object);
             }
             if (object instanceof Resolvable) {
-                return (Resolvable<T>)object;
+                return (Resolvable<T>) object;
             }
-            throw new IllegalStateException("cannot wrap " + object.getClass().getSimpleName() + " to the desired type of " + desiredType.getSimpleName());
+            throw new WrapException(object.getClass(), desiredType);
         }
         return null;
+    }
+
+    public static <T> Resolvable<T> wrap(Document document, String key, Class<T> desiredType) {
+        try {
+            return wrap(document.get(key), desiredType);
+        }
+        catch(TransformerException e) {
+            throw new WrapException("cannot wrap field '" + key + "'",e);
+        }
     }
 }

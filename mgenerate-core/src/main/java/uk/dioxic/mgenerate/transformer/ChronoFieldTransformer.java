@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.transformer;
 
 import uk.dioxic.mgenerate.annotation.ValueTransformer;
+import uk.dioxic.mgenerate.exception.TransformerException;
 
 import java.time.temporal.ChronoField;
 
@@ -16,6 +17,6 @@ public class ChronoFieldTransformer implements Transformer<ChronoField> {
             return ChronoField.valueOf(((String) objectToTransform).toUpperCase());
         }
 
-        throw new IllegalStateException("could not convert " + objectToTransform.getClass().getSimpleName() + " to ChronoField");
+        throw new TransformerException(objectToTransform.getClass(), ChronoField.class);
     }
 }

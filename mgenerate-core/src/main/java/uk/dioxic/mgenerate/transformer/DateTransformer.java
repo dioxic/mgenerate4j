@@ -2,9 +2,9 @@ package uk.dioxic.mgenerate.transformer;
 
 import uk.dioxic.mgenerate.annotation.ValueTransformer;
 import uk.dioxic.mgenerate.exception.TransformerException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @ValueTransformer(LocalDateTime.class)
 public class DateTransformer implements Transformer<LocalDateTime> {
@@ -13,19 +13,24 @@ public class DateTransformer implements Transformer<LocalDateTime> {
     private static final DateTimeFormatter DT = DateTimeFormatter.ISO_DATE;
 
     @Override
-    public LocalDateTime transform(Object objectToTransform) {
+    public LocalDateTime transform(Object objectToTransform) throws TransformerException {
 
         if (objectToTransform instanceof LocalDateTime){
             return (LocalDateTime)objectToTransform;
         }
 
         if (objectToTransform instanceof String) {
-            String dateString = (String)objectToTransform;
-            if (dateString.contains("T")) {
-                return LocalDateTime.parse(dateString, DTF);
-            }
+            try {
+                String dateString = (String) objectToTransform;
+                if (dateString.contains("T")) {
+                    return LocalDateTime.parse(dateString, DTF);
+                }
 
-            return LocalDateTime.parse(dateString, DT);
+                return LocalDateTime.parse(dateString, DT);
+            }
+            catch (DateTimeParseException e) {
+                throw new TransformerException(e);
+            }
         }
 
         throw new TransformerException(objectToTransform.getClass(), LocalDateTime.class);

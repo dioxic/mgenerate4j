@@ -10,6 +10,14 @@ public class TransformerException extends RuntimeException {
         super(message);
     }
 
+    public TransformerException(Exception e) {
+        super(e);
+    }
+
+    public TransformerException(String message, Exception e) {
+        super(message, e);
+    }
+
     public TransformerException() {
         super();
     }

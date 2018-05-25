@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.transformer;
 
 import uk.dioxic.mgenerate.annotation.ValueTransformer;
+import uk.dioxic.mgenerate.exception.TransformerException;
 import uk.dioxic.mgenerate.operator.Hash;
 
 @ValueTransformer(Hash.HashOutput.class)
@@ -15,6 +16,6 @@ public class HashOutputTransformer implements Transformer<Hash.HashOutput> {
             return Hash.HashOutput.valueOf(((String) objectToTransform).toUpperCase());
         }
 
-        throw new IllegalStateException("could not convert " + objectToTransform.getClass().getSimpleName() + " to Hash.HashType");
+        throw new TransformerException(objectToTransform.getClass(), Hash.HashOutput.class);
     }
 }

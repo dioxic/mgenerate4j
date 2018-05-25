@@ -14,7 +14,6 @@ public class Wrapper<T> implements Resolvable<T> {
     }
 
     public Wrapper(Object value, Transformer<T> transformer) {
-
         if (value instanceof Resolvable){
             this.resolvable = (Resolvable)value;
         }

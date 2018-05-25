@@ -95,7 +95,7 @@
                 <configuration>
                     <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
                     <annotationProcessors>
-                        <annotationProcessor>uk.dioxic.mgenerate.apt.processor.OperatorAnnotationProcessor</annotationProcessor>
+                        <annotationProcessor>uk.dioxic.mgenerate.apt.processor.OperatorBuilderProcessor</annotationProcessor>
                     </annotationProcessors>
                 </configuration>
             </plugin>

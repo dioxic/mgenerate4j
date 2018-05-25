@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.apt.processor;
+package uk.dioxic.mgenerate.apt.poet;
 
 import com.squareup.javapoet.*;
 import org.bson.Document;
@@ -11,7 +11,8 @@ import uk.dioxic.mgenerate.StringUtil;
 import uk.dioxic.mgenerate.annotation.Operator;
 import uk.dioxic.mgenerate.annotation.OperatorBuilder;
 import uk.dioxic.mgenerate.annotation.OperatorProperty;
-import uk.dioxic.mgenerate.apt.model.FieldModel;
+import uk.dioxic.mgenerate.apt.model.OperatorPropertyModel;
+import uk.dioxic.mgenerate.apt.processor.Util;
 import uk.dioxic.mgenerate.operator.Wrapper;
 
 import javax.lang.model.element.Element;
@@ -22,30 +23,32 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class BuilderGenerator {
+public class OperatorBuilderPoet implements Poet{
 
     private final TypeElement typeElement;
     private final String packageName;
     private final String className;
     private final ClassName thisType;
 
-    BuilderGenerator(TypeElement typeElement) {
+    public OperatorBuilderPoet(TypeElement typeElement) {
         this.typeElement = typeElement;
         this.packageName = Util.elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
         this.className = typeElement.getSimpleName() + "Builder";
         this.thisType = ClassName.get(typeElement);
     }
 
-    CharSequence getFullyQualifiedName() {
+    @Override
+    public CharSequence getFullyQualifiedName() {
         if (this.packageName != null && this.packageName.trim().length() > 0) {
             return this.packageName + "." + this.className;
         }
         return this.className;
     }
 
-    void generate(Appendable appendable) throws IOException {
+    @Override
+    public void generate(Appendable appendable) throws IOException {
         ClassName builderInterface = ClassName.get(ResolvableBuilder.class);
-        List<FieldModel> properties = getProperties();
+        List<OperatorPropertyModel> properties = getProperties();
 
         AnnotationSpec.Builder annotationBuilder = AnnotationSpec.builder(OperatorBuilder.class);
 
@@ -74,16 +77,16 @@ class BuilderGenerator {
         javaFile.writeTo(appendable);
     }
 
-    private void addFields(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
-        for (FieldModel field : properties) {
-            classBuilder.addField(field.getOperatorTypeName(), field.getName(), Modifier.PRIVATE);
+    private void addFields(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties) {
+        for (OperatorPropertyModel field : properties) {
+            classBuilder.addField(field.getResolvableTypeName(), field.getName(), Modifier.PRIVATE);
         }
     }
 
-    private List<FieldModel> getProperties() {
+    private List<OperatorPropertyModel> getProperties() {
         return typeElement
                 .getEnclosedElements().stream().filter(this::filterOperatorProperties)
-                .map(FieldModel::new)
+                .map(OperatorPropertyModel::new)
                 .collect(Collectors.toList());
     }
 
@@ -93,16 +96,16 @@ class BuilderGenerator {
                 && el.getAnnotation(OperatorProperty.class) != null;
     }
 
-    private void addBuildMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties, MethodSpec validate) {
+    private void addBuildMethod(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties, MethodSpec validate) {
 
         CodeBlock.Builder requiredBlock = CodeBlock.builder();
 
-        for (FieldModel property : properties) {
+        for (OperatorPropertyModel property : properties) {
             if (!property.isRequired()) {
                 requiredBlock.beginControlFlow("if ($L != null)", property.getName());
             }
 
-            if (!property.isOperatorType()) {
+            if (!property.isResolvableType()) {
                 requiredBlock.addStatement("obj.$L = $L.resolve()",
                         property.getName(),
                         property.getName());
@@ -146,12 +149,12 @@ class BuilderGenerator {
         return operatorKeys;
     }
 
-    private MethodSpec addValidateMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+    private MethodSpec addValidateMethod(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder("validate")
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .returns(void.class);
 
-        properties.stream().filter(FieldModel::isRequired).forEach(o ->
+        properties.stream().filter(OperatorPropertyModel::isRequired).forEach(o ->
                 builder.addStatement("$T.notNull($S,$L)", Assertions.class, o.getName(), o.getName())
         );
 
@@ -160,7 +163,7 @@ class BuilderGenerator {
         return method;
     }
 
-    private void addDocumentMethod(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
+    private void addDocumentMethod(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties) {
         AnnotationSpec suppressUnchecked = AnnotationSpec.builder(SuppressWarnings.class)
                 .addMember("value", "$S", "unchecked")
                 .build();
@@ -172,12 +175,12 @@ class BuilderGenerator {
                 .addParameter(Document.class, "document")
                 .returns(ClassName.get(packageName, className));
 
-        for (FieldModel property : properties) {
+        for (OperatorPropertyModel property : properties) {
             if (property.isRootTypeNameParameterized()) {
-                builder.addStatement("$L = ($T)$T.wrap(document.get($S),$T.class)", property.getName(), Resolvable.class, OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
+                builder.addStatement("$L = ($T)$T.wrap(document,$S,$T.class)", property.getName(), Resolvable.class, OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
             }
             else {
-                builder.addStatement("$L = $T.wrap(document.get($S),$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeName());
+                builder.addStatement("$L = $T.wrap(document,$S,$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeName());
             }
         }
 
@@ -186,12 +189,12 @@ class BuilderGenerator {
         classBuilder.addMethod(builder.build());
     }
 
-    private void addPropertyMethods(TypeSpec.Builder classBuilder, List<FieldModel> properties) {
-        for (FieldModel property : properties) {
+    private void addPropertyMethods(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties) {
+        for (OperatorPropertyModel property : properties) {
             classBuilder.addMethod(MethodSpec.methodBuilder(property.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .returns(ClassName.get(packageName, className))
-                    .addParameter(property.getOperatorTypeName(), property.getName())
+                    .addParameter(property.getResolvableTypeName(), property.getName())
                     .addStatement("this.$L = $L", property.getName(), property.getName())
                     .addStatement("return this")
                     .build());

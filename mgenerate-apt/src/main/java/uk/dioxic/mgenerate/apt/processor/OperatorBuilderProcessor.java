@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.apt.processor;
 
 import uk.dioxic.mgenerate.annotation.Operator;
+import uk.dioxic.mgenerate.apt.poet.OperatorBuilderPoet;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -16,9 +17,9 @@ import java.io.Writer;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SupportedAnnotationTypes("uk.dioxic.mgenerate.annotation.*")
+@SupportedAnnotationTypes("uk.dioxic.mgenerate.annotation.Operator")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class OperatorAnnotationProcessor extends AbstractProcessor {
+public class OperatorBuilderProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -52,11 +53,11 @@ public class OperatorAnnotationProcessor extends AbstractProcessor {
 
             for (TypeElement typeElement : typeElements) {
                 try {
-                    BuilderGenerator builderGen = new BuilderGenerator(typeElement);
+                    OperatorBuilderPoet poet = new OperatorBuilderPoet(typeElement);
 
-                    JavaFileObject jfo = this.processingEnv.getFiler().createSourceFile(builderGen.getFullyQualifiedName());
+                    JavaFileObject jfo = this.processingEnv.getFiler().createSourceFile(poet.getFullyQualifiedName());
                     try (Writer writer = jfo.openWriter()) {
-                        builderGen.generate(writer);
+                        poet.generate(writer);
                     }
 
                 } catch (Exception e) {

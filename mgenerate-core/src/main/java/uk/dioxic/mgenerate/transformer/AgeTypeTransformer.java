@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.transformer;
 
 import uk.dioxic.mgenerate.annotation.ValueTransformer;
+import uk.dioxic.mgenerate.exception.TransformerException;
 import uk.dioxic.mgenerate.operator.person.AgeType;
 
 @ValueTransformer(AgeType.class)
@@ -15,6 +16,6 @@ public class AgeTypeTransformer implements Transformer<AgeType> {
             return AgeType.valueOf(((String) objectToTransform).toUpperCase());
         }
 
-        throw new IllegalStateException("could not convert " + objectToTransform.getClass().getSimpleName() + " to AgeType");
+        throw new TransformerException(objectToTransform.getClass(), AgeType.class);
     }
 }
