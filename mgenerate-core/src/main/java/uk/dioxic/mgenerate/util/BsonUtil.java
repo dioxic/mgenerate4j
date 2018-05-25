@@ -1,10 +1,7 @@
 package uk.dioxic.mgenerate.util;
 
 import org.bson.Document;
-import org.bson.codecs.BsonTypeClassMap;
-import org.bson.codecs.DecoderContext;
-import org.bson.codecs.EncoderContext;
-import org.bson.codecs.ValueCodecProvider;
+import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.json.JsonWriter;
@@ -30,6 +27,7 @@ public class BsonUtil {
 
     public static CodecRegistry getRegistry() {
         return CodecRegistries.fromProviders(asList(new ValueCodecProvider(),
+                new BsonValueCodecProvider(),
                 new DocumentCacheCodecProvider(new OperatorTransformer()),
                 new ExtendedCodecProvider(),
                 new OperatorCodecProvider()));
