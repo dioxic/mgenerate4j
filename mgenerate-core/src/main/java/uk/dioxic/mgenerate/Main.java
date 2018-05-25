@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static uk.dioxic.mgenerate.util.BsonUtil.parse;
@@ -33,6 +36,7 @@ public class Main {
         Long end = System.currentTimeMillis();
 
         Double avg = (end.doubleValue() - start.doubleValue()) / ITERATIONS.doubleValue();
+
         Long speed = Double.valueOf(ITERATIONS.doubleValue()*1000 / (end - start)).longValue();
         System.out.printf("Producting %s documents took %sms (%s docs/s)%n", ITERATIONS, end - start, speed);
 

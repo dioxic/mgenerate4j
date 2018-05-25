@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.transformer;
 
 import uk.dioxic.mgenerate.annotation.ValueTransformer;
+import uk.dioxic.mgenerate.exception.TransformerException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +28,6 @@ public class DateTransformer implements Transformer<LocalDateTime> {
             return LocalDateTime.parse(dateString, DT);
         }
 
-        throw new IllegalStateException("could not convert " + objectToTransform.getClass().getSimpleName() + " to LocalDateTime");
+        throw new TransformerException(objectToTransform.getClass(), LocalDateTime.class);
     }
 }
