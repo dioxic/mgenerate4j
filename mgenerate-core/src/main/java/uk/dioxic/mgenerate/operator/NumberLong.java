@@ -5,7 +5,7 @@ import uk.dioxic.mgenerate.annotation.Operator;
 import uk.dioxic.mgenerate.annotation.OperatorProperty;
 import uk.dioxic.faker.resolvable.Resolvable;
 
-@Operator
+@Operator({"numberLong", "long"})
 public class NumberLong implements Resolvable<Long> {
 
     @OperatorProperty

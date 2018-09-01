@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +39,33 @@ public class BsonUtil {
     }
 
     public static Document parse(String json) {
-        StrictJsonReader bsonReader = new StrictJsonReader(json);
-        return DEFAULT_CODEC.decode(bsonReader, DecoderContext.builder().build());
+        return parse(json, DEFAULT_CODEC);
     }
 
-    public static Document parseFile(String file) throws IOException {
-        return parse(new String(Files.readAllBytes(Paths.get(file)), StandardCharsets.UTF_8));
+    public static <T> T parse(String json, Codec<T> codec) {
+        StrictJsonReader bsonReader = new StrictJsonReader(json);
+        return codec.decode(bsonReader, DecoderContext.builder().build());
+    }
+
+    public static <T> T parseFile(String file, Codec<T> codec) {
+        return parseFile(Paths.get(file), codec);
+    }
+
+    public static Document parseFile(String file) {
+        return parseFile(Paths.get(file), DEFAULT_CODEC);
+    }
+
+    public static Document parseFile(Path file) {
+        return parseFile(file, DEFAULT_CODEC);
+    }
+
+    public static <T> T parseFile(Path file, Codec<T> codec) {
+        try {
+            return parse(new String(Files.readAllBytes(file), StandardCharsets.UTF_8), codec);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static String toJson(Document document) {

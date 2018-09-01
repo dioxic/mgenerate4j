@@ -18,6 +18,8 @@ import uk.dioxic.mgenerate.util.BsonUtil;
 import uk.dioxic.mgenerate.util.FlsUtil;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,8 +101,41 @@ public class OperatorTest {
                 .build();
 
         assertThat(inc.resolve()).as("check starting value").isEqualTo(start);
-        assertThat(inc.resolve()).as("check starting value").isEqualTo(start + step);
-        assertThat(inc.resolve()).as("check starting value").isEqualTo(start + step + step);
+        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step);
+        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step + step);
+    }
+
+    @Test
+    public void incThreadLocal() {
+        int start = 3;
+        int step = 2;
+
+        Inc inc = new IncBuilder()
+                .start(start)
+                .step(step)
+                .threadLocal(true)
+                .build();
+
+        assertThat(inc.resolve()).as("check starting value").isEqualTo(start);
+        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step);
+        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step + step);
+    }
+
+    @Test
+    public void dateInc() {
+        LocalDateTime start = LocalDateTime.parse("1900-01-01T00:00:00");
+        long step = 5;
+        ChronoUnit chrono = ChronoUnit.MINUTES;
+
+        DateInc inc = new DateIncBuilder()
+                .start(start)
+                .chronoUnit(chrono)
+                .step(step)
+                .build();
+
+        assertThat(inc.resolve()).as("check starting value").isEqualTo(start);
+        assertThat(inc.resolve()).as("check next value").isEqualTo(start.plus(step, chrono));
+        assertThat(inc.resolve()).as("check next value").isEqualTo(start.plus(step, chrono).plus(step, chrono));
     }
 
     @Test

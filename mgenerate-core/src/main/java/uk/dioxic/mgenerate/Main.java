@@ -1,44 +1,55 @@
 package uk.dioxic.mgenerate;
 
-import org.bson.Document;
+import org.apache.commons.cli.ParseException;
+import uk.dioxic.mgenerate.exception.TerminateGenerationException;
+import uk.dioxic.mgenerate.util.BsonUtil;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
-
-import static uk.dioxic.mgenerate.util.BsonUtil.parse;
-import static uk.dioxic.mgenerate.util.BsonUtil.parseFile;
-import static uk.dioxic.mgenerate.util.BsonUtil.toJson;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        Integer ITERATIONS = args.length > 1 ? Integer.valueOf(args[1]) : 100;
+    public static void main(String[] args) throws IOException, ParseException {
 
-        Document doc = (args[0].startsWith("{") & args[0].endsWith("}"))? parse(args[0]) : parseFile(args[0]);
+        CliOptions cli = new CliOptions(args);
 
-        toJson(doc);
+        Writer writer = new OutputStreamWriter(System.out);
+
+        if (cli.isSingleFileOutput()) {
+            writer = new PrintWriter(Files.newBufferedWriter(cli.getOutputPath()));
+        }
+//        else if (cli.isConsoleOutput()) {
+//            writer = new PrintWriter(System.out);
+//        }
 
         Long start = System.currentTimeMillis();
 
-        try (PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Paths.get("output.json")))) {
-            Stream.generate(() -> toJson(doc))
-                    .limit(ITERATIONS)
-                    .parallel()
-                    .forEach(pw::println);
+        for (CliOptions.Template template : cli.getTemplates()) {
+            DocumentValueCache.mapDocument(template.document);
+
+            if (cli.isMultiFileOutput()) {
+                writer = Files.newBufferedWriter(template.templateFile);
+            }
+            try (PrintWriter pw = new PrintWriter(writer)) {
+                Stream.generate(() -> BsonUtil.toJson(template.document))
+                        .limit(cli.getDocuments())
+                        .forEach(pw::println);
+            }
+            catch (TerminateGenerationException e) {
+
+            }
         }
 
         Long end = System.currentTimeMillis();
 
-        Double avg = (end.doubleValue() - start.doubleValue()) / ITERATIONS.doubleValue();
+        Double avg = (end.doubleValue() - start.doubleValue()) / cli.getDocuments().doubleValue();
 
-        Long speed = Double.valueOf(ITERATIONS.doubleValue()*1000 / (end - start)).longValue();
-        System.out.printf("Producting %s documents took %sms (%s docs/s)%n", ITERATIONS, end - start, speed);
+        Long speed = Double.valueOf(cli.getDocuments().doubleValue() * 1000 / (end - start)).longValue();
+        System.out.printf("Producting %s documents took %sms (%s docs/s)%n", cli.getDocuments(), end - start, speed);
 
     }
 
