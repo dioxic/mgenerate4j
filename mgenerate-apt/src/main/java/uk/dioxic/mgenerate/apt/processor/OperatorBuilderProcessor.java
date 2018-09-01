@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.apt.processor;
 
-import uk.dioxic.mgenerate.annotation.Operator;
+import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.apt.poet.OperatorBuilderPoet;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -17,8 +17,8 @@ import java.io.Writer;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SupportedAnnotationTypes("uk.dioxic.mgenerate.annotation.Operator")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedAnnotationTypes("uk.dioxic.mgenerate.common.annotation.Operator")
+@SupportedSourceVersion(SourceVersion.RELEASE_10)
 public class OperatorBuilderProcessor extends AbstractProcessor {
 
     @Override

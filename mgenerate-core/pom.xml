@@ -99,6 +99,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>uk.dioxic.mgenerate</groupId>
+                            <artifactId>mgenerate-apt</artifactId>
+                            <version>${project.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <annotationProcessors>
                         <annotationProcessor>uk.dioxic.mgenerate.apt.processor.OperatorBuilderProcessor</annotationProcessor>
                     </annotationProcessors>
@@ -119,7 +126,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>uk.dioxic.mgenerate.Main</mainClass>
+                                    <mainClass>uk.dioxic.mgenerate.core.Main</mainClass>
                                 </transformer>
                             </transformers>
                             <createDependencyReducedPom>false</createDependencyReducedPom>

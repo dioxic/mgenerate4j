@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.apt.model;
 
-import uk.dioxic.mgenerate.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 
 import javax.lang.model.element.Element;
 

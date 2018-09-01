@@ -1,15 +1,14 @@
 package uk.dioxic.mgenerate.apt.processor;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Types;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AnnotationHierarchyUtil {
 

@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.apt.model;
 
-import uk.dioxic.mgenerate.annotation.PojoProperty;
+import uk.dioxic.mgenerate.common.annotation.PojoProperty;
 
 import javax.lang.model.element.Element;
 

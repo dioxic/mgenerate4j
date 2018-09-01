@@ -3,8 +3,8 @@ package uk.dioxic.mgenerate.apt.poet;
 import com.squareup.javapoet.*;
 import org.bson.Document;
 import uk.dioxic.faker.resolvable.Resolvable;
-import uk.dioxic.mgenerate.OperatorFactory;
-import uk.dioxic.mgenerate.annotation.PojoProperty;
+import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.annotation.PojoProperty;
 import uk.dioxic.mgenerate.apt.model.PojoPropertyModel;
 import uk.dioxic.mgenerate.apt.processor.Util;
 
