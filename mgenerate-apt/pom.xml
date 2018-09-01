@@ -16,11 +16,6 @@
     <description>Annotation processing for mgenerate4j</description>
     <url>https://github.com/dioxic/mgenerate4j</url>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>uk.dioxic.mgenerate</groupId>

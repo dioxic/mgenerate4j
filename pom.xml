@@ -7,7 +7,7 @@
     <groupId>uk.dioxic.mgenerate</groupId>
     <artifactId>mgenerate-parent</artifactId>
     <version>0.0.3-SNAPSHOT</version>
-	
+
     <packaging>pom</packaging>
 
     <name>mgenerate-parent</name>
@@ -18,8 +18,9 @@
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <junit.platform.version>1.2.0</junit.platform.version>
         <log4j.version>2.11.1</log4j.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>10</maven.compiler.source>
+        <maven.compiler.target>10</maven.compiler.target>
+        <java.version>10</java.version>
     </properties>
 
     <licenses>
@@ -175,22 +176,9 @@
             </build>
         </profile>
         <profile>
-            <id>release</id>
+            <id>javadoc</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -207,6 +195,13 @@
                             </execution>
                         </executions>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -243,5 +238,5 @@
         <module>mgenerate-core</module>
     </modules>
 
-    
+
 </project>
