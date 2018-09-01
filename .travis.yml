@@ -1,13 +1,13 @@
 sudo: false
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
+#addons:
+#  apt:
+#    packages:
+#      - oracle-java10-installer
 
 language: java
 
 jdk:
-  - oraclejdk8
+  - oraclejdk10
 
 #script:
 #  - chmod 700 ./mvnw
