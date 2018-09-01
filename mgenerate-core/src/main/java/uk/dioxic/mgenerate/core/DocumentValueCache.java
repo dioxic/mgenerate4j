@@ -18,7 +18,7 @@ public class DocumentValueCache {
     private static ThreadLocal<Map<Resolvable, Object>> resolverCache = ThreadLocal.withInitial(HashMap::new);
     private static Map<Document, Map<String, Object>> documentMap = new HashMap<>();
     private static ThreadLocal<Map<String, Object>> encodingContext = ThreadLocal.withInitial(HashMap::new);
-    private static ThreadLocal<Document> encodingContextDoc = new ThreadLocal();
+    private static ThreadLocal<Document> encodingContextDoc = new ThreadLocal<>();
 
     /**
      * Returns the cached value of the input {@link Resolvable} or, if
