@@ -25,8 +25,8 @@ public class OperatorFactory {
     private static final Map<Class, Transformer> transformerMap = new HashMap<>();
 
     static {
-        addBuilders("uk.dioxic.mgenerate.common.operator");
-        addTransformers("uk.dioxic.mgenerate.common.transformer");
+        addBuilders("uk.dioxic.mgenerate.core.operator");
+        addTransformers("uk.dioxic.mgenerate.core.transformer");
     }
 
     @SuppressWarnings("unchecked")

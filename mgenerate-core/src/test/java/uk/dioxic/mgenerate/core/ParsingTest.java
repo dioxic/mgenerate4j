@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.common;
+package uk.dioxic.mgenerate.core;
 
 import org.bson.Document;
 import org.bson.codecs.Codec;
@@ -10,9 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.faker.resolvable.Resolvable;
-import uk.dioxic.mgenerate.core.DocumentValueCache;
 import uk.dioxic.mgenerate.core.codec.OperatorCodec;
-import uk.dioxic.mgenerate.core.common.test.TimingExtension;
+import uk.dioxic.mgenerate.core.test.TimingExtension;
 import uk.dioxic.mgenerate.core.operator.internet.Email;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
 

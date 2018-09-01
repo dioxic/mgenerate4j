@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.common;
+package uk.dioxic.mgenerate.core;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

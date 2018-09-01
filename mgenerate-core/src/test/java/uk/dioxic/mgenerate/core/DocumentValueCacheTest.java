@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.common;
+package uk.dioxic.mgenerate.core;
 
 import org.bson.Document;
 import org.bson.json.JsonWriterSettings;

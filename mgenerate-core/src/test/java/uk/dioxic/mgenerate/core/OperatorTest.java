@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.common;
+package uk.dioxic.mgenerate.core;
 
 import org.assertj.core.util.Lists;
 import org.bson.types.ObjectId;
