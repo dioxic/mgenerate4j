@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.common;
+package uk.dioxic.mgenerate.apt.util;
 
 public class StringUtil {
 

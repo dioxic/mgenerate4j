@@ -3,17 +3,13 @@ package uk.dioxic.mgenerate.apt.poet;
 import com.squareup.javapoet.*;
 import org.bson.Document;
 import org.bson.assertions.Assertions;
-import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.apt.model.OperatorPropertyModel;
-import uk.dioxic.mgenerate.apt.processor.Util;
-import uk.dioxic.mgenerate.common.Initializable;
-import uk.dioxic.mgenerate.common.OperatorFactory;
-import uk.dioxic.mgenerate.common.ResolvableBuilder;
-import uk.dioxic.mgenerate.common.StringUtil;
+import uk.dioxic.mgenerate.apt.util.ModelUtil;
+import uk.dioxic.mgenerate.apt.util.StringUtil;
+import uk.dioxic.mgenerate.common.*;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorBuilder;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.mgenerate.common.operator.Wrapper;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -23,8 +19,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OperatorBuilderPoet implements Poet{
+import static uk.dioxic.mgenerate.apt.util.ModelUtil.isSameType;
 
+public class OperatorBuilderPoet implements Poet {
+
+    private final static String TRANSFORMER_REGISTRY = "transformerRegistry";
     private final TypeElement typeElement;
     private final String packageName;
     private final String className;
@@ -32,7 +31,7 @@ public class OperatorBuilderPoet implements Poet{
 
     public OperatorBuilderPoet(TypeElement typeElement) {
         this.typeElement = typeElement;
-        this.packageName = Util.elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
+        this.packageName = ModelUtil.elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
         this.className = typeElement.getSimpleName() + "Builder";
         this.thisType = ClassName.get(typeElement);
     }
@@ -61,7 +60,9 @@ public class OperatorBuilderPoet implements Poet{
                 .addSuperinterface(ParameterizedTypeName.get(builderInterface, this.thisType))
                 .addAnnotation(annotationBuilder.build());
 
-        addFields(classBuilder, properties);
+        addConstructor(classBuilder);
+
+        addProperties(classBuilder, properties);
 
         addPropertyMethods(classBuilder, properties);
 
@@ -77,7 +78,18 @@ public class OperatorBuilderPoet implements Poet{
         javaFile.writeTo(appendable);
     }
 
-    private void addFields(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties) {
+    private void addConstructor(TypeSpec.Builder classBuilder) {
+        MethodSpec constructor = MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC)
+                .addParameter(ClassName.get(TransformerRegistry.class), TRANSFORMER_REGISTRY)
+                .addStatement("this.$L = $L", TRANSFORMER_REGISTRY, TRANSFORMER_REGISTRY)
+                .build();
+
+        classBuilder.addMethod(constructor);
+    }
+
+    private void addProperties(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties) {
+        classBuilder.addField(ClassName.get(TransformerRegistry.class), TRANSFORMER_REGISTRY, Modifier.PRIVATE, Modifier.FINAL);
         for (OperatorPropertyModel field : properties) {
             classBuilder.addField(field.getResolvableTypeName(), field.getName(), Modifier.PRIVATE);
         }
@@ -121,7 +133,7 @@ public class OperatorBuilderPoet implements Poet{
 
         CodeBlock.Builder initBlock = CodeBlock.builder();
 
-        if (typeElement.getInterfaces().stream().anyMatch(clazz -> Util.isSameType(clazz, Initializable.class))) {
+        if (typeElement.getInterfaces().stream().anyMatch(clazz -> isSameType(clazz, Initializable.class))) {
             initBlock.addStatement("obj.initialize()");
         }
 
@@ -177,10 +189,10 @@ public class OperatorBuilderPoet implements Poet{
 
         for (OperatorPropertyModel property : properties) {
             if (property.isRootTypeNameParameterized()) {
-                builder.addStatement("$L = ($T)$T.wrap(document,$S,$T.class)", property.getName(), Resolvable.class, OperatorFactory.class, property.getName(), property.getRootTypeNameErasure());
+                builder.addStatement("$L = ($T)$T.wrap(document.get($S),$T.class,$L)", property.getName(), Resolvable.class, Wrapper.class, property.getName(), property.getRootTypeNameErasure(), TRANSFORMER_REGISTRY);
             }
             else {
-                builder.addStatement("$L = $T.wrap(document,$S,$T.class)", property.getName(), OperatorFactory.class, property.getName(), property.getRootTypeName());
+                builder.addStatement("$L = $T.wrap(document.get($S),$T.class,$L)", property.getName(), Wrapper.class, property.getName(), property.getRootTypeName(), TRANSFORMER_REGISTRY);
             }
         }
 
@@ -203,7 +215,7 @@ public class OperatorBuilderPoet implements Poet{
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .returns(ClassName.get(packageName, className))
                     .addParameter(property.getRootTypeName(), property.getName())
-                    .addStatement("this.$L = new $T<>($L)", property.getName(), Wrapper.class, property.getName())
+                    .addStatement("this.$L = $T.wrap($L)", property.getName(), Wrapper.class, property.getName())
                     .addStatement("return this")
                     .build());
 

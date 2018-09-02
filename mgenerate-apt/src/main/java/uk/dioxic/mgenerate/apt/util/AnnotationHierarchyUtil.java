@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.apt.processor;
+package uk.dioxic.mgenerate.apt.util;
 
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;

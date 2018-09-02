@@ -1,19 +1,19 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import org.bson.BsonRegularExpression;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import org.bson.BsonRegularExpression;
-import uk.dioxic.faker.resolvable.Resolvable;
 
 @Operator
 public class Regex implements Resolvable<BsonRegularExpression> {
 
     @OperatorProperty
-    Resolvable<String> string = OperatorFactory.wrap(".*");
+    Resolvable<String> string = Wrapper.wrap(".*");
 
     @OperatorProperty
-    Resolvable<String> flags = OperatorFactory.wrap("");
+    Resolvable<String> flags = Wrapper.wrap("");
 
     @Override
     public BsonRegularExpression resolve() {

@@ -1,11 +1,11 @@
 package uk.dioxic.mgenerate.core.operator.internet;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.operator.text.Word;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
 public class Url implements Resolvable<String> {
@@ -17,7 +17,7 @@ public class Url implements Resolvable<String> {
     Resolvable<String> path = new Word();
 
     @OperatorProperty
-    Resolvable<Boolean> extension = OperatorFactory.wrap(Boolean.FALSE);
+    Resolvable<Boolean> extension = Wrapper.wrap(Boolean.FALSE);
 
     @Override
     public String resolve() {

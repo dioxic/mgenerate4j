@@ -1,6 +1,8 @@
 package uk.dioxic.mgenerate.apt.processor;
 
 import uk.dioxic.mgenerate.apt.poet.Poet;
+import uk.dioxic.mgenerate.apt.util.AnnotationHierarchyUtil;
+import uk.dioxic.mgenerate.apt.util.ModelUtil;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -14,7 +16,7 @@ import java.lang.annotation.Annotation;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class AbstractMgenProcessor extends AbstractProcessor {
+abstract class AbstractMgenProcessor extends AbstractProcessor {
 
     private Class<? extends Annotation> triggeringAnnotation;
 
@@ -35,9 +37,9 @@ public abstract class AbstractMgenProcessor extends AbstractProcessor {
             return false;
         }
 
-        Util.elementUtils = this.processingEnv.getElementUtils();
-        Util.typeUtils = this.processingEnv.getTypeUtils();
-        Util.messager = this.processingEnv.getMessager();
+        ModelUtil.elementUtils = this.processingEnv.getElementUtils();
+        ModelUtil.typeUtils = this.processingEnv.getTypeUtils();
+        ModelUtil.messager = this.processingEnv.getMessager();
 
         AnnotationHierarchyUtil hierarchyUtil = new AnnotationHierarchyUtil(this.processingEnv.getTypeUtils());
 

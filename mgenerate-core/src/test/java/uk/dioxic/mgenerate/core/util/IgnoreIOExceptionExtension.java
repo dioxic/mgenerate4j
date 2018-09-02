@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.test;
+package uk.dioxic.mgenerate.core.util;
 
 import java.io.IOException;
 

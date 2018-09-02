@@ -1,10 +1,10 @@
 package uk.dioxic.mgenerate.core.operator.text;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class Paragraph implements Resolvable<String> {
 
     @OperatorProperty
-    Resolvable<Integer> sentences = OperatorFactory.wrap(3);
+    Resolvable<Integer> sentences = Wrapper.wrap(3);
 
     @Override
     public String resolve() {

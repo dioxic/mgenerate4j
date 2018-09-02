@@ -1,8 +1,7 @@
-package uk.dioxic.mgenerate.core;
+package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.faker.Faker;
-import uk.dioxic.faker.resolvable.LookupResolver;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,13 +10,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringResolver implements Resolvable {
+public class PatternResolver implements Resolvable {
     private final static Pattern LOOKUP_PATTERN = Pattern.compile("([#$])\\{([a-z0-9A-Z_.]+)\\s*}");
 
     private final List<String> parts;
     private final List<Resolvable> lookups;
 
-    public StringResolver(String expression, Faker faker) {
+    public PatternResolver(String expression, Faker faker) {
         Matcher matcher = LOOKUP_PATTERN.matcher(expression);
         lookups = new ArrayList<>();
 
@@ -62,16 +61,4 @@ public class StringResolver implements Resolvable {
         return LOOKUP_PATTERN.matcher(expression).find();
     }
 
-    private static class DocumentKeyResolver implements Resolvable {
-        private final String documentKey;
-
-        public DocumentKeyResolver(String documentKey) {
-            this.documentKey = documentKey;
-        }
-
-        @Override
-        public Object resolve() {
-            return DocumentValueCache.get(documentKey);
-        }
-    }
 }

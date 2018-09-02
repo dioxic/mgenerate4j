@@ -2,7 +2,7 @@ package uk.dioxic.mgenerate.core.operator;
 
 import org.apache.commons.codec.binary.Hex;
 import org.bson.Document;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.util.BsonUtil;

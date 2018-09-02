@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +38,7 @@ public class CliOptions {
             jsonTemplate = templateOptValue;
         }
         else {
-            templatePath = Paths.get(cmd.getOptionValue("t"));
+            templatePath = Paths.get(templateOptValue);
         }
 
         if (cmd.hasOption("o")) {
@@ -77,10 +77,10 @@ public class CliOptions {
                         .map(Template::new)
                         .collect(Collectors.toList());
             }
-            return Arrays.asList(new Template(templatePath));
+            return Collections.singletonList(new Template(templatePath));
         }
         else {
-            return Arrays.asList(new Template(jsonTemplate));
+            return Collections.singletonList(new Template(jsonTemplate));
         }
     }
 

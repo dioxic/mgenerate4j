@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.test;
+package uk.dioxic.mgenerate.core.util;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
@@ -15,12 +15,12 @@ public class TimingExtension implements BeforeTestExecutionCallback, AfterTestEx
     private static final String START_TIME = "start time";
 
     @Override
-    public void beforeTestExecution(ExtensionContext context) throws Exception {
+    public void beforeTestExecution(ExtensionContext context) {
         getStore(context).put(START_TIME, System.currentTimeMillis());
     }
 
     @Override
-    public void afterTestExecution(ExtensionContext context) throws Exception {
+    public void afterTestExecution(ExtensionContext context) {
         Method testMethod = context.getRequiredTestMethod();
         long startTime = getStore(context).remove(START_TIME, long.class);
         long duration = System.currentTimeMillis() - startTime;

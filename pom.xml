@@ -21,6 +21,8 @@
         <maven.compiler.source>10</maven.compiler.source>
         <maven.compiler.target>10</maven.compiler.target>
         <maven.compiler.release>10</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <licenses>
@@ -74,7 +76,7 @@
             <dependency>
                 <groupId>uk.dioxic.faker4j</groupId>
                 <artifactId>faker4j</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.mongodb</groupId>
@@ -127,6 +129,11 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.22.0</version>
+                    <configuration>
+                        <additionalClasspathElements>
+                            <additionalClasspathElement>${project.build.directory}/target/classes</additionalClasspathElement>
+                        </additionalClasspathElements>
+                    </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.junit.platform</groupId>

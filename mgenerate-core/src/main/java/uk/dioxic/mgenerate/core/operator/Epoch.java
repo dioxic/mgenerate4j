@@ -1,10 +1,9 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 
-import java.lang.Number;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;

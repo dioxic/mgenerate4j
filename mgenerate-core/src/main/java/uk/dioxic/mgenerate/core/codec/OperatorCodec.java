@@ -4,7 +4,7 @@ import org.bson.BsonReader;
 import org.bson.BsonWriter;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.DocumentValueCache;
 
 import java.util.Map;

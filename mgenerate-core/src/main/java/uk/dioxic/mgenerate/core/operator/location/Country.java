@@ -1,16 +1,16 @@
 package uk.dioxic.mgenerate.core.operator.location;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
 public class Country implements Resolvable<String> {
 
     @OperatorProperty
-    Resolvable<Boolean> full = OperatorFactory.wrap(Boolean.FALSE);
+    Resolvable<Boolean> full = Wrapper.wrap(Boolean.FALSE);
 
 	@Override
 	public String resolve() {

@@ -3,7 +3,7 @@ package uk.dioxic.mgenerate.core;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.DocumentCacheCodec;
 import uk.dioxic.mgenerate.common.exception.DocumentNotMappedException;
 import uk.dioxic.mgenerate.core.util.BsonUtil;

@@ -6,16 +6,13 @@ import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.OperatorCodec;
-import uk.dioxic.mgenerate.core.test.TimingExtension;
 import uk.dioxic.mgenerate.core.operator.internet.Email;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +37,7 @@ public class ParsingTest {
     }
 
     @Test
-    public void documentTest() throws IOException {
+    public void documentTest() {
         Document doc = BsonUtil.parseFile("src/test/resources/template.json");
         DocumentValueCache.mapDocument(doc);
         logger.debug(doc.toString());
@@ -50,8 +47,8 @@ public class ParsingTest {
     }
 
     @Test
-    @ExtendWith(TimingExtension.class)
-    public void performanceTest() throws IOException {
+    //@ExtendWith(TimingExtension.class)
+    public void performanceTest() {
         Document doc = BsonUtil.parseFile("src/test/resources/bson-test.json");
         DocumentValueCache.mapDocument(doc);
         List<String> results = Stream.generate(() -> BsonUtil.toJson(doc))

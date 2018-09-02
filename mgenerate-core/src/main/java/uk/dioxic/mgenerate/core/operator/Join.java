@@ -1,9 +1,9 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class Join implements Resolvable<String> {
     Resolvable<List<? extends CharSequence>> array;
 
     @OperatorProperty
-    Resolvable<String> sep = OperatorFactory.wrap(DEFAULT_SEP);
+    Resolvable<String> sep = Wrapper.wrap(DEFAULT_SEP);
 
     @Override
     public String resolve() {

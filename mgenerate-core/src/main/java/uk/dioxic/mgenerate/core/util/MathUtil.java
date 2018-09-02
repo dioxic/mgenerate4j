@@ -22,7 +22,7 @@ public final class MathUtil {
         return x;
     }
 
-    public static final double sqrt(final double d) {
+    public static double sqrt(final double d) {
         return d * invSqrt(d); // ~10% faster than Math.sqrt.
     }
 

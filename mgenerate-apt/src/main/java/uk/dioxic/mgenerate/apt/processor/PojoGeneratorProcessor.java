@@ -10,7 +10,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 
 @SupportedAnnotationTypes("uk.dioxic.mgenerate.common.annotation.Pojo")
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_10)
 public class PojoGeneratorProcessor extends AbstractMgenProcessor {
 
     public PojoGeneratorProcessor() {

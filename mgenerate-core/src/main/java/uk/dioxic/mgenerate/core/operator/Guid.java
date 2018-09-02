@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 
 import java.util.UUID;

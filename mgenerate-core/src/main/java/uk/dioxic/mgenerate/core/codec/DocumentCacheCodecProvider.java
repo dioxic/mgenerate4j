@@ -82,11 +82,7 @@ public class DocumentCacheCodecProvider implements CodecProvider {
         if (!bsonTypeClassMap.equals(that.bsonTypeClassMap)) {
             return false;
         }
-        if (valueTransformer != null ? !valueTransformer.equals(that.valueTransformer) : that.valueTransformer != null) {
-            return false;
-        }
-
-        return true;
+        return valueTransformer != null ? valueTransformer.equals(that.valueTransformer) : that.valueTransformer == null;
     }
 
     @Override

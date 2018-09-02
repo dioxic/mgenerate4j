@@ -1,7 +1,8 @@
 package uk.dioxic.mgenerate.core.util;
 
 import uk.dioxic.faker.Faker;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.core.resolver.FakerResolver;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,7 +26,7 @@ public class FakerUtil {
     }
 
     public static Resolvable<String> getResolvable(String fakerKey){
-	 return faker.getResolvable(fakerKey);
+	 return new FakerResolver(faker, fakerKey);
     }
 
 	public static Random random() {

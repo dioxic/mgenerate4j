@@ -1,10 +1,10 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.time.LocalDateTime;
 
@@ -15,10 +15,10 @@ public class Date implements Resolvable<LocalDateTime> {
 	private static final LocalDateTime DEFAULT_MAX = LocalDateTime.parse("2099-12-31T23:59:59");
 
     @OperatorProperty
-    Resolvable<LocalDateTime> min = OperatorFactory.wrap(DEFAULT_MIN);
+    Resolvable<LocalDateTime> min = Wrapper.wrap(DEFAULT_MIN);
 
     @OperatorProperty
-    Resolvable<LocalDateTime> max = OperatorFactory.wrap(DEFAULT_MAX);
+    Resolvable<LocalDateTime> max = Wrapper.wrap(DEFAULT_MAX);
 
 	@Override
 	public LocalDateTime resolve() {

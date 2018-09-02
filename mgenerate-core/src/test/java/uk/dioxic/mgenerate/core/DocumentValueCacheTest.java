@@ -5,10 +5,7 @@ import org.bson.json.JsonWriterSettings;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.mgenerate.core.DocumentValueCache;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
-
-import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -20,7 +17,7 @@ public class DocumentValueCacheTest {
             .build();
 
     @Test
-    public void documentTest() throws IOException {
+    public void documentTest() {
         Document doc = BsonUtil.parseFile("src/test/resources/lookup-test.json");
         DocumentValueCache.mapDocument(doc);
         DocumentValueCache.getKeys(doc).forEach(logger::debug);

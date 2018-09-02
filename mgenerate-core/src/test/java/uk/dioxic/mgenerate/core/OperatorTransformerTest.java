@@ -2,7 +2,7 @@ package uk.dioxic.mgenerate.core;
 
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.OperatorTransformer;
 
 import static org.assertj.core.api.Assertions.*;

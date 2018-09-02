@@ -1,14 +1,14 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
 public class Hour implements Resolvable<Integer> {
 
-    Resolvable<Boolean> twentyFour = OperatorFactory.wrap(Boolean.FALSE);
+    Resolvable<Boolean> twentyFour = Wrapper.wrap(Boolean.FALSE);
 
     @Override
     public Integer resolve() {

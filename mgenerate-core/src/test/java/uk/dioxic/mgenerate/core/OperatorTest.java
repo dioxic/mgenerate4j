@@ -35,7 +35,7 @@ public class OperatorTest {
         String of = "turnip";
         int number = 4;
 
-        Array array = new ArrayBuilder()
+        Array array = new ArrayBuilder(ReflectiveTransformerRegistry.getInstance())
                 .of(of)
                 .number(number)
                 .build();
@@ -50,7 +50,7 @@ public class OperatorTest {
         List<String> from = Lists.newArrayList("fish", "bread", "turnip");
         List<Integer> weights = Lists.newArrayList(1, 2, 3);
 
-        Choose choose = new ChooseBuilder()
+        Choose choose = new ChooseBuilder(ReflectiveTransformerRegistry.getInstance())
                 .from(from)
                 .weights(weights)
                 .build();
@@ -63,16 +63,16 @@ public class OperatorTest {
     public void arrayChoose() {
         List<String> from = Lists.newArrayList("fish", "bread", "turnip");
 
-        NumberOp number = new NumberOpBuilder()
+        NumberInt number = new NumberIntBuilder(ReflectiveTransformerRegistry.getInstance())
                 .min(0)
                 .max(5)
                 .build();
 
-        Choose choose = new ChooseBuilder()
+        Choose choose = new ChooseBuilder(ReflectiveTransformerRegistry.getInstance())
                 .from(from)
                 .build();
 
-        Array array = new ArrayBuilder()
+        Array array = new ArrayBuilder(ReflectiveTransformerRegistry.getInstance())
                 .of(choose)
                 .number(number)
                 .build();
@@ -87,7 +87,7 @@ public class OperatorTest {
 
     @Test
     public void objectId() {
-        assertThat(new ObjectIdBuilder().build().resolve()).isInstanceOf(ObjectId.class);
+        assertThat(new ObjectIdBuilder(ReflectiveTransformerRegistry.getInstance()).build().resolve()).isInstanceOf(ObjectId.class);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class OperatorTest {
         int start = 3;
         int step = 2;
 
-        Inc inc = new IncBuilder()
+        Inc inc = new IncBuilder(ReflectiveTransformerRegistry.getInstance())
                 .start(start)
                 .step(step)
                 .build();
@@ -110,7 +110,7 @@ public class OperatorTest {
         int start = 3;
         int step = 2;
 
-        Inc inc = new IncBuilder()
+        Inc inc = new IncBuilder(ReflectiveTransformerRegistry.getInstance())
                 .start(start)
                 .step(step)
                 .threadLocal(true)
@@ -127,7 +127,7 @@ public class OperatorTest {
         long step = 5;
         ChronoUnit chrono = ChronoUnit.MINUTES;
 
-        DateInc inc = new DateIncBuilder()
+        DateInc inc = new DateIncBuilder(ReflectiveTransformerRegistry.getInstance())
                 .start(start)
                 .chronoUnit(chrono)
                 .step(step)
@@ -143,7 +143,7 @@ public class OperatorTest {
         String sep = "|";
         List<String> array = Lists.newArrayList("fish", "gofer", "beaver");
 
-        Join join = new JoinBuilder().array(array).sep(sep).build();
+        Join join = new JoinBuilder(ReflectiveTransformerRegistry.getInstance()).array(array).sep(sep).build();
 
         assertThat(join.resolve()).as("check concaternation").isEqualTo("fish|gofer|beaver");
     }
@@ -151,7 +151,7 @@ public class OperatorTest {
     @Test
     public void timestamp() {
         int i = 333;
-        Timestamp timestamp = new TimestampBuilder().i(i).build();
+        Timestamp timestamp = new TimestampBuilder(ReflectiveTransformerRegistry.getInstance()).i(i).build();
 
         assertThat(timestamp.resolve().getInc()).as("check increment value").isEqualTo(i);
     }
@@ -162,7 +162,7 @@ public class OperatorTest {
         long max = 25L;
         int fixed = 2;
 
-        NumberDecimal decimal = new NumberDecimalBuilder().fixed(fixed).min(min).max(max).build();
+        NumberDecimal decimal = new NumberDecimalBuilder(ReflectiveTransformerRegistry.getInstance()).fixed(fixed).min(min).max(max).build();
 
         assertThat(decimal.resolve()).as("check value").isBetween(BigDecimal.valueOf(min), BigDecimal.valueOf(max));
         assertThat(decimal.resolve().scale()).as("check scale").isEqualTo(fixed);
@@ -173,7 +173,7 @@ public class OperatorTest {
         List<String> array = Lists.newArrayList("fish", "turtle", "badger");
         int element = 2;
 
-        Pick pick = new PickBuilder().array(array).element(element).build();
+        Pick pick = new PickBuilder(ReflectiveTransformerRegistry.getInstance()).array(array).element(element).build();
 
         assertThat(pick.resolve()).as("correct element").isEqualTo(array.get(element));
     }
@@ -182,19 +182,19 @@ public class OperatorTest {
     public void character() {
         String pool = "ABCDE04[]";
 
-        Character character = new CharacterBuilder().pool(pool).build();
+        Character character = new CharacterBuilder(ReflectiveTransformerRegistry.getInstance()).pool(pool).build();
         assertThat(character.resolve()).as("check pool").isIn(asCharacterList(pool));
 
-        character = new CharacterBuilder().numeric(true).build();
+        character = new CharacterBuilder(ReflectiveTransformerRegistry.getInstance()).numeric(true).build();
         assertThat(character.resolve()).as("check numeric").matches(java.lang.Character::isDigit);
 
-        character = new CharacterBuilder().casing("upper").build();
+        character = new CharacterBuilder(ReflectiveTransformerRegistry.getInstance()).casing("upper").build();
         assertThat(character.resolve()).as("check upper case").matches(java.lang.Character::isUpperCase);
 
-        character = new CharacterBuilder().casing("lower").build();
+        character = new CharacterBuilder(ReflectiveTransformerRegistry.getInstance()).casing("lower").build();
         assertThat(character.resolve()).as("check lower case").matches(java.lang.Character::isLowerCase);
 
-        character = new CharacterBuilder().alpha(true).build();
+        character = new CharacterBuilder(ReflectiveTransformerRegistry.getInstance()).alpha(true).build();
         assertThat(character.resolve()).as("check alpha").matches(java.lang.Character::isLetter);
     }
 
@@ -203,7 +203,7 @@ public class OperatorTest {
         String pool = "ABCDE04[]";
         int length = 7;
 
-        StringOp stringOp = new StringOpBuilder().pool(pool).length(length).build();
+        StringOp stringOp = new StringOpBuilder(ReflectiveTransformerRegistry.getInstance()).pool(pool).length(length).build();
 
         assertThat(stringOp.resolve()).as("size").hasSize(length);
 
@@ -216,22 +216,22 @@ public class OperatorTest {
 
     @Test
     public void month() {
-        Month month = new MonthBuilder().build();
+        Month month = new MonthBuilder(ReflectiveTransformerRegistry.getInstance()).build();
         assertThat(month.resolve()).as("full month").isNotNull();
         logger.debug(month.resolve());
 
-        month = new MonthBuilder().full(false).build();
+        month = new MonthBuilder(ReflectiveTransformerRegistry.getInstance()).full(false).build();
         assertThat(month.resolve()).as("short month").isNotNull();
         logger.debug(month.resolve());
     }
 
     @Test
     public void weekday() {
-        Weekday weekday = new WeekdayBuilder().build();
+        Weekday weekday = new WeekdayBuilder(ReflectiveTransformerRegistry.getInstance()).build();
         assertThat(weekday.resolve()).as("full weekday").isNotNull();
         logger.debug(weekday.resolve());
 
-        weekday = new WeekdayBuilder().weekday_only(true).build();
+        weekday = new WeekdayBuilder(ReflectiveTransformerRegistry.getInstance()).weekday_only(true).build();
         assertThat(weekday.resolve()).as("short weekday").isNotNull();
         logger.debug(weekday.resolve());
     }
@@ -241,32 +241,32 @@ public class OperatorTest {
         String domain = "www.socialradar.com";
         String path = "images";
 
-        Url url = new UrlBuilder().domain(domain).path(path).extension(true).build();
+        Url url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).domain(domain).path(path).extension(true).build();
         assertThat(url.resolve()).as("all args").startsWith("http://" + domain).contains(path);
         logger.debug(url.resolve());
 
-        url = new UrlBuilder().path(path).extension(true).build();
+        url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).path(path).extension(true).build();
         assertThat(url.resolve()).as("all args").contains(path);
         logger.debug(url.resolve());
 
-        url = new UrlBuilder().extension(true).build();
+        url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).extension(true).build();
         assertThat(url.resolve()).as("all args").isNotNull();
         logger.debug(url.resolve());
 
-        url = new UrlBuilder().build();
+        url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).build();
         assertThat(url.resolve()).as("all args").isNotNull();
         logger.debug(url.resolve());
     }
 
     @Test
     public void hash() {
-        Hash hash = new HashBuilder().input("canibal halibuts").build();
+        Hash hash = new HashBuilder(ReflectiveTransformerRegistry.getInstance()).input("canibal halibuts").build();
         assertThat(hash.resolve()).as("INT32").isEqualTo(-855357176);
 
-        hash = new HashBuilder().input("canibal halibuts").output(Hash.HashOutput.INT64).build();
+        hash = new HashBuilder(ReflectiveTransformerRegistry.getInstance()).input("canibal halibuts").output(Hash.HashOutput.INT64).build();
         assertThat(hash.resolve()).as("INT64").isEqualTo(-3673731096897361255L);
 
-        hash = new HashBuilder().input("canibal halibuts").output(Hash.HashOutput.HEX).build();
+        hash = new HashBuilder(ReflectiveTransformerRegistry.getInstance()).input("canibal halibuts").output(Hash.HashOutput.HEX).build();
         assertThat(hash.resolve()).as("HEX").isEqualTo("cd04490819206a990ed5b165a35598a4");
     }
 
@@ -276,7 +276,7 @@ public class OperatorTest {
         int corners = 5;
         List<Number> long_lim = asList(0d, 100d);
         List<Number> lat_lim = asList(-200, 0);
-        Polygon polygon = new PolygonBuilder()
+        Polygon polygon = new PolygonBuilder(ReflectiveTransformerRegistry.getInstance())
                 .corners(corners)
                 .long_lim(long_lim)
                 .lat_lim(lat_lim)
@@ -300,7 +300,7 @@ public class OperatorTest {
         List<Number> long_lim = asList(0d, 10d);
         List<Number> lat_lim = asList(-20, 0);
 
-        Coordinates coordinates = new CoordinatesBuilder().long_lim(long_lim).lat_lim(lat_lim).build();
+        Coordinates coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance()).long_lim(long_lim).lat_lim(lat_lim).build();
 
         assertThat(coordinates.resolve()).isNotNull();
         assertBounds(coordinates.resolve(), long_lim, lat_lim);
@@ -311,7 +311,7 @@ public class OperatorTest {
         List<Number> long_lim = asList(0d, 10d);
         List<Number> lat_lim = asList(-20, 0);
 
-        Point point = new PointBuilder().long_lim(long_lim).lat_lim(lat_lim).build();
+        Point point = new PointBuilder(ReflectiveTransformerRegistry.getInstance()).long_lim(long_lim).lat_lim(lat_lim).build();
 
         assertThat(point.resolve()).isNotNull();
         assertThat(point.resolve().get("type")).as("geo type").isEqualTo("Point");
@@ -326,7 +326,7 @@ public class OperatorTest {
         List<Number> long_lim = asList(0d, 10d);
         List<Number> lat_lim = asList(-20, 0);
 
-        LineString lineString = new LineStringBuilder().long_lim(long_lim).lat_lim(lat_lim).build();
+        LineString lineString = new LineStringBuilder(ReflectiveTransformerRegistry.getInstance()).long_lim(long_lim).lat_lim(lat_lim).build();
 
         assertThat(lineString.resolve()).isNotNull();
         assertThat(lineString.resolve().get("type")).as("geo type").isEqualTo("LineString");
@@ -337,7 +337,7 @@ public class OperatorTest {
 
     @Test
     public void sentence() {
-        Sentence sentence = new SentenceBuilder().build();
+        Sentence sentence = new SentenceBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
         assertThat(sentence.resolve()).isNotNull();
         assertThat(sentence.resolve()).isInstanceOf(String.class);

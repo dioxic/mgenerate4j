@@ -4,20 +4,19 @@ import org.bson.Document;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.faker.resolvable.Resolvable;
-import uk.dioxic.mgenerate.core.DocumentValueCache;
-import uk.dioxic.mgenerate.core.StringResolver;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.core.resolver.PatternResolver;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class StringResolverTest {
+public class PatternTest {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
     public void resolve() {
-        Resolvable lookup = new StringResolver("${nested.a} fish #{name.name}", FakerUtil.instance());
+        Resolvable lookup = new PatternResolver("${nested.a} fish #{name.name}", FakerUtil.instance());
         Document nested = new Document("a", 123);
         Document document = new Document();
         document.put("lkp", lookup);

@@ -1,10 +1,10 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.text.DateFormatSymbols;
 
@@ -15,7 +15,7 @@ public class Weekday implements Resolvable<String> {
     private static final String[] shortWeekDays = DateFormatSymbols.getInstance().getShortWeekdays();
 
     @OperatorProperty
-    Resolvable<Boolean> weekday_only = OperatorFactory.wrap(Boolean.FALSE);
+    Resolvable<Boolean> weekday_only = Wrapper.wrap(Boolean.FALSE);
 
     @Override
     public String resolve() {

@@ -1,10 +1,10 @@
 package uk.dioxic.mgenerate.core.operator.text;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
 public class Letter implements Resolvable<java.lang.Character>, Initializable {

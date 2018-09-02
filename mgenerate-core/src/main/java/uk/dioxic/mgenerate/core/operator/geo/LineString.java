@@ -1,11 +1,12 @@
 package uk.dioxic.mgenerate.core.operator.geo;
 
 import org.bson.Document;
-import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.common.Initializable;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.operator.location.Coordinates;
 import uk.dioxic.mgenerate.core.operator.location.CoordinatesBuilder;
 import uk.dioxic.mgenerate.core.util.FlsUtil;
@@ -25,7 +26,7 @@ public class LineString implements Resolvable<Document>, Initializable {
     List<Number> lat_lim = asList(-90d, 90d);
 
     @OperatorProperty
-    Resolvable<Integer> locs = OperatorFactory.wrap(3);
+    Resolvable<Integer> locs = Wrapper.wrap(3);
 
     @OperatorProperty
     Boolean valid = true;
@@ -47,7 +48,7 @@ public class LineString implements Resolvable<Document>, Initializable {
 
     @Override
     public void initialize() {
-        coordinates = new CoordinatesBuilder()
+        coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance())
                 .long_lim(long_lim)
                 .lat_lim(lat_lim)
                 .build();

@@ -17,7 +17,7 @@ public class FastLocalSearchTest {
 
     @Test
     public void randomPoints() {
-        Coordinates coord = new CoordinatesBuilder().build();
+        Coordinates coord = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance()).build();
         FlsUtil.Point[] points = Stream.generate(coord::resolve)
                 .limit(5)
                 .toArray(FlsUtil.Point[]::new);

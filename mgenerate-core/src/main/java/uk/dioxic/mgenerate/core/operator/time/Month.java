@@ -1,10 +1,10 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.text.DateFormatSymbols;
 
@@ -15,7 +15,7 @@ public class Month implements Resolvable<String> {
     private static final String[] shortMonths = DateFormatSymbols.getInstance().getShortMonths();
 
     @OperatorProperty
-    Resolvable<Boolean> full = OperatorFactory.wrap(Boolean.TRUE);
+    Resolvable<Boolean> full = Wrapper.wrap(Boolean.TRUE);
 
     @Override
     public String resolve() {

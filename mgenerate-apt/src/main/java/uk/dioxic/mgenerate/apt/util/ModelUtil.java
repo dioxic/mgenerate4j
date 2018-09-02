@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.apt.processor;
+package uk.dioxic.mgenerate.apt.util;
 
 import javax.annotation.processing.Messager;
 import javax.lang.model.type.TypeKind;
@@ -8,7 +8,7 @@ import javax.lang.model.util.Types;
 import java.util.Collection;
 import java.util.Map;
 
-public class Util {
+public class ModelUtil {
 
     public static Elements elementUtils;
 

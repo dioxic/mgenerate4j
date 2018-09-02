@@ -1,8 +1,8 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.faker.resolvable.Resolvable;
 import uk.dioxic.mgenerate.common.Initializable;
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Inc implements Resolvable<Integer>, Initializable {
 
     @OperatorProperty
-    Resolvable<Integer> step = OperatorFactory.wrap(1);
+    Resolvable<Integer> step = Wrapper.wrap(1);
 
     @OperatorProperty
     Integer start = 0;

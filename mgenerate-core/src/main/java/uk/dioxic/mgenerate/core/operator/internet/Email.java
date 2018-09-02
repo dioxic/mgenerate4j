@@ -1,9 +1,9 @@
 package uk.dioxic.mgenerate.core.operator.internet;
 
-import uk.dioxic.mgenerate.core.util.FakerUtil;
+import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
+import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
 public class Email implements Resolvable<String> {

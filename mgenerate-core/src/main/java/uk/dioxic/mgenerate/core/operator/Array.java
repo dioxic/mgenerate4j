@@ -1,9 +1,9 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.mgenerate.common.OperatorFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.faker.resolvable.Resolvable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class Array implements Resolvable<List> {
     Resolvable of;
 
     @OperatorProperty
-    Resolvable<Integer> number = OperatorFactory.wrap(DEFAULT_NUMBER);
+    Resolvable<Integer> number = Wrapper.wrap(DEFAULT_NUMBER);
 
     @Override
     public List<Object> resolve() {

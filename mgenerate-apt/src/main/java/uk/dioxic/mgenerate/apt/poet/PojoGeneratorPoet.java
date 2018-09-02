@@ -2,11 +2,11 @@ package uk.dioxic.mgenerate.apt.poet;
 
 import com.squareup.javapoet.*;
 import org.bson.Document;
-import uk.dioxic.faker.resolvable.Resolvable;
-import uk.dioxic.mgenerate.common.OperatorFactory;
-import uk.dioxic.mgenerate.common.annotation.PojoProperty;
 import uk.dioxic.mgenerate.apt.model.PojoPropertyModel;
-import uk.dioxic.mgenerate.apt.processor.Util;
+import uk.dioxic.mgenerate.apt.util.ModelUtil;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.TransformerRegistry;
+import uk.dioxic.mgenerate.common.annotation.PojoProperty;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 public class PojoGeneratorPoet implements Poet {
 
+    private final static String WRAPPER_SERVICE = "wrapperService";
     private final TypeElement typeElement;
     private final String packageName;
     private final String className;
@@ -25,7 +26,7 @@ public class PojoGeneratorPoet implements Poet {
 
     public PojoGeneratorPoet(TypeElement typeElement) {
         this.typeElement = typeElement;
-        this.packageName = Util.elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
+        this.packageName = ModelUtil.elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
         this.className = typeElement.getSimpleName() + "Generator";
         this.thisType = ClassName.get(typeElement);
     }
@@ -47,15 +48,9 @@ public class PojoGeneratorPoet implements Poet {
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addSuperinterface(ParameterizedTypeName.get(builderInterface, this.thisType));
 
-        addFields(classBuilder, properties);
+        addProperties(classBuilder, properties);
 
         addConstructor(classBuilder, properties);
-
-        //addPropertyMethods(classBuilder, properties);
-
-        //addDocumentMethod(classBuilder, properties);
-
-        //MethodSpec validateMethod = addValidateMethod(classBuilder, properties);
 
         addResolveMethod(classBuilder, properties);
 
@@ -65,7 +60,7 @@ public class PojoGeneratorPoet implements Poet {
         javaFile.writeTo(appendable);
     }
 
-    private void addFields(TypeSpec.Builder classBuilder, List<PojoPropertyModel> properties) {
+    private void addProperties(TypeSpec.Builder classBuilder, List<PojoPropertyModel> properties) {
         for (PojoPropertyModel field : properties) {
             classBuilder.addField(field.getResolvableTypeName(), field.getName(), Modifier.PRIVATE);
         }
@@ -93,10 +88,10 @@ public class PojoGeneratorPoet implements Poet {
             }
             else {
                 if (property.isRootTypeNameParameterized()) {
-                    getBlock.addStatement("$L = ($T)$T.wrap(document,$S,$T.class)", property.getName(), Resolvable.class, OperatorFactory.class, property.getDocKey(), property.getRootTypeNameErasure());
+                    getBlock.addStatement("$L = ($T)$L.wrap(document,$S,$T.class)", property.getName(), Resolvable.class, WRAPPER_SERVICE, property.getDocKey(), property.getRootTypeNameErasure());
                 }
                 else {
-                    getBlock.addStatement("$L = $T.wrap(document,$S,$T.class)", property.getName(), OperatorFactory.class, property.getDocKey(), property.getRootTypeName());
+                    getBlock.addStatement("$L = $L.wrap(document,$S,$T.class)", property.getName(), WRAPPER_SERVICE, property.getDocKey(), property.getRootTypeName());
                 }
             }
         }
@@ -104,6 +99,8 @@ public class PojoGeneratorPoet implements Poet {
         MethodSpec constructor = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(Document.class, "document")
+                .addParameter(TypeName.get(TransformerRegistry.class), WRAPPER_SERVICE)
+                .addStatement("this.$L = $L", WRAPPER_SERVICE, WRAPPER_SERVICE)
                 .addCode(getBlock.build())
                 .build();
 

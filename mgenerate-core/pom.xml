@@ -16,12 +16,6 @@
     <dependencies>
         <dependency>
             <groupId>uk.dioxic.mgenerate</groupId>
-            <artifactId>mgenerate-apt</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.dioxic.mgenerate</groupId>
             <artifactId>mgenerate-common</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -89,6 +83,11 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
         </dependency>
     </dependencies>
 

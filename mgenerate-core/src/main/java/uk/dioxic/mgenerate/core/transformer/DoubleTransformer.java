@@ -2,7 +2,7 @@ package uk.dioxic.mgenerate.core.transformer;
 
 import uk.dioxic.mgenerate.common.annotation.ValueTransformer;
 import uk.dioxic.mgenerate.common.exception.TransformerException;
-import uk.dioxic.mgenerate.common.transformer.Transformer;
+import uk.dioxic.mgenerate.common.Transformer;
 
 @ValueTransformer(Double.class)
 public class DoubleTransformer implements Transformer<Double> {
