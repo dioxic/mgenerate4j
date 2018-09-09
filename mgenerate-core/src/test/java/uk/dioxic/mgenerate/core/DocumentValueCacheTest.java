@@ -27,7 +27,7 @@ public class DocumentValueCacheTest {
 
         DocumentValueCache.setEncodingContext(doc);
         Object cachedValue = DocumentValueCache.get(doc, "c3");
-        Object expected  = DocumentValueCache.get(doc, "c.cc.ccc");
+        Object expected  = String.format("%s <%s>", DocumentValueCache.get(doc, "b"), DocumentValueCache.get(doc, "c.cc.ccc"));
         assertThat(cachedValue).as("is resolvable").isEqualTo(expected);
     }
 }

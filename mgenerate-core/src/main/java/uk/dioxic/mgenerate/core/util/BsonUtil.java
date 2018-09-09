@@ -11,6 +11,7 @@ import uk.dioxic.mgenerate.core.codec.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,17 +74,20 @@ public class BsonUtil {
     }
 
     public static String toJson(Document document, JsonWriterSettings jsonWriterSettings) {
-        return toJson(document, jsonWriterSettings, true);
+        Writer writer = new StringWriter();
+        toJson(document, writer, jsonWriterSettings, true);
+        return writer.toString();
     }
 
     public static String toJson(Document document, boolean encodingCollectibleDocument) {
-        return toJson(document, DEFAULT_JWS, encodingCollectibleDocument);
+        Writer writer = new StringWriter();
+        toJson(document, writer, DEFAULT_JWS, encodingCollectibleDocument);
+        return writer.toString();
     }
 
-    public static String toJson(Document document, JsonWriterSettings jsonWriterSettings, boolean encodingCollectibleDocument) {
-        JsonWriter writer = new JsonWriter(new StringWriter(), jsonWriterSettings);
-        DEFAULT_CODEC.encode(writer, document, EncoderContext.builder().isEncodingCollectibleDocument(encodingCollectibleDocument).build());
-        return writer.getWriter().toString();
+    public static void toJson(Document document, Writer writer, JsonWriterSettings jsonWriterSettings, boolean encodingCollectibleDocument) {
+        JsonWriter jsonWriter = new JsonWriter(writer, jsonWriterSettings);
+        DEFAULT_CODEC.encode(jsonWriter, document, EncoderContext.builder().isEncodingCollectibleDocument(encodingCollectibleDocument).build());
     }
 
     /**

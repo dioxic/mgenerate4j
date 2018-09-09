@@ -1,8 +1,7 @@
 package uk.dioxic.mgenerate.core;
 
 import org.apache.commons.cli.*;
-import org.bson.Document;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
+import uk.dioxic.mgenerate.core.util.FileUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,34 +9,61 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CliOptions {
 
     private static final Options opt = new Options();
 
     static {
-        opt.addRequiredOption("t", "template", true, "path to template file or directory");
-        opt.addOption("o", "output", true, "path to output file or directory");
-        opt.addOption("n", true, "number of documents to generate (per file)");
-        opt.addOption("s", "single", false, "output to a single file");
+        Option template = Option.builder("t")
+                .longOpt("template")
+                .hasArg()
+                .desc("path to template file or directory")
+                .required()
+                .build();
+
+        Option output = Option.builder("o")
+                .longOpt("output")
+                .hasArg()
+                .desc("output file or directory")
+                .build();
+
+        Option number = Option.builder("n")
+                .longOpt("number")
+                .hasArg()
+                .desc("number of documents to generate (default: 5)")
+                .type(Integer.class)
+                .build();
+
+        opt.addOption(template)
+                .addOption(output)
+                .addOption(number);
     }
 
     private Path outputPath;
-    private int documents = 10;
+    private int number = 5;
     private Path templatePath;
     private String jsonTemplate;
-    private boolean singleFileOut;
 
-    public CliOptions(String[] args) throws ParseException {
+    public CliOptions(String[] args) throws CliArgumentException, ParseException {
         CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(opt, args);
+        CommandLine cmd;
+
+        try {
+            cmd = parser.parse(opt, args);
+        }
+        catch (ParseException e) {
+            printUsage();
+            throw e;
+        }
 
         String templateOptValue = cmd.getOptionValue("t");
         if (templateOptValue.startsWith("{")) {
+            // explict template string
             jsonTemplate = templateOptValue;
         }
         else {
+            // template file
             templatePath = Paths.get(templateOptValue);
         }
 
@@ -46,41 +72,11 @@ public class CliOptions {
         }
 
         if (cmd.hasOption("n")) {
-            documents = Integer.valueOf(cmd.getOptionValue("n"));
-        }
-
-        if (cmd.hasOption("s")) {
-            singleFileOut = Boolean.valueOf(cmd.getOptionValue("s"));
-        }
-
-        // validation checks
-
-        if (!singleFileOut && outputPath != null) {
-            if (Files.exists(outputPath) && !Files.isDirectory(outputPath)) {
-                throw new ParseException("multiple file output is not valid - [" + outputPath + "] is a file!");
-            }
+            number = Integer.valueOf(cmd.getOptionValue("n"));
         }
 
         if (!Files.exists(templatePath)) {
-            throw new ParseException("template [" + templatePath + "] does not exist!");
-        }
-    }
-
-    public boolean isTemplateFile() {
-        return templatePath != null;
-    }
-
-    public List<Template> getTemplates() throws IOException {
-        if (isTemplateFile()) {
-            if (Files.isDirectory(templatePath)) {
-                return Files.walk(templatePath)
-                        .map(Template::new)
-                        .collect(Collectors.toList());
-            }
-            return Collections.singletonList(new Template(templatePath));
-        }
-        else {
-            return Collections.singletonList(new Template(jsonTemplate));
+            throw new CliArgumentException("template [" + templatePath + "] does not exist!");
         }
     }
 
@@ -88,38 +84,41 @@ public class CliOptions {
         return jsonTemplate;
     }
 
+    public boolean isTemplateFile() {
+        return templatePath != null;
+    }
+
+    public Path getTemplatePath() {
+        return templatePath;
+    }
+
+    public List<Template> getTemplates() throws IOException {
+        return isTemplateFile() ? FileUtil.getTemplates(getTemplatePath()) : Collections.singletonList(new Template(getJsonTemplate()));
+    }
+
     public Path getOutputPath() {
         return outputPath;
     }
 
-    public Integer getDocuments() {
-        return documents;
+    public Integer getNumber() {
+        return number;
     }
 
     public boolean isMultiFileOutput() {
-        return outputPath != null && !singleFileOut;
+        return outputPath != null && Files.isDirectory(outputPath);
+    }
+
+    public boolean isSingleFileOuput() {
+        return outputPath != null && !Files.isDirectory(outputPath);
     }
 
     public boolean isConsoleOutput() {
         return outputPath == null;
     }
 
-    public boolean isSingleFileOutput() {
-        return singleFileOut;
+    public void printUsage() {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("mgenerate", opt, true);
     }
 
-    class Template {
-        Document document;
-        Path templateFile;
-
-        public Template(Path templateFile) {
-            this.document = BsonUtil.parseFile(templateFile);
-            this.templateFile = templateFile;
-        }
-
-        public Template(String json) {
-            document = BsonUtil.parse(json);
-            templateFile = Paths.get("output.json");
-        }
-    }
 }
