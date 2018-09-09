@@ -16,6 +16,10 @@
     <description>Annotation processing for mgenerate4j</description>
     <url>https://github.com/dioxic/mgenerate4j</url>
 
+    <properties>
+        <project.moduleName>uk.dioxic.mgenerate.apt</project.moduleName>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>uk.dioxic.mgenerate</groupId>
@@ -28,6 +32,5 @@
             <version>1.11.1</version>
         </dependency>
     </dependencies>
-
 
 </project>

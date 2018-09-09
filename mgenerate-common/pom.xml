@@ -15,6 +15,10 @@
     <description>Common code for mgenerate4j project</description>
     <url>https://github.com/dioxic/mgenerate4j</url>
 
+    <properties>
+        <project.moduleName>uk.dioxic.mgenerate.common</project.moduleName>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SupportedAnnotationTypes("uk.dioxic.mgenerate.common.annotation.Operator")
-@SupportedSourceVersion(SourceVersion.RELEASE_10)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class OperatorBuilderProcessor extends AbstractProcessor {
 
     @Override

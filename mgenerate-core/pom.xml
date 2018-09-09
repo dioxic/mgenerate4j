@@ -13,6 +13,10 @@
     <description>Core code for mgenerate4j project</description>
     <url>https://github.com/dioxic/mgenerate4j</url>
 
+    <properties>
+        <project.moduleName>uk.dioxic.mgenerate.core</project.moduleName>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>uk.dioxic.mgenerate</groupId>
