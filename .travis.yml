@@ -7,7 +7,7 @@ sudo: false
 language: java
 
 jdk:
-  - oraclejdk10
+  - oraclejdk8
 
 #script:
 #  - chmod 700 ./mvnw
