@@ -1,0 +1,523 @@
+{
+  "KeyPair": "AdvancedAdministrator",
+  "NumberOfTeams": "4",
+  "Name": "MBM-EBPI",
+  "Teams": [
+    {
+      "SecurityGroup": "sg-075d6906a3647b4ee",
+      "Hosts": [
+        {
+          "PublicName": "ec2-34-254-29-50.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-101.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.101",
+          "PublicIP": "34.254.29.50",
+          "Role": "node1",
+          "Id": "i-0939faf50e36d87ac"
+        },
+        {
+          "PublicName": "ec2-34-245-237-252.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-110.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.110",
+          "PublicIP": "34.245.237.252",
+          "Role": "node10",
+          "Id": "i-0971819cba70eca7c"
+        },
+        {
+          "PublicName": "ec2-34-254-157-229.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-111.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.111",
+          "PublicIP": "34.254.157.229",
+          "Role": "node11",
+          "Id": "i-0ac2267f7470f5a0b"
+        },
+        {
+          "PublicName": "ec2-34-253-241-113.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-112.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.112",
+          "PublicIP": "34.253.241.113",
+          "Role": "node12",
+          "Id": "i-09c51520659fd76e0"
+        },
+        {
+          "PublicName": "ec2-34-245-76-38.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-102.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.102",
+          "PublicIP": "34.245.76.38",
+          "Role": "node2",
+          "Id": "i-034b387ba9504300f"
+        },
+        {
+          "PublicName": "ec2-34-255-100-67.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-103.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.103",
+          "PublicIP": "34.255.100.67",
+          "Role": "node3",
+          "Id": "i-0239524efc57d6538"
+        },
+        {
+          "PublicName": "ec2-52-212-172-216.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-104.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.104",
+          "PublicIP": "52.212.172.216",
+          "Role": "node4",
+          "Id": "i-05f08e26daad165f9"
+        },
+        {
+          "PublicName": "ec2-34-254-163-146.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-105.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.105",
+          "PublicIP": "34.254.163.146",
+          "Role": "node5",
+          "Id": "i-04d13e225196c28fc"
+        },
+        {
+          "PublicName": "ec2-34-245-95-25.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-106.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.106",
+          "PublicIP": "34.245.95.25",
+          "Role": "node6",
+          "Id": "i-086409d79d6b0af77"
+        },
+        {
+          "PublicName": "ec2-34-245-231-123.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-107.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.107",
+          "PublicIP": "34.245.231.123",
+          "Role": "node7",
+          "Id": "i-07086495393e028c6"
+        },
+        {
+          "PublicName": "ec2-34-250-138-225.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-108.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.108",
+          "PublicIP": "34.250.138.225",
+          "Role": "node8",
+          "Id": "i-0e609f1b967af165f"
+        },
+        {
+          "PublicName": "ec2-52-50-222-116.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-109.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.109",
+          "PublicIP": "52.50.222.116",
+          "Role": "node9",
+          "Id": "i-0db0ae5bb4782c3d5"
+        },
+        {
+          "PublicName": "ec2-34-243-47-247.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-21.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.21",
+          "PublicIP": "34.243.47.247",
+          "Role": "opsmgr1",
+          "Id": "i-023d741874af4608d"
+        },
+        {
+          "PublicName": "ec2-34-255-191-53.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-22.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.22",
+          "PublicIP": "34.255.191.53",
+          "Role": "opsmgr2",
+          "Id": "i-0fa5e4b6e28fa2b0a"
+        },
+        {
+          "PublicName": "ec2-34-245-52-17.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-23.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.23",
+          "PublicIP": "34.245.52.17",
+          "Role": "opsmgr3",
+          "Id": "i-03d27c56eea0c5622"
+        }
+      ],
+      "VPC": "vpc-08f2200df77cedc68",
+      "SubnetMask": "10.0.0.0/24",
+      "Id": "1",
+      "LoadBalancer": "MBM-EBPI-team-1-36836459.eu-west-1.elb.amazonaws.com"
+    },
+    {
+      "SecurityGroup": "sg-0acecddc5ffc68707",
+      "Hosts": [
+        {
+          "PublicName": "ec2-34-245-186-88.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-101.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.101",
+          "PublicIP": "34.245.186.88",
+          "Role": "node1",
+          "Id": "i-0c4115a74a67006fd"
+        },
+        {
+          "PublicName": "ec2-34-254-65-117.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-110.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.110",
+          "PublicIP": "34.254.65.117",
+          "Role": "node10",
+          "Id": "i-0b069b78aacb5a508"
+        },
+        {
+          "PublicName": "ec2-18-202-178-195.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-111.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.111",
+          "PublicIP": "18.202.178.195",
+          "Role": "node11",
+          "Id": "i-06f77fd580cda65c2"
+        },
+        {
+          "PublicName": "ec2-34-254-164-119.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-112.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.112",
+          "PublicIP": "34.254.164.119",
+          "Role": "node12",
+          "Id": "i-0c14bd772d35483c1"
+        },
+        {
+          "PublicName": "ec2-34-245-110-74.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-102.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.102",
+          "PublicIP": "34.245.110.74",
+          "Role": "node2",
+          "Id": "i-0eed81e5d3f8cbf83"
+        },
+        {
+          "PublicName": "ec2-34-245-129-22.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-103.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.103",
+          "PublicIP": "34.245.129.22",
+          "Role": "node3",
+          "Id": "i-07beadccdf6de8e77"
+        },
+        {
+          "PublicName": "ec2-52-50-218-201.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-104.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.104",
+          "PublicIP": "52.50.218.201",
+          "Role": "node4",
+          "Id": "i-051c301a7f9885c65"
+        },
+        {
+          "PublicName": "ec2-18-203-48-0.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-105.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.105",
+          "PublicIP": "18.203.48.0",
+          "Role": "node5",
+          "Id": "i-0b1a3560bca5ad1f2"
+        },
+        {
+          "PublicName": "ec2-54-154-242-152.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-106.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.106",
+          "PublicIP": "54.154.242.152",
+          "Role": "node6",
+          "Id": "i-0172e6d58cc4adbc5"
+        },
+        {
+          "PublicName": "ec2-52-215-80-162.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-107.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.107",
+          "PublicIP": "52.215.80.162",
+          "Role": "node7",
+          "Id": "i-0407b588fb44aee44"
+        },
+        {
+          "PublicName": "ec2-34-243-177-115.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-108.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.108",
+          "PublicIP": "34.243.177.115",
+          "Role": "node8",
+          "Id": "i-0296db9b6ab403b02"
+        },
+        {
+          "PublicName": "ec2-34-247-251-33.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-109.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.109",
+          "PublicIP": "34.247.251.33",
+          "Role": "node9",
+          "Id": "i-01c29fc920a5c079e"
+        },
+        {
+          "PublicName": "ec2-54-171-89-91.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-21.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.21",
+          "PublicIP": "54.171.89.91",
+          "Role": "opsmgr1",
+          "Id": "i-088906c0c216772f6"
+        },
+        {
+          "PublicName": "ec2-34-250-193-34.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-22.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.22",
+          "PublicIP": "34.250.193.34",
+          "Role": "opsmgr2",
+          "Id": "i-005fbf446548a1ea6"
+        },
+        {
+          "PublicName": "ec2-34-245-38-119.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-23.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.23",
+          "PublicIP": "34.245.38.119",
+          "Role": "opsmgr3",
+          "Id": "i-062e1b7ab31c05005"
+        }
+      ],
+      "VPC": "vpc-015eb2c6bb452486f",
+      "SubnetMask": "10.0.0.0/24",
+      "Id": "2",
+      "LoadBalancer": "MBM-EBPI-team-2-1837935617.eu-west-1.elb.amazonaws.com"
+    },
+    {
+      "SecurityGroup": "sg-0cacbf604d6da21a4",
+      "Hosts": [
+        {
+          "PublicName": "ec2-52-214-188-244.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-101.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.101",
+          "PublicIP": "52.214.188.244",
+          "Role": "node1",
+          "Id": "i-01a9aff3d6d899d3e"
+        },
+        {
+          "PublicName": "ec2-52-213-125-21.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-110.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.110",
+          "PublicIP": "52.213.125.21",
+          "Role": "node10",
+          "Id": "i-01f1cdd1b4cc8fcb8"
+        },
+        {
+          "PublicName": "ec2-34-243-12-209.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-111.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.111",
+          "PublicIP": "34.243.12.209",
+          "Role": "node11",
+          "Id": "i-0cf2ac4c8eb2428fc"
+        },
+        {
+          "PublicName": "ec2-34-240-86-181.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-112.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.112",
+          "PublicIP": "34.240.86.181",
+          "Role": "node12",
+          "Id": "i-0b470c35706393ec8"
+        },
+        {
+          "PublicName": "ec2-54-77-245-71.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-102.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.102",
+          "PublicIP": "54.77.245.71",
+          "Role": "node2",
+          "Id": "i-0bee3a9a71e6bdf8d"
+        },
+        {
+          "PublicName": "ec2-34-244-91-112.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-103.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.103",
+          "PublicIP": "34.244.91.112",
+          "Role": "node3",
+          "Id": "i-082dde702fb956b16"
+        },
+        {
+          "PublicName": "ec2-34-244-251-170.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-104.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.104",
+          "PublicIP": "34.244.251.170",
+          "Role": "node4",
+          "Id": "i-0ce5fc5d1d0d46b59"
+        },
+        {
+          "PublicName": "ec2-34-245-85-124.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-105.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.105",
+          "PublicIP": "34.245.85.124",
+          "Role": "node5",
+          "Id": "i-0518a1042c903a104"
+        },
+        {
+          "PublicName": "ec2-34-248-82-150.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-106.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.106",
+          "PublicIP": "34.248.82.150",
+          "Role": "node6",
+          "Id": "i-097b293b0ef23c67a"
+        },
+        {
+          "PublicName": "ec2-34-242-226-43.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-107.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.107",
+          "PublicIP": "34.242.226.43",
+          "Role": "node7",
+          "Id": "i-01c0eb69a73ea2514"
+        },
+        {
+          "PublicName": "ec2-34-245-40-137.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-108.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.108",
+          "PublicIP": "34.245.40.137",
+          "Role": "node8",
+          "Id": "i-0d37490814cdd225c"
+        },
+        {
+          "PublicName": "ec2-34-242-195-25.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-109.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.109",
+          "PublicIP": "34.242.195.25",
+          "Role": "node9",
+          "Id": "i-0911a46aa2f0324a4"
+        },
+        {
+          "PublicName": "ec2-34-253-223-83.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-21.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.21",
+          "PublicIP": "34.253.223.83",
+          "Role": "opsmgr1",
+          "Id": "i-09a0c0cb689fa3e1c"
+        },
+        {
+          "PublicName": "ec2-54-229-176-124.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-22.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.22",
+          "PublicIP": "54.229.176.124",
+          "Role": "opsmgr2",
+          "Id": "i-024886ad1489506be"
+        },
+        {
+          "PublicName": "ec2-52-213-119-72.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-23.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.23",
+          "PublicIP": "52.213.119.72",
+          "Role": "opsmgr3",
+          "Id": "i-0e87d18d2eb2dd9a4"
+        }
+      ],
+      "VPC": "vpc-0e1255a09b6a7e4ed",
+      "SubnetMask": "10.0.0.0/24",
+      "Id": "3",
+      "LoadBalancer": "MBM-EBPI-team-3-621700100.eu-west-1.elb.amazonaws.com"
+    },
+    {
+      "SecurityGroup": "sg-0f9a4b9ff6acd63b1",
+      "Hosts": [
+        {
+          "PublicName": "ec2-34-242-11-160.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-101.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.101",
+          "PublicIP": "34.242.11.160",
+          "Role": "node1",
+          "Id": "i-03df80032485d7d47"
+        },
+        {
+          "PublicName": "ec2-52-16-139-184.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-110.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.110",
+          "PublicIP": "52.16.139.184",
+          "Role": "node10",
+          "Id": "i-0e0c0c8c9ebc7110a"
+        },
+        {
+          "PublicName": "ec2-52-49-65-68.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-111.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.111",
+          "PublicIP": "52.49.65.68",
+          "Role": "node11",
+          "Id": "i-013d7ab55c44f87dc"
+        },
+        {
+          "PublicName": "ec2-34-255-121-114.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-112.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.112",
+          "PublicIP": "34.255.121.114",
+          "Role": "node12",
+          "Id": "i-0199867f6d055128f"
+        },
+        {
+          "PublicName": "ec2-52-16-11-62.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-102.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.102",
+          "PublicIP": "52.16.11.62",
+          "Role": "node2",
+          "Id": "i-06bdbd01518b4732e"
+        },
+        {
+          "PublicName": "ec2-34-242-164-231.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-103.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.103",
+          "PublicIP": "34.242.164.231",
+          "Role": "node3",
+          "Id": "i-008570d015ec1883f"
+        },
+        {
+          "PublicName": "ec2-54-229-117-156.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-104.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.104",
+          "PublicIP": "54.229.117.156",
+          "Role": "node4",
+          "Id": "i-019ee30d2827a49a7"
+        },
+        {
+          "PublicName": "ec2-18-202-248-25.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-105.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.105",
+          "PublicIP": "18.202.248.25",
+          "Role": "node5",
+          "Id": "i-0f40d2d2fdf18bf1c"
+        },
+        {
+          "PublicName": "ec2-54-194-81-162.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-106.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.106",
+          "PublicIP": "54.194.81.162",
+          "Role": "node6",
+          "Id": "i-004b73c89b67dfa8d"
+        },
+        {
+          "PublicName": "ec2-34-253-191-137.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-107.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.107",
+          "PublicIP": "34.253.191.137",
+          "Role": "node7",
+          "Id": "i-087c6d5429ddb70de"
+        },
+        {
+          "PublicName": "ec2-18-202-232-235.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-108.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.108",
+          "PublicIP": "18.202.232.235",
+          "Role": "node8",
+          "Id": "i-005ed5d7042f5b248"
+        },
+        {
+          "PublicName": "ec2-52-211-246-13.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-109.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.109",
+          "PublicIP": "52.211.246.13",
+          "Role": "node9",
+          "Id": "i-02308689f8e5f4023"
+        },
+        {
+          "PublicName": "ec2-52-209-241-161.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-21.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.21",
+          "PublicIP": "52.209.241.161",
+          "Role": "opsmgr1",
+          "Id": "i-01b432bc91989a635"
+        },
+        {
+          "PublicName": "ec2-34-252-191-32.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-22.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.22",
+          "PublicIP": "34.252.191.32",
+          "Role": "opsmgr2",
+          "Id": "i-0940644c46383a905"
+        },
+        {
+          "PublicName": "ec2-52-210-250-248.eu-west-1.compute.amazonaws.com",
+          "PrivateName": "ip-10-0-0-23.eu-west-1.compute.internal",
+          "PrivateIP": "10.0.0.23",
+          "PublicIP": "52.210.250.248",
+          "Role": "opsmgr3",
+          "Id": "i-05a95fc9d79454542"
+        }
+      ],
+      "VPC": "vpc-062e7c5e5457ef261",
+      "SubnetMask": "10.0.0.0/24",
+      "Id": "4",
+      "LoadBalancer": "MBM-EBPI-team-4-448236801.eu-west-1.elb.amazonaws.com"
+    }
+  ]
+}
