@@ -76,7 +76,7 @@
             <dependency>
                 <groupId>uk.dioxic.faker4j</groupId>
                 <artifactId>faker4j</artifactId>
-                <version>0.0.4-SNAPSHOT</version>
+                <version>0.0.4</version>
             </dependency>
             <dependency>
                 <groupId>org.mongodb</groupId>

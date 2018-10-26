@@ -6,7 +6,7 @@
     <parent>
         <artifactId>mgenerate-parent</artifactId>
         <groupId>uk.dioxic.mgenerate</groupId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.3</version>
     </parent>
 
     <name>mgenerate-core</name>
