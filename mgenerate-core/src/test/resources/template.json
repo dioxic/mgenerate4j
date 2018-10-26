@@ -89,7 +89,7 @@
           ]
         }
       },
-      "VerifiedDate": "$date",
+      "VerifiedDate": "$ts",
       "VerifiedDateEpoch": {
         "$epoch": {
           "input": "${Caree.Benefit.VerifiedDate}"
@@ -134,7 +134,7 @@
       "Line3": "$city",
       "PostCode": "$postal"
     },
-    "SeperatedDate": "$date"
+    "SeperatedDate": "$ts"
   },
   "Eligibility": {
     "Employed": "$bool",
@@ -161,14 +161,14 @@
     "GeographicChallenge": "$bool"
   },
   "AssistedDecision": "$string",
-  "CaringStartDate": "$date",
-  "DateOfReceipt": "$date",
-  "ClaimDate": "$date",
+  "CaringStartDate": "$ts",
+  "DateOfReceipt": "$ts",
+  "ClaimDate": "$ts",
   "ContactHistory": {
     "Contact": {
       "$array": {
         "of": {
-          "date": "$date",
+          "date": "$ts",
           "Method": "$string",
           "who": "$string",
           "details": "$string"
@@ -181,9 +181,9 @@
     "Decision": {
       "$array": {
         "of": {
-          "date": "$date",
+          "date": "$ts",
           "MadeBy": "$objectid",
-          "AllowedFrom": "$date"
+          "AllowedFrom": "$ts"
         },
         "number": 1
       }
@@ -195,8 +195,8 @@
         "of": {
           "Who": "$name",
           "Where": "$string",
-          "From": "$date",
-          "To": "$date"
+          "From": "$ts",
+          "To": "$ts"
         },
         "number": 2
       }

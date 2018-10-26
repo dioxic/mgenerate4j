@@ -3,10 +3,7 @@ package uk.dioxic.mgenerate.core;
 import org.apache.commons.cli.ParseException;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;

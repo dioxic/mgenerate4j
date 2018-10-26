@@ -8,7 +8,7 @@ import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.time.LocalDateTime;
 
-@Operator
+@Operator({"dateTime", "ts"})
 public class Date implements Resolvable<LocalDateTime> {
     // TODO ISO-8601
 	private static final LocalDateTime DEFAULT_MIN = LocalDateTime.parse("1900-01-01T00:00:00");
