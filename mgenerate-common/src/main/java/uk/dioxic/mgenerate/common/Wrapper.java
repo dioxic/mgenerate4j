@@ -2,7 +2,7 @@ package uk.dioxic.mgenerate.common;
 
 import uk.dioxic.mgenerate.common.exception.WrapException;
 
-public class Wrapper<T> implements Resolvable<T> {
+public class Wrapper<T> implements CacheResolvable<T> {
 
     private T value;
     private Resolvable resolvable;
@@ -52,4 +52,12 @@ public class Wrapper<T> implements Resolvable<T> {
         return transformer.transform(resolvable.resolve());
     }
 
+    @Override
+    public T resolve(Cache cache) {
+        if (value != null) {
+            return value;
+        }
+
+        return transformer.transform(CacheResolvable.resolve(cache, resolvable));
+    }
 }

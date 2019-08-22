@@ -9,7 +9,7 @@ import uk.dioxic.mgenerate.core.util.BsonUtil;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class DocumentValueCacheTest {
+public class DocumentCacheTest {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private static JsonWriterSettings jws = JsonWriterSettings.builder()

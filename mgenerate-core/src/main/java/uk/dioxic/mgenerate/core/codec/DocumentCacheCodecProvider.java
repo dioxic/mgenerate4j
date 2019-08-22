@@ -7,6 +7,8 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.types.CodeWithScope;
 
+import java.util.Objects;
+
 import static org.bson.assertions.Assertions.notNull;
 
 public class DocumentCacheCodecProvider implements CodecProvider {
@@ -82,7 +84,7 @@ public class DocumentCacheCodecProvider implements CodecProvider {
         if (!bsonTypeClassMap.equals(that.bsonTypeClassMap)) {
             return false;
         }
-        return valueTransformer != null ? valueTransformer.equals(that.valueTransformer) : that.valueTransformer == null;
+        return Objects.equals(valueTransformer, that.valueTransformer);
     }
 
     @Override

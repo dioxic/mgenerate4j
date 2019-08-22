@@ -105,9 +105,7 @@ public class BsonUtil {
     @SuppressWarnings("unchecked")
     private static void map(Map<String, Object> flatMap, String key, Object o) {
         if (o instanceof Map) {
-            Map<String, Object> localMap = ((Map) o);
-
-            localMap.entrySet().forEach(m -> map(flatMap, key, m));
+            ((Map) o).entrySet().forEach(m -> map(flatMap, key, m));
             flatMap.put(key, o);
         }
         else if (o instanceof Map.Entry) {
@@ -119,6 +117,7 @@ public class BsonUtil {
             for (Object item : (List)o) {
                 map(flatMap, key + "." + counter++, item);
             }
+            flatMap.put(key, o);
         }
         else {
             if (key != null) {

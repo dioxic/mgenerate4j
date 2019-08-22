@@ -2,6 +2,8 @@ package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.faker.Faker;
 import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.CacheResolvable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,11 +12,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PatternResolver implements Resolvable {
+public class PatternResolver implements CacheResolvable {
     private final static Pattern LOOKUP_PATTERN = Pattern.compile("([#$])\\{([a-z0-9A-Z_.]+)\\s*}");
 
     private final List<String> parts;
-    private final List<Resolvable> lookups;
+    private final List<Resolvable<?>> lookups;
 
     public PatternResolver(String expression, Faker faker) {
         Matcher matcher = LOOKUP_PATTERN.matcher(expression);
@@ -46,7 +48,7 @@ public class PatternResolver implements Resolvable {
 
         StringBuilder sb = new StringBuilder();
 
-        Iterator<Resolvable> iter = lookups.iterator();
+        Iterator<Resolvable<?>> iter = lookups.iterator();
         for (String part : parts) {
             sb.append(part);
             if (iter.hasNext()) {
@@ -61,4 +63,22 @@ public class PatternResolver implements Resolvable {
         return LOOKUP_PATTERN.matcher(expression).find();
     }
 
+    @Override
+    public Object resolve(Cache cache) {
+        if (parts.isEmpty()) {
+            return CacheResolvable.resolve(cache, lookups.get(0));
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        Iterator<Resolvable<?>> iter = lookups.iterator();
+        for (String part : parts) {
+            sb.append(part);
+            if (iter.hasNext()) {
+                sb.append(CacheResolvable.resolve(cache, iter.next()));
+            }
+        }
+
+        return sb.toString();
+    }
 }

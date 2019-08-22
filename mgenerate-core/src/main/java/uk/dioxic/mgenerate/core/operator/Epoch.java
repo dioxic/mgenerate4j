@@ -1,6 +1,8 @@
 package uk.dioxic.mgenerate.core.operator;
 
 import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.CacheResolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 
@@ -9,7 +11,7 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 
 @Operator
-public class Epoch implements Resolvable<Number> {
+public class Epoch implements CacheResolvable<Number> {
 
     @OperatorProperty(required = true)
     Resolvable<LocalDateTime> input;
@@ -19,10 +21,16 @@ public class Epoch implements Resolvable<Number> {
 
     @Override
     public Number resolve() {
-        LocalDateTime ldt = input.resolve();
+        return format(input.resolve());
+    }
 
+    @Override
+    public Number resolve(Cache cache) {
+        return format(CacheResolvable.resolve(cache, input));
+    }
+    private Number format(LocalDateTime ldt) {
         if (chronoField == null) {
-            return (int) (input.resolve().toInstant(ZoneOffset.UTC).toEpochMilli() & Integer.MAX_VALUE);
+            return (int) (ldt.toInstant(ZoneOffset.UTC).toEpochMilli() & Integer.MAX_VALUE);
         }
 
         if (chronoField.range().getMaximum() > Integer.MAX_VALUE) {

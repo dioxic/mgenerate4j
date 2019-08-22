@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.core.operator.geo;
 
 import org.bson.Document;
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -26,6 +27,11 @@ public class Point implements Resolvable<Document>, Initializable {
 
     @Override
     public Document resolve() {
+        return resolve(null);
+    }
+
+    @Override
+    public Document resolve(Cache cache) {
         Document doc = new Document();
         doc.put("type", "Point");
         doc.put("coordinates", coordinates.resolve());

@@ -1,9 +1,10 @@
 package uk.dioxic.mgenerate.core.resolver;
 
-import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.CacheResolvable;
 import uk.dioxic.mgenerate.core.DocumentValueCache;
 
-public class DocumentKeyResolver implements Resolvable {
+public class DocumentKeyResolver implements CacheResolvable {
     private final String documentKey;
 
     DocumentKeyResolver(String documentKey) {
@@ -13,5 +14,10 @@ public class DocumentKeyResolver implements Resolvable {
     @Override
     public Object resolve() {
         return DocumentValueCache.get(documentKey);
+    }
+
+    @Override
+    public Object resolve(Cache cache) {
+        return cache.get(documentKey);
     }
 }
