@@ -1,7 +1,7 @@
 package uk.dioxic.mgenerate.core.operator;
 
 import org.bson.BsonRegularExpression;
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -18,12 +18,7 @@ public class Regex implements Resolvable<BsonRegularExpression> {
 
     @Override
     public BsonRegularExpression resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public BsonRegularExpression resolve(Cache cache) {
-        return new BsonRegularExpression(string.resolve(cache), flags.resolve(cache));
+        return new BsonRegularExpression(string.resolve(), flags.resolve());
     }
 
 }

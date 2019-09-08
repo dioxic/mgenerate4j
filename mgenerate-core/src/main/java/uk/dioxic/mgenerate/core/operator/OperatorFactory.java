@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core;
+package uk.dioxic.mgenerate.core.operator;
 
 import org.bson.Document;
 import org.reflections.Reflections;
@@ -8,6 +8,7 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.ResolvableBuilder;
 import uk.dioxic.mgenerate.common.TransformerRegistry;
 import uk.dioxic.mgenerate.common.annotation.OperatorBuilder;
+import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 
 import java.util.HashMap;
 import java.util.Map;

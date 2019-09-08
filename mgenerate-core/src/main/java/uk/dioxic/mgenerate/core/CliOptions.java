@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.core;
 
 import org.apache.commons.cli.*;
+import uk.dioxic.mgenerate.core.exception.CliArgumentException;
 import uk.dioxic.mgenerate.core.util.FileUtil;
 
 import java.io.IOException;
@@ -93,7 +94,7 @@ public class CliOptions {
     }
 
     public List<Template> getTemplates() throws IOException {
-        return isTemplateFile() ? FileUtil.getTemplates(getTemplatePath()) : Collections.singletonList(new Template(getJsonTemplate()));
+        return isTemplateFile() ? FileUtil.getTemplates(getTemplatePath()) : Collections.singletonList(Template.parse(getJsonTemplate()));
     }
 
     public Path getOutputPath() {

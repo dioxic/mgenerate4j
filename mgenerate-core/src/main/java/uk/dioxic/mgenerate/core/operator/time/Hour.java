@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -13,12 +13,7 @@ public class Hour implements Resolvable<Integer> {
 
     @Override
     public Integer resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public Integer resolve(Cache cache) {
-        return (twentyFour.resolve(cache)) ? FakerUtil.numberBetween(1, 24) : FakerUtil.numberBetween(1, 12);
+        return (twentyFour.resolve()) ? FakerUtil.numberBetween(1, 24) : FakerUtil.numberBetween(1, 12);
     }
 
 

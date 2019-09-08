@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.internet;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
@@ -16,11 +16,6 @@ public class Ip implements Resolvable<String> {
         return Stream.generate(() -> String.valueOf(FakerUtil.random().nextInt(254) + 2))
                 .limit(4)
                 .collect(Collectors.joining("."));
-    }
-
-    @Override
-    public String resolve(Cache cache) {
-        return resolve();
     }
 
 }

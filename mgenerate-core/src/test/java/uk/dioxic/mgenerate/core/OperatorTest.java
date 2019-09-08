@@ -1,20 +1,27 @@
 package uk.dioxic.mgenerate.core;
 
 import org.assertj.core.util.Lists;
+import org.bson.codecs.DocumentCodec;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.dioxic.mgenerate.core.codec.TemplateCodec;
 import uk.dioxic.mgenerate.core.operator.*;
+import uk.dioxic.mgenerate.core.operator.core.*;
 import uk.dioxic.mgenerate.core.operator.geo.*;
 import uk.dioxic.mgenerate.core.operator.internet.Url;
 import uk.dioxic.mgenerate.core.operator.internet.UrlBuilder;
 import uk.dioxic.mgenerate.core.operator.location.Coordinates;
 import uk.dioxic.mgenerate.core.operator.location.CoordinatesBuilder;
+import uk.dioxic.mgenerate.core.operator.numeric.NumberDecimal;
+import uk.dioxic.mgenerate.core.operator.numeric.NumberDecimalBuilder;
+import uk.dioxic.mgenerate.core.operator.numeric.NumberInt;
+import uk.dioxic.mgenerate.core.operator.numeric.NumberIntBuilder;
 import uk.dioxic.mgenerate.core.operator.text.Character;
 import uk.dioxic.mgenerate.core.operator.text.*;
 import uk.dioxic.mgenerate.core.operator.time.*;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
+import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.util.FlsUtil;
 
 import java.math.BigDecimal;
@@ -282,7 +289,7 @@ public class OperatorTest {
                 .lat_lim(lat_lim)
                 .build();
 
-        logger.info(BsonUtil.toJson(polygon.resolve()));
+        logger.info(polygon.resolve().toJson(new DocumentCodec(TemplateCodec.getCodeRegistry())));
 
         assertThat(polygon.resolve().get("type")).as("geo type").isEqualTo("Polygon");
         assertThat(polygon.resolve().get("coordinates")).as("coordinates class").isInstanceOf(List.class);

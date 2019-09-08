@@ -4,7 +4,7 @@ import org.bson.Document;
 import uk.dioxic.mgenerate.common.*;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.mgenerate.core.ReflectiveTransformerRegistry;
+import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.operator.location.Coordinates;
 import uk.dioxic.mgenerate.core.operator.location.CoordinatesBuilder;
 import uk.dioxic.mgenerate.core.util.FlsUtil;
@@ -33,13 +33,8 @@ public class LineString implements Resolvable<Document>, Initializable {
 
     @Override
     public Document resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public Document resolve(Cache cache) {
         FlsUtil.Point[] polygon = Stream.generate(coordinates::resolve)
-                .limit(locs.resolve(cache))
+                .limit(locs.resolve())
                 .toArray(FlsUtil.Point[]::new);
 
         Document doc = new Document();

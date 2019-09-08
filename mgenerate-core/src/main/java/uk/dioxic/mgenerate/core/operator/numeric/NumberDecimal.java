@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -27,11 +27,6 @@ public class NumberDecimal implements Resolvable<BigDecimal> {
 
     @Override
     public BigDecimal resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public BigDecimal resolve(Cache cache) {
-        return FakerUtil.randomDecimal(min, max, fixed.resolve(cache));
+        return FakerUtil.randomDecimal(min, max, fixed.resolve());
     }
 }

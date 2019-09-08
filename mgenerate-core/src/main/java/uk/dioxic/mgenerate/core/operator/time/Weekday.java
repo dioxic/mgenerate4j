@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -20,14 +20,9 @@ public class Weekday implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public String resolve(Cache cache) {
         int day = FakerUtil.numberBetween(1, 7);
 
-        return weekday_only.resolve(cache) ? shortWeekDays[day] : weekDays[day];
+        return weekday_only.resolve() ? shortWeekDays[day] : weekDays[day];
     }
 
 }

@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.internet;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
@@ -15,13 +15,8 @@ public class Email implements Resolvable<String> {
     private Username username = new Username();
 
     @Override
-	public String resolve(Cache cache) {
-		return String.join("@", username.resolve(cache), domain.resolve(cache));
+	public String resolve() {
+		return String.join("@", username.resolve(), domain.resolve());
 	}
-
-    @Override
-    public String resolve() {
-        return resolve(null);
-    }
 
 }

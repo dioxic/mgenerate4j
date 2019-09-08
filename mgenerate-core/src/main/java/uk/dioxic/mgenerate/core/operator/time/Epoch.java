@@ -1,7 +1,7 @@
-package uk.dioxic.mgenerate.core.operator;
+package uk.dioxic.mgenerate.core.operator.time;
 
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 
@@ -20,12 +20,7 @@ public class Epoch implements Resolvable<Number> {
 
     @Override
     public Number resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public Number resolve(Cache cache) {
-        return format(input.resolve(cache));
+        return format(input.resolve());
     }
     private Number format(LocalDateTime ldt) {
         if (chronoField == null) {

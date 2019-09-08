@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.core.operator.location.Coordinates;
 import uk.dioxic.mgenerate.core.operator.location.CoordinatesBuilder;
+import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.util.FlsUtil;
 
 import java.util.Arrays;

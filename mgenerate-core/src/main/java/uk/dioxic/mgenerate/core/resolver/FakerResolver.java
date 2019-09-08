@@ -1,7 +1,7 @@
 package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.faker.Faker;
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 
 public class FakerResolver implements Resolvable {
@@ -19,8 +19,4 @@ public class FakerResolver implements Resolvable {
         return faker.get(key);
     }
 
-    @Override
-    public Object resolve(Cache cache) {
-        return resolve();
-    }
 }

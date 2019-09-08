@@ -4,6 +4,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.core.operator.OperatorFactory;
 
 import static org.assertj.core.api.Assertions.*;
 

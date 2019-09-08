@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -19,12 +19,7 @@ public class Pick implements Resolvable<Object> {
 
     @Override
     public Object resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public Object resolve(Cache cache) {
-        return array.resolve(cache).get(element.resolve(cache));
+        return array.resolve().get(element.resolve());
     }
 
 

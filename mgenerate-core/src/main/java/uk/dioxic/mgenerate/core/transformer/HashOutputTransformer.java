@@ -3,7 +3,7 @@ package uk.dioxic.mgenerate.core.transformer;
 import uk.dioxic.mgenerate.common.annotation.ValueTransformer;
 import uk.dioxic.mgenerate.common.exception.TransformerException;
 import uk.dioxic.mgenerate.common.Transformer;
-import uk.dioxic.mgenerate.core.operator.Hash;
+import uk.dioxic.mgenerate.core.operator.core.Hash;
 
 @ValueTransformer(Hash.HashOutput.class)
 public class HashOutputTransformer implements Transformer<Hash.HashOutput> {

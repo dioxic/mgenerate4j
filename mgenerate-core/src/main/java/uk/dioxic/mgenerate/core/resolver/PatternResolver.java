@@ -2,7 +2,7 @@ package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.faker.Faker;
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,22 +62,4 @@ public class PatternResolver implements Resolvable {
         return LOOKUP_PATTERN.matcher(expression).find();
     }
 
-    @Override
-    public Object resolve(Cache cache) {
-        if (parts.isEmpty()) {
-            return lookups.get(0).resolve(cache);
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        Iterator<Resolvable<?>> iter = lookups.iterator();
-        for (String part : parts) {
-            sb.append(part);
-            if (iter.hasNext()) {
-                sb.append(iter.next().resolve(cache));
-            }
-        }
-
-        return sb.toString();
-    }
 }

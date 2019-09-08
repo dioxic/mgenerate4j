@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
@@ -25,20 +25,15 @@ public class Inc implements Resolvable<Integer>, Initializable {
     private ThreadLocal<Integer> localCounter;
 
     @Override
-    public Integer resolve(Cache cache) {
+    public Integer resolve() {
         if (threadLocal) {
             Integer current = localCounter.get();
-            localCounter.set(current + step.resolve(cache));
+            localCounter.set(current + step.resolve());
             return current;
         }
         else {
-            return counter.getAndUpdate(n -> n + step.resolve(cache));
+            return counter.getAndUpdate(n -> n + step.resolve());
         }
-    }
-
-    @Override
-    public Integer resolve() {
-        return resolve(null);
     }
 
     @Override

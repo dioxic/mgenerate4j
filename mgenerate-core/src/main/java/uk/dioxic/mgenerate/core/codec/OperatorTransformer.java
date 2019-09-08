@@ -4,7 +4,7 @@ import org.bson.Document;
 import org.bson.Transformer;
 import uk.dioxic.mgenerate.core.resolver.PatternResolver;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
-import uk.dioxic.mgenerate.core.OperatorFactory;
+import uk.dioxic.mgenerate.core.operator.OperatorFactory;
 
 import java.util.Map;
 

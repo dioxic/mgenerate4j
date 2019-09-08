@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core;
+package uk.dioxic.mgenerate.core.transformer;
 
 import org.reflections.Reflections;
 import uk.dioxic.mgenerate.common.Transformer;

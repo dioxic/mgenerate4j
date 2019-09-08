@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.text;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -18,13 +18,8 @@ public class Sentence implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public String resolve(Cache cache) {
         return Stream.generate(() -> FakerUtil.getValue("lorem.words"))
-                .limit(words.resolve(cache))
+                .limit(words.resolve())
                 .collect(Collectors.joining(" ","","."));
     }
 

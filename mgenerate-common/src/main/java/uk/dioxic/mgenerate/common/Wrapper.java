@@ -45,19 +45,10 @@ public class Wrapper<T> implements Resolvable<T> {
 
     @Override
     public T resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public T resolve(Cache cache) {
-        Object res = value;
-        if (resolvable != null) {
-            res = Resolvable.rescursiveResolve(resolvable, cache);
-        }
-        if (transformer != null) {
-            res = transformer.transform(res);
+        if (value != null) {
+            return value;
         }
 
-        return (T)res;
+        return transformer.transform(resolvable.resolve());
     }
 }

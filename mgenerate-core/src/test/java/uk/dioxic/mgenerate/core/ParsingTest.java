@@ -14,6 +14,8 @@ import uk.dioxic.mgenerate.core.operator.internet.Email;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
 
 import java.io.StringWriter;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,21 +39,19 @@ public class ParsingTest {
     }
 
     @Test
-    public void documentTest() {
-        Document doc = BsonUtil.parseFile("src/test/resources/template.json");
-        DocumentValueCache.getInstance().mapTemplate(doc);
-        logger.debug(doc.toString());
+    public void documentTest() throws URISyntaxException {
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("template.json").toURI()));
+        logger.debug(template.getDocument().toString());
 
-        String outJson = BsonUtil.toJson(doc, jws);
+        String outJson = template.toJson(jws);
         logger.info(outJson);
     }
 
     @Test
     //@ExtendWith(TimingExtension.class)
-    public void performanceTest() {
-        Document doc = BsonUtil.parseFile("src/test/resources/bson-test.json");
-        DocumentValueCache.getInstance().mapTemplate(doc);
-        List<String> results = Stream.generate(() -> BsonUtil.toJson(doc))
+    public void performanceTest() throws URISyntaxException {
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("bson-test.json").toURI()));
+        List<String> results = Stream.generate(template::toJson)
                 .limit(100)
                 .parallel()
                 .collect(Collectors.toList());

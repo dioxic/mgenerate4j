@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -23,12 +23,7 @@ public class Date implements Resolvable<LocalDateTime> {
 
 	@Override
 	public LocalDateTime resolve() {
-		return resolve(null);
-	}
-
-	@Override
-	public LocalDateTime resolve(Cache cache) {
-		return FakerUtil.randomDate(min.resolve(cache), max.resolve(cache));
+		return FakerUtil.randomDate(min.resolve(), max.resolve());
 	}
 
 

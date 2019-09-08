@@ -1,11 +1,10 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
 import org.bson.BsonTimestamp;
-import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.mgenerate.core.operator.NumberInt;
+import uk.dioxic.mgenerate.core.operator.numeric.NumberInt;
 
 @Operator
 public class Timestamp implements Resolvable<BsonTimestamp> {
@@ -18,12 +17,7 @@ public class Timestamp implements Resolvable<BsonTimestamp> {
 
     @Override
     public BsonTimestamp resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public BsonTimestamp resolve(Cache cache) {
-        return new BsonTimestamp(t.resolve(cache), i.resolve(cache));
+        return new BsonTimestamp(t.resolve(), i.resolve());
     }
 
 

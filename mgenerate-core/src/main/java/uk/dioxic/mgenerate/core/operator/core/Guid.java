@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 
@@ -14,8 +14,4 @@ public class Guid implements Resolvable<String> {
         return UUID.randomUUID().toString();
     }
 
-    @Override
-    public String resolve(Cache cache) {
-        return resolve();
-    }
 }

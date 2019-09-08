@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.text;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -18,12 +18,7 @@ public class StringOp implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public String resolve(Cache cache) {
-        Integer length = this.length.resolve(cache);
+        Integer length = this.length.resolve();
 
         StringBuilder sb = new StringBuilder(length);
 

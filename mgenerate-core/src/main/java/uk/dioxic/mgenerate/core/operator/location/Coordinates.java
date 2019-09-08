@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.location;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
@@ -27,8 +27,4 @@ public class Coordinates implements Resolvable<FlsUtil.Point> {
         return new FlsUtil.Point(longitude, latitude);
     }
 
-    @Override
-    public FlsUtil.Point resolve(Cache cache) {
-        return resolve();
-    }
 }

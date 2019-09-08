@@ -15,10 +15,10 @@ public class FileUtil {
         if (Files.exists(path)) {
             if (Files.isDirectory(path)) {
                 return Files.walk(path)
-                        .map(Template::new)
+                        .map(Template::from)
                         .collect(Collectors.toList());
             }
-            return Collections.singletonList(new Template(path));
+            return Collections.singletonList(Template.from(path));
         }
         return Collections.emptyList();
     }

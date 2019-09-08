@@ -1,11 +1,11 @@
 package uk.dioxic.mgenerate.core;
 
 import org.apache.commons.cli.ParseException;
+import uk.dioxic.mgenerate.core.exception.CliArgumentException;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public class Main {
@@ -27,15 +27,14 @@ public class Main {
         }
 
         for (Template template : cli.getTemplates()) {
-            DocumentValueCache.getInstance().mapTemplate(template.getDocument());
 
-            if (cli.isMultiFileOutput()) {
-                Path outputFile = cli.getOutputPath().resolve(template.getName());
-                System.out.println("Writing to " + outputFile);
-                writer = Files.newBufferedWriter(outputFile);
-            }
+//            if (cli.isMultiFileOutput()) {
+//                Path outputFile = cli.getOutputPath().resolve(template.getName());
+//                System.out.println("Writing to " + outputFile);
+//                writer = Files.newBufferedWriter(outputFile);
+//            }
             try (PrintWriter pw = new PrintWriter(writer)) {
-                Stream.generate(() -> BsonUtil.toJson(template.getDocument()))
+                Stream.generate(template::toJson)
                         .limit(cli.getNumber())
                         .forEach(pw::println);
             }

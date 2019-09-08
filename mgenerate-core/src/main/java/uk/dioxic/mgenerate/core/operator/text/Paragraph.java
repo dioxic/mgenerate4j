@@ -1,6 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.text;
 
-import uk.dioxic.mgenerate.common.Cache;
+import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -18,16 +18,11 @@ public class Paragraph implements Resolvable<String> {
 
     @Override
     public String resolve() {
-        return resolve(null);
-    }
-
-    @Override
-    public String resolve(Cache cache) {
         return Stream.generate(() ->
                 Stream.generate(() -> FakerUtil.getValue("lorem.words"))
                         .limit(FakerUtil.numberBetween(12, 18))
                         .collect(Collectors.joining(" ", "", ".")))
-                .limit(sentences.resolve(cache))
+                .limit(sentences.resolve())
                 .collect(Collectors.joining(" "));
     }
 

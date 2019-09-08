@@ -22,12 +22,12 @@ public class PatternTest {
         document.put("lkp", lookup);
         document.put("nested", nested);
 
-        DocumentValueCache.getInstance().mapTemplate(document);
-        DocumentValueCache.getInstance().setEncodingContext(document);
+        Template template = new Template(document);
+        DocumentStateCache.setEncodingContext(template);
 
-        assertThat(lookup.resolve()).as("string").isInstanceOf(String.class);
-        assertThat(lookup.resolve().toString()).as("equal").startsWith("123 fish");
+        assertThat(DocumentStateCache.get(lookup)).as("string").isInstanceOf(String.class);
+        assertThat(DocumentStateCache.get(lookup).toString()).as("equal").startsWith("123 fish");
 
-        logger.debug(lookup.resolve().toString());
+        logger.debug(DocumentStateCache.get(lookup).toString());
     }
 }

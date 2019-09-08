@@ -7,9 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
 
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+
 import static org.assertj.core.api.Assertions.*;
 
-public class DocumentCacheTest {
+public class DocumentStateTest {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private static JsonWriterSettings jws = JsonWriterSettings.builder()
@@ -17,18 +20,16 @@ public class DocumentCacheTest {
             .build();
 
     @Test
-    public void documentTest() {
-        Document doc = BsonUtil.parseFile("src/test/resources/lookup-test.json");
-        DocumentValueCache dvc = DocumentValueCache.getInstance();
-        dvc.mapTemplate(doc);
-        dvc.getKeys(doc).forEach(logger::debug);
+    public void documentTest() throws URISyntaxException {
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("lookup-test.json").toURI()));
 
-        String outJson = BsonUtil.toJson(doc, jws);
+        String outJson = template.toJson(jws);
         logger.debug(outJson);
 
-        dvc.setEncodingContext(doc);
-        Object cachedValue = dvc.get(doc, "c3");
-        Object expected  = String.format("%s <%s>", dvc.get(doc, "b"), dvc.get(doc, "c.cc.ccc"));
+        DocumentStateCache.setEncodingContext(template);
+
+        Object cachedValue = DocumentStateCache.get("c3");
+        Object expected  = String.format("%s <%s>", DocumentStateCache.get("b"), DocumentStateCache.get("c.cc.ccc"));
         assertThat(cachedValue).as("is resolvable").isEqualTo(expected);
     }
 }
