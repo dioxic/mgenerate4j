@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.core.operator.geo;
 
 import org.bson.Document;
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
@@ -37,8 +38,13 @@ public class Polygon implements Resolvable<Document>, Initializable {
 
     @Override
     public Document resolve() {
-        FlsUtil.Point[] polygon = Stream.generate(coordinates::resolve)
-                .limit(corners.resolve())
+        return resolve(null);
+    }
+
+    @Override
+    public Document resolve(Cache cache) {
+        FlsUtil.Point[] polygon = Stream.generate(() -> coordinates.resolve(cache))
+                .limit(corners.resolve(cache))
                 .toArray(FlsUtil.Point[]::new);
 
         if (valid) {

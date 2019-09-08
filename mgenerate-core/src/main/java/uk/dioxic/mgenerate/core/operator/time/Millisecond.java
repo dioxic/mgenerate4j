@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
@@ -11,5 +12,11 @@ public class Millisecond implements Resolvable<Integer> {
     public Integer resolve() {
         return FakerUtil.numberBetween(0, 999);
     }
+
+    @Override
+    public Integer resolve(Cache cache) {
+        return resolve();
+    }
+
 
 }

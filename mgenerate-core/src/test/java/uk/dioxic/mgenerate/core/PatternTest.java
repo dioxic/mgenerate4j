@@ -22,8 +22,8 @@ public class PatternTest {
         document.put("lkp", lookup);
         document.put("nested", nested);
 
-        DocumentValueCache.mapDocument(document);
-        DocumentValueCache.setEncodingContext(document);
+        DocumentValueCache.getInstance().mapTemplate(document);
+        DocumentValueCache.getInstance().setEncodingContext(document);
 
         assertThat(lookup.resolve()).as("string").isInstanceOf(String.class);
         assertThat(lookup.resolve().toString()).as("equal").startsWith("123 fish");

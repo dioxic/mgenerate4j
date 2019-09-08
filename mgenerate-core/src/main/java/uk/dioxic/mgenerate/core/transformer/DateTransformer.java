@@ -16,6 +16,9 @@ public class DateTransformer implements Transformer<LocalDateTime> {
 
     @Override
     public LocalDateTime transform(Object objectToTransform) throws TransformerException {
+        if (objectToTransform == null) {
+            return null;
+        }
 
         if (objectToTransform instanceof LocalDateTime){
             return (LocalDateTime)objectToTransform;

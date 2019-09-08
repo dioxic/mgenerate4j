@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.text;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -20,6 +21,11 @@ public class Letter implements Resolvable<java.lang.Character>, Initializable {
     @Override
     public java.lang.Character resolve() {
         return pool.charAt(FakerUtil.numberBetween(0, pool.length()));
+    }
+
+    @Override
+    public java.lang.Character resolve(Cache cache) {
+        return resolve();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
@@ -17,5 +18,10 @@ public class NumberLong implements Resolvable<Long> {
 	@Override
 	public Long resolve() {
 		return FakerUtil.numberBetween(min, max);
+	}
+
+	@Override
+	public Long resolve(Cache cache) {
+		return resolve();
 	}
 }

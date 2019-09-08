@@ -19,15 +19,16 @@ public class DocumentCacheTest {
     @Test
     public void documentTest() {
         Document doc = BsonUtil.parseFile("src/test/resources/lookup-test.json");
-        DocumentValueCache.mapDocument(doc);
-        DocumentValueCache.getKeys(doc).forEach(logger::debug);
+        DocumentValueCache dvc = DocumentValueCache.getInstance();
+        dvc.mapTemplate(doc);
+        dvc.getKeys(doc).forEach(logger::debug);
 
         String outJson = BsonUtil.toJson(doc, jws);
         logger.debug(outJson);
 
-        DocumentValueCache.setEncodingContext(doc);
-        Object cachedValue = DocumentValueCache.get(doc, "c3");
-        Object expected  = String.format("%s <%s>", DocumentValueCache.get(doc, "b"), DocumentValueCache.get(doc, "c.cc.ccc"));
+        dvc.setEncodingContext(doc);
+        Object cachedValue = dvc.get(doc, "c3");
+        Object expected  = String.format("%s <%s>", dvc.get(doc, "b"), dvc.get(doc, "c.cc.ccc"));
         assertThat(cachedValue).as("is resolvable").isEqualTo(expected);
     }
 }

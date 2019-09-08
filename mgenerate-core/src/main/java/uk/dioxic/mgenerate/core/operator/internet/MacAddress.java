@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.internet;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
@@ -15,6 +16,11 @@ public class MacAddress implements Resolvable<String> {
         return Stream.generate(() -> Integer.toHexString(FakerUtil.random().nextInt(16)))
                 .limit(6)
                 .collect(Collectors.joining(":"));
+    }
+
+    @Override
+    public String resolve(Cache cache) {
+        return resolve();
     }
 
 }

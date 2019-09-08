@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -20,10 +21,15 @@ public class Array implements Resolvable<List> {
     Resolvable<Integer> number = Wrapper.wrap(DEFAULT_NUMBER);
 
     @Override
-    public List<Object> resolve() {
-        return Stream.generate(() -> of.resolve())
-                .limit(number.resolve())
+    public List<Object> resolve(Cache cache) {
+        return Stream.generate(() -> of.resolve(cache))
+                .limit(number.resolve(cache))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Object> resolve() {
+        return resolve(null);
     }
 
 }

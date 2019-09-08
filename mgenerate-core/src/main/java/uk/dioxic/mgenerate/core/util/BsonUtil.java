@@ -30,7 +30,8 @@ public class BsonUtil {
     public static CodecRegistry getRegistry() {
         return CodecRegistries.fromProviders(asList(new ValueCodecProvider(),
                 new BsonValueCodecProvider(),
-                new DocumentCacheCodecProvider(new OperatorTransformer()),
+//                new DocumentCacheCodecProvider(new OperatorTransformer()),
+                new DocumentCodecProvider(new OperatorTransformer()),
                 new ExtendedCodecProvider(),
                 new OperatorCodecProvider()));
     }

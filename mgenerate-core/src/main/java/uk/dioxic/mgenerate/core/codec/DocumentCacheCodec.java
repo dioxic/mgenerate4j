@@ -13,6 +13,8 @@ import uk.dioxic.mgenerate.core.DocumentValueCache;
 
 public class DocumentCacheCodec extends DocumentCodec {
 
+    private DocumentValueCache dvc = DocumentValueCache.getInstance();
+
     public DocumentCacheCodec() {
         super();
     }
@@ -32,14 +34,14 @@ public class DocumentCacheCodec extends DocumentCodec {
     @Override
     public void encode(BsonWriter writer, Document document, EncoderContext encoderContext) {
         if (encoderContext.isEncodingCollectibleDocument()) {
-            DocumentValueCache.setEncodingContext(document);
+            dvc.setEncodingContext(document);
         }
         super.encode(writer, document, encoderContext);
     }
 
     public Document decodeAndMap(BsonReader reader, DecoderContext decoderContext) {
         Document document = super.decode(reader, decoderContext);
-        DocumentValueCache.mapDocument(document);
+        dvc.mapTemplate(document);
         return document;
     }
 }

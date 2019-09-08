@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.faker.Faker;
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 
 public class LookupResolver implements Resolvable<String> {
@@ -16,5 +17,10 @@ public class LookupResolver implements Resolvable<String> {
     @Override
     public String resolve() {
         return faker.get(lookupKey);
+    }
+
+    @Override
+    public String resolve(Cache cache) {
+        return resolve();
     }
 }

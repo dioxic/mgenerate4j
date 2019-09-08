@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -36,6 +37,11 @@ public class DateInc implements Resolvable<LocalDateTime>, Initializable {
             throw new TerminateGenerationException();
         }
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(counter.getAndUpdate(n -> n + step)), ZoneOffset.UTC);
+    }
+
+    @Override
+    public LocalDateTime resolve(Cache cache) {
+        return resolve();
     }
 
     @Override

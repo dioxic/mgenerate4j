@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.person;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -20,8 +21,14 @@ public class Birthday implements Resolvable<Object> {
 
     @Override
     public Object resolve() {
-        AgeType ageType = type.resolve();
+        return resolve(null);
+    }
+
+    @Override
+    public Object resolve(Cache cache) {
+        AgeType ageType = type.resolve(cache);
         return Date.from(FakerUtil.randomDate(ageType.getMinBirthday(), ageType.getMaxBirthday()).toInstant(ZoneOffset.UTC));
     }
+
 
 }

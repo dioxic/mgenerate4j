@@ -45,7 +45,7 @@ public class OperatorCodec implements Codec<Resolvable> {
 
     @Override
     public void encode(BsonWriter writer, Resolvable value, EncoderContext encoderContext) {
-        writeValue(writer, encoderContext, DocumentValueCache.get(value));
+        writeValue(writer, encoderContext, DocumentValueCache.getInstance().get(value));
     }
 
     @Override

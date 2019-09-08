@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -19,7 +20,12 @@ public class Join implements Resolvable<String> {
     Resolvable<String> sep = Wrapper.wrap(DEFAULT_SEP);
 
     @Override
+    public String resolve(Cache cache) {
+        return String.join(sep.resolve(cache), array.resolve(cache));
+    }
+
+    @Override
     public String resolve() {
-        return String.join(sep.resolve(), array.resolve());
+        return resolve(null);
     }
 }

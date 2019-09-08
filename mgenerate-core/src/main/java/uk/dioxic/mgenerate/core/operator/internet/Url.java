@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.internet;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -21,10 +22,15 @@ public class Url implements Resolvable<String> {
 
     @Override
     public String resolve() {
+        return resolve(null);
+    }
+
+    @Override
+    public String resolve(Cache cache) {
         StringBuilder sb = new StringBuilder("http://");
-        sb.append(domain.resolve());
+        sb.append(domain.resolve(cache));
         sb.append('/');
-        sb.append(path.resolve());
+        sb.append(path.resolve(cache));
 
         if (extension != null) {
             sb.append('/');

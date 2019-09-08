@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.time;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -19,9 +20,14 @@ public class Month implements Resolvable<String> {
 
     @Override
     public String resolve() {
+        return resolve(null);
+    }
+
+    @Override
+    public String resolve(Cache cache) {
         int month = FakerUtil.numberBetween(0,11);
 
-        return full.resolve() ? months[month] : shortMonths[month];
+        return full.resolve(cache) ? months[month] : shortMonths[month];
     }
 
 }

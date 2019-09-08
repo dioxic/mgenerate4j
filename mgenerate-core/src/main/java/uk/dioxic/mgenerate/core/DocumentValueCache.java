@@ -15,10 +15,22 @@ import java.util.Set;
 public class DocumentValueCache {
 
     private static Logger logger = LoggerFactory.getLogger(DocumentValueCache.class);
-    private static ThreadLocal<Map<Resolvable, Object>> resolverCache = ThreadLocal.withInitial(HashMap::new);
-    private static Map<Document, Map<String, Object>> documentMap = new HashMap<>();
-    private static ThreadLocal<Map<String, Object>> encodingContext = ThreadLocal.withInitial(HashMap::new);
-    private static ThreadLocal<Document> encodingContextDoc = new ThreadLocal<>();
+    private Map<Document, Map<String, Object>> templateFlatMap = new HashMap<>();
+    private ThreadLocal<Map<Resolvable, Object>> resolverValueCache = ThreadLocal.withInitial(HashMap::new);
+    private ThreadLocal<Map<String, Object>> encodingContext = ThreadLocal.withInitial(HashMap::new);
+    private ThreadLocal<Document> encodingContextDoc = new ThreadLocal<>();
+
+    private static DocumentValueCache instance;
+
+    private DocumentValueCache() {
+    }
+
+    public static DocumentValueCache getInstance() {
+        if (instance == null) {
+            instance = new DocumentValueCache();
+        }
+        return instance;
+    }
 
     /**
      * Returns the cached value of the input {@link Resolvable} or, if
@@ -26,11 +38,11 @@ public class DocumentValueCache {
      * @param resolvable
      * @return the resolved/cached value
      */
-    public static Object get(Resolvable resolvable) {
-        Object value = resolverCache.get().get(resolvable);
+    public Object get(Resolvable resolvable) {
+        Object value = resolverValueCache.get().get(resolvable);
         if (value == null) {
             value = resolvable.resolve();
-            resolverCache.get().put(resolvable, value);
+            resolverValueCache.get().put(resolvable, value);
         }
         return value;
     }
@@ -38,8 +50,8 @@ public class DocumentValueCache {
     /**
      * Clears all stored data for the current thread.
      */
-    public static void clearThread() {
-        resolverCache.remove();
+    public void clearThread() {
+        resolverValueCache.remove();
         encodingContext.remove();
         encodingContextDoc.remove();
     }
@@ -48,8 +60,8 @@ public class DocumentValueCache {
      * Purges the document lookup mapping.
      * @param document the document to purge
      */
-    public static void purgeDocument(Document document) {
-        documentMap.remove(document);
+    public void purgeTemplate(Document document) {
+        templateFlatMap.remove(document);
     }
 
     /**
@@ -59,24 +71,24 @@ public class DocumentValueCache {
      * automatically if using the {@link DocumentCacheCodec}
      * @param document the document being encoding
      */
-    public static void setEncodingContext(Document document) {
+    public void setEncodingContext(Document document) {
         Document currentContextDoc = encodingContextDoc.get();
 
         // micro-optimisation to avoid hash calculation on document during map.get
         if (currentContextDoc != document) {
-            encodingContext.set(documentMap.get(document));
+            encodingContext.set(templateFlatMap.get(document));
             encodingContextDoc.set(document);
         }
 
-        resolverCache.get().clear();
+        resolverValueCache.get().clear();
     }
 
     /**
      * Maps the input {@link Document} to a one-dimension map suitable for dot-notation lookups.
      * @param document the document to map
      */
-    public static void mapDocument(Document document) {
-        documentMap.put(document, BsonUtil.flatMap(document));
+    public void mapTemplate(Document document) {
+        templateFlatMap.put(document, BsonUtil.flatMap(document));
     }
 
     /**
@@ -92,8 +104,8 @@ public class DocumentValueCache {
      * @param coordinates dot-notation coordinates
      * @return resolved/cached valued
      */
-    public static Object get(String coordinates) throws DocumentNotMappedException {
-        return get(encodingContext.get(),coordinates);
+    public Object get(String coordinates) throws DocumentNotMappedException {
+        return get(encodingContext.get(), coordinates);
     }
 
     /**
@@ -110,18 +122,18 @@ public class DocumentValueCache {
      * @param coordinates dot-notation coordinates
      * @return resolved/cached valued
      */
-    public static Object get(Document document, String coordinates) throws DocumentNotMappedException {
-        return get(documentMap.get(document),coordinates);
+    public Object get(Document document, String coordinates) throws DocumentNotMappedException {
+        return get(templateFlatMap.get(document), coordinates);
     }
 
-    private static Object get(Map<String, Object> map, String coordinates) throws DocumentNotMappedException {
+    private Object get(Map<String, Object> map, String coordinates) throws DocumentNotMappedException {
         if (map == null) {
             throw new DocumentNotMappedException("coordinates [" + coordinates + "] could not be resolved");
         }
 
         Object object = map.get(coordinates);
         if (object instanceof Resolvable) {
-            return get((Resolvable)object);
+            return get((Resolvable) object);
         }
         if (object == null) {
             logger.warn("coordinates [{}] could not be resolved", coordinates);
@@ -129,8 +141,8 @@ public class DocumentValueCache {
         return object;
     }
 
-    public static Set<String> getKeys(Document document) {
-        Map<String, Object> docMap = documentMap.get(document);
+    public Set<String> getKeys(Document document) {
+        Map<String, Object> docMap = templateFlatMap.get(document);
         if (docMap == null) {
             throw new DocumentNotMappedException();
         }

@@ -7,7 +7,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Cache;
-import uk.dioxic.mgenerate.common.CacheResolvable;
 import uk.dioxic.mgenerate.common.exception.DocumentNotMappedException;
 import uk.dioxic.mgenerate.core.util.BsonUtil;
 
@@ -30,12 +29,12 @@ public class Generator {
         cache = new GeneratorCache(template);
     }
 
-    public Flux<Document> generate() {
+    public Flux<Document> generate(int limit) {
         long startMs = System.currentTimeMillis();
         //Flux<Document> flux =
-        return Flux.range(0, docLimit)
+        return Flux.range(0, limit)
                 .map(i -> template)
-                .flatMap(t -> Mono.just(genDoc(t)))
+                .flatMap(t -> Mono.just(genDoc(t)), 8)
 //                .doOnNext(doc -> {
 //                    if (logger.isDebugEnabled()) {
 //                        logger.debug(doc.toString());
@@ -46,7 +45,7 @@ public class Generator {
                     long runtime = 1+ (System.currentTimeMillis() - startMs) / 1000;
 
                     logger.info("Runtime: {}s", runtime);
-                    logger.info("Speed: {} docs/s", docLimit / runtime);
+                    logger.info("Speed: {} docs/s", limit / runtime);
                 });
 
 //        return null;
@@ -162,19 +161,16 @@ public class Generator {
 
         @Override
         public Object get(String coordinates) throws DocumentNotMappedException {
-            logger.debug("GET {}", coordinates);
+            logger.trace("GET {}", coordinates);
             Object v = valueCache.get(coordinates);
             if (v == null) {
                 v = templateFlatMap.get(coordinates);
-                if (v instanceof CacheResolvable) {
-                    v = ((CacheResolvable)v).resolve(this);
-                    valueCache.put(coordinates, v);
-                }
-                else if (v instanceof Resolvable) {
-                    v = ((Resolvable)v).resolve();
-                    valueCache.put(coordinates, v);
-                }
+                v = Resolvable.rescursiveResolve(v, this);
+                valueCache.put(coordinates, v);
+                logger.trace("CREATING cache for {} = {}", coordinates, v);
+                //else error??
             }
+            logger.trace("{} = {}", coordinates, v);
             return v;
         }
 

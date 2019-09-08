@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.location;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
@@ -24,5 +25,10 @@ public class Coordinates implements Resolvable<FlsUtil.Point> {
         double longitude = FakerUtil.randomDouble(long_lim.get(0), long_lim.get(1));
         double latitude = FakerUtil.randomDouble(lat_lim.get(0), lat_lim.get(1));
         return new FlsUtil.Point(longitude, latitude);
+    }
+
+    @Override
+    public FlsUtil.Point resolve(Cache cache) {
+        return resolve();
     }
 }

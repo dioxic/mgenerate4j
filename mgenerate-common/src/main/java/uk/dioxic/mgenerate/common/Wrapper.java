@@ -2,14 +2,14 @@ package uk.dioxic.mgenerate.common;
 
 import uk.dioxic.mgenerate.common.exception.WrapException;
 
-public class Wrapper<T> implements CacheResolvable<T> {
+public class Wrapper<T> implements Resolvable<T> {
 
     private T value;
     private Resolvable resolvable;
     private Transformer<T> transformer;
 
     public static <T> Resolvable<T> wrap(T value) {
-        return (value instanceof Resolvable) ? (Resolvable)value : new Wrapper<>(value);
+        return (value instanceof Resolvable) ? (Resolvable) value : new Wrapper<>(value);
     }
 
     public static <T> Resolvable<T> wrap(Object object, Class<T> desiredType, TransformerRegistry transformRegistry) {
@@ -34,7 +34,7 @@ public class Wrapper<T> implements CacheResolvable<T> {
 
     private Wrapper(Object value, Transformer<T> transformer) {
         if (value instanceof Resolvable) {
-            this.resolvable = (Resolvable) value;
+            resolvable = (Resolvable)value;
         }
         else {
             this.value = transformer.transform(value);
@@ -45,19 +45,19 @@ public class Wrapper<T> implements CacheResolvable<T> {
 
     @Override
     public T resolve() {
-        if (value != null) {
-            return value;
-        }
-
-        return transformer.transform(resolvable.resolve());
+        return resolve(null);
     }
 
     @Override
     public T resolve(Cache cache) {
-        if (value != null) {
-            return value;
+        Object res = value;
+        if (resolvable != null) {
+            res = Resolvable.rescursiveResolve(resolvable, cache);
+        }
+        if (transformer != null) {
+            res = transformer.transform(res);
         }
 
-        return transformer.transform(CacheResolvable.resolve(cache, resolvable));
+        return (T)res;
     }
 }

@@ -2,6 +2,7 @@ package uk.dioxic.mgenerate.core.operator;
 
 import org.apache.commons.codec.binary.Hex;
 import org.bson.Document;
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
@@ -25,20 +26,23 @@ public class Hash implements Resolvable<Object> {
 
     @Override
     public Object resolve() {
-        Object value = input.resolve();
+        return resolve(null);
+    }
+
+    @Override
+    public Object resolve(Cache cache) {
+        Object value = input.resolve(cache);
         byte[] valBytes;
 
         if (value instanceof Document) {
-            valBytes = BsonUtil.toJson((Document)value, false).getBytes();
-        }
-        else {
+            valBytes = BsonUtil.toJson((Document) value, false).getBytes();
+        } else {
             valBytes = value.toString().getBytes();
         }
 
         try {
             return output.toOutputType(MessageDigest.getInstance(algorithm).digest(valBytes));
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }

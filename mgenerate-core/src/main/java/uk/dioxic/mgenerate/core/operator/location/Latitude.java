@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator.location;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
@@ -20,4 +21,8 @@ public class Latitude implements Resolvable<Double> {
 		return FakerUtil.randomDouble(bounds.get(0), bounds.get(1));
 	}
 
+	@Override
+	public Double resolve(Cache cache) {
+		return resolve();
+	}
 }

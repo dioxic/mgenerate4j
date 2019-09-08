@@ -45,7 +45,7 @@ public class OperatorFactory {
     }
 
     public static void addBuilder(String key, Class<ResolvableBuilder> builderClass) {
-        logger.debug("adding [{}] to operator registry", key);
+        logger.trace("adding [{}] to operator registry", key);
         builderMap.put(key, builderClass);
     }
 

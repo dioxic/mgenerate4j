@@ -27,7 +27,7 @@ public class Main {
         }
 
         for (Template template : cli.getTemplates()) {
-            DocumentValueCache.mapDocument(template.getDocument());
+            DocumentValueCache.getInstance().mapTemplate(template.getDocument());
 
             if (cli.isMultiFileOutput()) {
                 Path outputFile = cli.getOutputPath().resolve(template.getName());

@@ -35,13 +35,13 @@ public class GeneratorTest {
         Document template = BsonUtil.parseFile("src/test/resources/template.json", codec);
         Generator generator = new Generator(template);
 
-        generator.generate()
+        generator.generate(10)
                 //.map(Document::toJson)
                 //.doOnNext(System.out::println)
                 .doOnNext(doc -> {
                     if (logger.isDebugEnabled()) {
-                        logger.debug(doc.toString());
-                        logger.debug(doc.toJson());
+//                        logger.debug(doc.toString());
+                        logger.debug(doc.toJson(codec));
                     }
                 })
 //                .flatMap(d -> Flux.just(123))

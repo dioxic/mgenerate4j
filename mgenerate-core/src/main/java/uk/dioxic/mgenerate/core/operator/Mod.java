@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core.operator;
 
+import uk.dioxic.mgenerate.common.Cache;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
@@ -15,6 +16,11 @@ public class Mod implements Resolvable<Integer> {
 
     @Override
     public Integer resolve() {
-        return Math.floorMod(input.resolve(), mod);
+        return resolve(null);
+    }
+
+    @Override
+    public Integer resolve(Cache cache) {
+        return Math.floorMod(input.resolve(cache), mod);
     }
 }
