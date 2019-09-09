@@ -9,6 +9,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 
+@Deprecated
 @SupportedAnnotationTypes("uk.dioxic.mgenerate.common.annotation.Pojo")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class PojoGeneratorProcessor extends AbstractMgenProcessor {

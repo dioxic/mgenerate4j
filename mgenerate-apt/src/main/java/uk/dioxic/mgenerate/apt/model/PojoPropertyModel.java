@@ -4,6 +4,7 @@ import uk.dioxic.mgenerate.common.annotation.PojoProperty;
 
 import javax.lang.model.element.Element;
 
+@Deprecated
 public class PojoPropertyModel extends AbstractFieldModel {
 
     private final boolean required;

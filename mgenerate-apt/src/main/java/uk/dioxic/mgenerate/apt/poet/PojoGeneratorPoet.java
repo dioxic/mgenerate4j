@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class PojoGeneratorPoet implements Poet {
 
     private final static String WRAPPER_SERVICE = "wrapperService";
