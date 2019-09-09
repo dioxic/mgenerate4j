@@ -58,7 +58,7 @@ public class OperatorBuilderProcessor extends AbstractProcessor {
             for (TypeElement typeElement : typeElements) {
                 try {
                     OperatorBuilderPoet poet = new OperatorBuilderPoet(typeElement);
-
+                    this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "found @Operator at " + typeElement);
                     JavaFileObject jfo = this.processingEnv.getFiler().createSourceFile(poet.getFullyQualifiedName());
                     try (Writer writer = jfo.openWriter()) {
                         poet.generate(writer);

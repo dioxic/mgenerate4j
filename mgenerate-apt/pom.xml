@@ -7,7 +7,7 @@
     <parent>
         <artifactId>mgenerate-parent</artifactId>
         <groupId>uk.dioxic.mgenerate</groupId>
-        <version>0.0.4</version>
+        <version>0.0.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>mgenerate-apt</artifactId>
@@ -32,5 +32,19 @@
             <version>1.11.1</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Configure the project to use java 8 version. -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Disable annotation processing for ourselves. -->
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
