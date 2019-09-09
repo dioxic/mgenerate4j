@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core;
+package uk.dioxic.mgenerate.core.exception;
 
 public class CliArgumentException extends Exception {
 

@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class OperatorBuilderProcessor extends AbstractProcessor {
 
+    public OperatorBuilderProcessor() {}
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver() || annotations.size() == 0) {
@@ -61,7 +63,6 @@ public class OperatorBuilderProcessor extends AbstractProcessor {
                     try (Writer writer = jfo.openWriter()) {
                         poet.generate(writer);
                     }
-
                 } catch (Exception e) {
                     this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
                 }

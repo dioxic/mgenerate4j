@@ -1,12 +1,12 @@
-package uk.dioxic.mgenerate.core.operator;
+package uk.dioxic.mgenerate.core.operator.core;
 
 import org.apache.commons.codec.binary.Hex;
 import org.bson.Document;
-import uk.dioxic.mgenerate.common.State;
+import org.bson.codecs.DocumentCodec;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
+import uk.dioxic.mgenerate.core.codec.TemplateCodec;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -30,7 +30,7 @@ public class Hash implements Resolvable<Object> {
         byte[] valBytes;
 
         if (value instanceof Document) {
-            valBytes = BsonUtil.toJson((Document) value, false).getBytes();
+            valBytes = ((Document) value).toJson(new DocumentCodec(TemplateCodec.getCodeRegistry())).getBytes();
         } else {
             valBytes = value.toString().getBytes();
         }

@@ -6,9 +6,9 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
-import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.operator.location.Coordinates;
 import uk.dioxic.mgenerate.core.operator.location.CoordinatesBuilder;
+import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.util.FlsUtil;
 
 import java.util.ArrayList;

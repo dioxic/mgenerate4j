@@ -1,7 +1,6 @@
-package uk.dioxic.mgenerate.core.operator;
+package uk.dioxic.mgenerate.core.operator.core;
 
 import org.bson.BsonRegularExpression;
-import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;

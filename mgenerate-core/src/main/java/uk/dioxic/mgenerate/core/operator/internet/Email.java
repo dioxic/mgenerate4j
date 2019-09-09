@@ -1,6 +1,5 @@
 package uk.dioxic.mgenerate.core.operator.internet;
 
-import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;

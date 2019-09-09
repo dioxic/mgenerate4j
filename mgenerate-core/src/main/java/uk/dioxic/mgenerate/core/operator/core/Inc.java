@@ -1,6 +1,5 @@
-package uk.dioxic.mgenerate.core.operator;
+package uk.dioxic.mgenerate.core.operator.core;
 
-import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;

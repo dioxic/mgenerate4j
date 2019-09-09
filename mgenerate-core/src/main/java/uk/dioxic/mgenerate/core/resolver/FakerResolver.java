@@ -1,7 +1,6 @@
 package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.faker.Faker;
-import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 
 public class FakerResolver implements Resolvable {

@@ -2,9 +2,11 @@ package uk.dioxic.mgenerate.core;
 
 import org.apache.commons.cli.ParseException;
 import uk.dioxic.mgenerate.core.exception.CliArgumentException;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.util.stream.Stream;
 

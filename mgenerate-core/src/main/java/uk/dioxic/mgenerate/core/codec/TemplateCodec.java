@@ -2,46 +2,57 @@ package uk.dioxic.mgenerate.core.codec;
 
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
-import org.bson.Document;
-import org.bson.Transformer;
-import org.bson.codecs.BsonTypeClassMap;
-import org.bson.codecs.DecoderContext;
-import org.bson.codecs.DocumentCodec;
-import org.bson.codecs.EncoderContext;
+import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
-import uk.dioxic.mgenerate.core.DocumentValueCache;
+import uk.dioxic.mgenerate.core.DocumentStateCache;
+import uk.dioxic.mgenerate.core.Template;
 
-public class DocumentCacheCodec extends DocumentCodec {
+import static java.util.Arrays.asList;
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 
-    private DocumentValueCache dvc = DocumentValueCache.getInstance();
+public class TemplateCodec implements Codec<Template> {
 
-    public DocumentCacheCodec() {
-        super();
+    private static final CodecRegistry DEFAULT_REGISTRY = fromProviders(asList(new ValueCodecProvider(),
+            new BsonValueCodecProvider(),
+            new DocumentCodecProvider(new OperatorTransformer()),
+            new ExtendedCodecProvider(),
+            new OperatorCodecProvider()));
+    private static ThreadLocal<Boolean> keyResolverCount = ThreadLocal.withInitial(() -> Boolean.FALSE);
+
+    private DocumentCodec documentCodec;
+
+
+    public TemplateCodec() {
+        documentCodec = new DocumentCodec(DEFAULT_REGISTRY, new BsonTypeClassMap(), new OperatorTransformer());
     }
 
-    public DocumentCacheCodec(CodecRegistry registry) {
-        super(registry);
+    public static CodecRegistry getCodeRegistry() {
+        return DEFAULT_REGISTRY;
     }
 
-    public DocumentCacheCodec(CodecRegistry registry, BsonTypeClassMap bsonTypeClassMap) {
-        super(registry, bsonTypeClassMap);
-    }
-
-    public DocumentCacheCodec(CodecRegistry registry, BsonTypeClassMap bsonTypeClassMap, Transformer valueTransformer) {
-        super(registry, bsonTypeClassMap, valueTransformer);
+    public static void keyResolverFound() {
+        keyResolverCount.set(Boolean.TRUE);
     }
 
     @Override
-    public void encode(BsonWriter writer, Document document, EncoderContext encoderContext) {
-        if (encoderContext.isEncodingCollectibleDocument()) {
-            dvc.setEncodingContext(document);
-        }
-        super.encode(writer, document, encoderContext);
+    public Template decode(BsonReader reader, DecoderContext decoderContext) {
+        // determine whether the document tree contains a DocumentKeyResolver and we need document state caching.
+        // the constructor of the DocumentKeyResolver sets the threadlocal flag
+
+        keyResolverCount.set(Boolean.FALSE);
+        Template template = new Template(documentCodec.decode(reader, decoderContext));
+        template.setStateCachingRequired(keyResolverCount.get());
+        return template;
     }
 
-    public Document decodeAndMap(BsonReader reader, DecoderContext decoderContext) {
-        Document document = super.decode(reader, decoderContext);
-        dvc.mapTemplate(document);
-        return document;
+    @Override
+    public void encode(BsonWriter writer, Template value, EncoderContext encoderContext) {
+        DocumentStateCache.setEncodingContext(value);
+        documentCodec.encode(writer, value.getDocument(), encoderContext);
+    }
+
+    @Override
+    public Class<Template> getEncoderClass() {
+        return Template.class;
     }
 }

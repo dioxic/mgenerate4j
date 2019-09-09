@@ -2,7 +2,6 @@ package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.faker.Faker;
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.common.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,6 +1,5 @@
-package uk.dioxic.mgenerate.core.operator;
+package uk.dioxic.mgenerate.core.operator.numeric;
 
-import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
@@ -9,12 +8,12 @@ import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.math.BigDecimal;
 
-@Operator
+@Operator({"numberdecimal", "decimal"})
 public class NumberDecimal implements Resolvable<BigDecimal> {
 
     private static final Long DEFAULT_MIN = 0L;
     private static final Long DEFAULT_MAX = 1000L;
-    private static final Resolvable<Integer> DEFAULT_FIXED = Wrapper.wrap(Integer.valueOf(2));
+    private static final Resolvable<Integer> DEFAULT_FIXED = Wrapper.wrap(2);
 
     @OperatorProperty
     Long min = DEFAULT_MIN;
