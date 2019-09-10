@@ -30,6 +30,11 @@
       "input": "${ducks.0.age}"
     }
   },
+  "last_check": {
+    "$min": {
+      "values": "${ducks.last_check}"
+    }
+  },
   "duck1": "${ducks.0.favourites.food.0}",
   "ducks": {
     "$array": {
@@ -53,6 +58,12 @@
             ]
           }
         },
+				"last_check": {
+					"$ts": {
+						"min": "2019-01-01T00:00:00",
+						"max": "2019-09-01T00:00:00"
+					}
+				},        
         "favourites": {
           "food": {
             "$array": {
