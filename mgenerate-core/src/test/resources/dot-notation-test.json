@@ -1,0 +1,125 @@
+{
+  "allColours": "${ducks.colour}",
+  "favBooks": "${ducks.favourites.book.name}",
+  "foodAndColours": {
+    "$distinct": {
+      "values": {
+        "$concat": {
+          "values": [ "${ducks.favourites.food}", "${ducks.colour}" ]
+        }
+      }
+    }
+  },
+  "distinctFood": {
+    "$distinct": {
+      "values": "${ducks.favourites.food}"
+    }
+  },
+  "minAge": {
+    "$min":{
+      "values": "${ducks.age}"
+    }
+  },
+  "avgAge": {
+    "$avg":{
+      "values": "${ducks.age}"
+    }
+  },
+  "duck1AgePlus1": {
+    "$inc": {
+      "input": "${ducks.0.age}"
+    }
+  },
+  "duck1": "${ducks.0.favourites.food.0}",
+  "ducks": {
+    "$array": {
+      "of": {
+        "name": "$first",
+        "age": {
+          "$number": {
+            "min": 1,
+            "max": 10
+          }
+        },
+        "colour": {
+          "$choose": {
+            "from": [
+              "green",
+              "blue",
+              "red",
+              "white",
+              "yellow",
+              "orange"
+            ]
+          }
+        },
+        "favourites": {
+          "food": {
+            "$array": {
+              "of": {
+                "$choose": {
+                  "from": [
+                    "worms",
+                    "petals",
+                    "slugs",
+                    "snails",
+                    "duckweed"
+                  ]
+                }
+              },
+              "number": {
+                "$number": {
+                  "min": 1,
+                  "max": 3
+                }
+              }
+            }
+          },
+          "pastime": [
+            "mounting",
+            "swimming"
+          ],
+          "book": [
+            {
+              "$choose": {
+                "from": [
+                  {
+                    "name": "#{book.title}",
+                    "author": "#{book.author}",
+                    "pages": {
+                      "$number": {
+                        "min": 1,
+                        "max": 600
+                      }
+                    }
+                  },
+                  {
+                    "name": "#{book.title}",
+                    "author": "#{book.author}",
+                    "pages": {
+                      "$number": {
+                        "min": 1,
+                        "max": 600
+                      }
+                    }
+                  },
+                  {
+                    "name": "#{book.title}",
+                    "author": "#{book.author}",
+                    "pages": {
+                      "$number": {
+                        "min": 1,
+                        "max": 600
+                      }
+                    }
+                  }                  
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "number": 4
+    }
+  }
+}

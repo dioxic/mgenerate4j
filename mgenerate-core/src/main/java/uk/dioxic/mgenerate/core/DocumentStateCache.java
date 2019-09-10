@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.exception.DocumentNotMappedException;
+import uk.dioxic.mgenerate.core.util.BsonUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,32 @@ public class DocumentStateCache {
             valueCache.clear();
         }
 
+        private String getNearestParent(String coordinates) throws DocumentNotMappedException {
+            String parent = getParentCoordinates(coordinates);
+
+            if (parent == null) {
+                return null;
+            }
+
+            Object v = valueCache.get(parent);
+            if (v == null) {
+                v = template.getValue(parent);
+                if (v == null) {
+                    return getNearestParent(parent);
+                }
+            }
+            logger.trace("nearest parent for {} = {}", coordinates, parent);
+            return parent;
+        }
+
+        public void put(String coordinates, Object value) {
+            valueCache.put(coordinates, value);
+        }
+
+        public void put(Resolvable resolvable, Object value) {
+            valueCache.put(template.getCoordinates(resolvable), value);
+        }
+
         @Override
         public Object get(String coordinates) throws DocumentNotMappedException {
             logger.trace("GET {}", coordinates);
@@ -61,20 +88,17 @@ public class DocumentStateCache {
             if (v == null) {
                 v = template.getValue(coordinates);
                 if (v == null) {
-                    String parent = getParentCoordinates(coordinates);
-                    if (parent == null) {
-                        return null;
+                    String parentCoordinates = getNearestParent(coordinates);
+                    if (parentCoordinates != null) {
+                        v = BsonUtil.resolveCoordinate(coordinates.substring(parentCoordinates.length()+1), get(parentCoordinates));
                     }
-                    // this could be a nested resolvable, recurse up the tree to find it
-                    v = get(parent);
-                    if (v == null) {
+                    else {
                         throw new DocumentNotMappedException();
                     }
                 }
-                if (v instanceof Resolvable) {
-                    v = ((Resolvable) v).resolve();
-                }
-                valueCache.put(coordinates, v);
+                // make sure anything stored in the value cache is fully hydrated
+                v = BsonUtil.recursiveResolve(v);
+                BsonUtil.map(valueCache, coordinates, v);
                 logger.trace("CREATING state entry for {} = {}", coordinates, v);
             }
             logger.trace("'{}' = {}", coordinates, v);
@@ -86,7 +110,7 @@ public class DocumentStateCache {
             if (lastDotIdx == -1) {
                 return null;
             }
-            return coordinates.substring(0, coordinates.length()-lastDotIdx-1);
+            return coordinates.substring(0, lastDotIdx);
         }
 
         @Override

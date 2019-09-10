@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.core.codec.TemplateCodec;
-import uk.dioxic.mgenerate.core.operator.*;
 import uk.dioxic.mgenerate.core.operator.core.*;
 import uk.dioxic.mgenerate.core.operator.geo.*;
 import uk.dioxic.mgenerate.core.operator.internet.Url;
@@ -98,34 +97,34 @@ public class OperatorTest {
     }
 
     @Test
-    public void inc() {
+    public void seq() {
         int start = 3;
         int step = 2;
 
-        Inc inc = new IncBuilder(ReflectiveTransformerRegistry.getInstance())
+        Sequence seq = new SequenceBuilder(ReflectiveTransformerRegistry.getInstance())
                 .start(start)
                 .step(step)
                 .build();
 
-        assertThat(inc.resolve()).as("check starting value").isEqualTo(start);
-        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step);
-        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step + step);
+        assertThat(seq.resolve()).as("check starting value").isEqualTo(start);
+        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step);
+        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step + step);
     }
 
     @Test
-    public void incThreadLocal() {
+    public void seqThreadLocal() {
         int start = 3;
         int step = 2;
 
-        Inc inc = new IncBuilder(ReflectiveTransformerRegistry.getInstance())
+        Sequence seq = new SequenceBuilder(ReflectiveTransformerRegistry.getInstance())
                 .start(start)
                 .step(step)
                 .threadLocal(true)
                 .build();
 
-        assertThat(inc.resolve()).as("check starting value").isEqualTo(start);
-        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step);
-        assertThat(inc.resolve()).as("check next value").isEqualTo(start + step + step);
+        assertThat(seq.resolve()).as("check starting value").isEqualTo(start);
+        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step);
+        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step + step);
     }
 
     @Test

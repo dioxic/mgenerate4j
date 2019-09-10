@@ -12,16 +12,16 @@ public class Wrapper<T> implements Resolvable<T> {
         return (value instanceof Resolvable) ? (Resolvable) value : new Wrapper<>(value);
     }
 
-    public static <T> Resolvable<T> wrap(Object object, Class<T> desiredType, TransformerRegistry transformRegistry) {
+    public static <T> Resolvable wrap(Object object, Class<T> desiredType, TransformerRegistry transformRegistry) {
         if (object != null) {
+            if (object instanceof Resolvable) {
+                return (Resolvable) object;
+            }
             if (transformRegistry.canHandle(desiredType)) {
                 return new Wrapper<>(object, transformRegistry.get(desiredType));
             }
             if (desiredType.isAssignableFrom(object.getClass())) {
                 return new Wrapper<>((T) object);
-            }
-            if (object instanceof Resolvable) {
-                return (Resolvable) object;
             }
             throw new WrapException(object.getClass(), desiredType);
         }

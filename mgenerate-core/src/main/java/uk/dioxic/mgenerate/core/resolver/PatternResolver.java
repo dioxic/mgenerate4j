@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PatternResolver implements Resolvable {
+    // TODO -- thread safe?
     private final static Pattern LOOKUP_PATTERN = Pattern.compile("([#$])\\{([a-z0-9A-Z_.]+)\\s*}");
 
     private final List<String> parts;

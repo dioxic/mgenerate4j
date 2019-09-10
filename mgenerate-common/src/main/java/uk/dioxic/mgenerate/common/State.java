@@ -8,6 +8,10 @@ public interface State {
 
     Object get(Resolvable resolvable) throws DocumentNotMappedException;
 
+    void put(String coordinates, Object value);
+
+    void put(Resolvable resolvable, Object value);
+
     void clear();
 
 }

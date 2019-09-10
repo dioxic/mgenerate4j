@@ -9,7 +9,7 @@ import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Operator
-public class Inc implements Resolvable<Integer>, Initializable {
+public class Sequence implements Resolvable<Integer>, Initializable {
 
     @OperatorProperty
     Resolvable<Integer> step = Wrapper.wrap(1);
