@@ -19,7 +19,7 @@ public class BsonUtil {
     }
 
     public static Object recursiveResolve(Object o) {
-        logger.trace("recursively resolving {}", o.toString());
+        //logger.trace("recursively resolving {}", o.toString());
         if (o instanceof Resolvable) {
             Resolvable r = (Resolvable) o;
             Object res = recursiveResolve(r.resolve());
