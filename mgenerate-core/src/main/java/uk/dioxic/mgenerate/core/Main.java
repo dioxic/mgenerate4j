@@ -15,11 +15,6 @@ import java.util.concurrent.Callable;
 @Command(name = "mgenerate")
 public class Main implements Callable<Integer> {
 
-    static {
-        // add mgenerate operators
-        OperatorFactory.addBuilders("org.mongodb.etl.operator");
-    }
-
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
     private boolean helpRequested = false;
 
