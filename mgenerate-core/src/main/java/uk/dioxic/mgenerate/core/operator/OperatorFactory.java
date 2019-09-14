@@ -8,11 +8,11 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.ResolvableBuilder;
 import uk.dioxic.mgenerate.common.TransformerRegistry;
 import uk.dioxic.mgenerate.common.annotation.OperatorBuilder;
+import uk.dioxic.mgenerate.common.exception.TransformerException;
 import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.bson.assertions.Assertions.notNull;
 
@@ -76,13 +76,16 @@ public class OperatorFactory {
         }
     }
 
-    public static Resolvable create(String operatorKey, Document doc) {
-        notNull("document", doc);
+    public static Resolvable create(String operatorKey, Object object) {
+        notNull("document", object);
         notNull("operatorKey", operatorKey);
 
-        return Optional.ofNullable(createBuilder(operatorKey))
-                .map(b -> b.document(doc).build())
-                .orElse(null);
+        ResolvableBuilder builder = createBuilder(operatorKey);
+
+        if (object instanceof Document) {
+            return builder.document((Document) object).build();
+        }
+        return builder.singleValue(object).build();
     }
 
     private static ResolvableBuilder createBuilder(String operatorKey) {
@@ -91,7 +94,7 @@ public class OperatorFactory {
                 Class<ResolvableBuilder> builderClass = builderMap.get(getOperatorKey(operatorKey));
                 return builderClass.getConstructor(TransformerRegistry.class).newInstance(ReflectiveTransformerRegistry.getInstance());
             }
-            return null;
+            throw new TransformerException("no builder found for " + operatorKey);
         }
         catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);

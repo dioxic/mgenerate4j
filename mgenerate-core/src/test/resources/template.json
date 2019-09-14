@@ -222,5 +222,8 @@
     }
   },
   "point": "$point",
-  "lineString": "$lineString"
+  "lineString": "$lineString",
+  "names": {
+    "$join": ["bob","mary","kevin"]
+  }
 }

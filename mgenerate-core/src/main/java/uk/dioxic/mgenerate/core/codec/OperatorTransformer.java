@@ -17,8 +17,8 @@ public class OperatorTransformer implements Transformer {
             if (doc.size() == 1) {
                 Map.Entry<String, Object> entry = doc.entrySet().iterator().next();
                 String key = entry.getKey();
-                if (entry.getValue() instanceof Document && OperatorFactory.canHandle(key)) {
-                    return OperatorFactory.create(key, (Document) entry.getValue());
+                if (OperatorFactory.canHandle(key)) {
+                    return OperatorFactory.create(key, entry.getValue());
                 }
             }
         }

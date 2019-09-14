@@ -68,6 +68,8 @@ public class OperatorBuilderPoet implements Poet {
 
         addDocumentMethod(classBuilder, properties);
 
+        addSingleValueMethod(classBuilder, properties);
+
         MethodSpec validateMethod = addValidateMethod(classBuilder, properties);
 
         addBuildMethod(classBuilder, properties, validateMethod);
@@ -193,6 +195,33 @@ public class OperatorBuilderPoet implements Poet {
             }
             else {
                 builder.addStatement("$L = $T.wrap(document.get($S),$T.class,$L)", property.getName(), Wrapper.class, property.getName(), property.getRootTypeName(), TRANSFORMER_REGISTRY);
+            }
+        }
+
+        builder.addStatement("return this");
+
+        classBuilder.addMethod(builder.build());
+    }
+
+    private void addSingleValueMethod(TypeSpec.Builder classBuilder, List<OperatorPropertyModel> properties) {
+        AnnotationSpec suppressUnchecked = AnnotationSpec.builder(SuppressWarnings.class)
+                .addMember("value", "$S", "unchecked")
+                .build();
+
+        MethodSpec.Builder builder = MethodSpec.methodBuilder("singleValue")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                .addAnnotation(Override.class)
+                .addAnnotation(suppressUnchecked)
+                .addParameter(Object.class, "value")
+                .returns(ClassName.get(packageName, className));
+
+        for (OperatorPropertyModel property : properties) {
+            if (property.isRequired()) {
+                if (property.isRootTypeNameParameterized()) {
+                    builder.addStatement("$L = ($T)$T.wrap(value,$T.class,$L)", property.getName(), Resolvable.class, Wrapper.class, property.getRootTypeNameErasure(), TRANSFORMER_REGISTRY);
+                } else {
+                    builder.addStatement("$L = $T.wrap(value,$T.class,$L)", property.getName(), Wrapper.class, property.getRootTypeName(), TRANSFORMER_REGISTRY);
+                }
             }
         }
 

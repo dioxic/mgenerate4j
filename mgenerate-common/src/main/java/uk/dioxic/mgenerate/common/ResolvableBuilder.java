@@ -8,4 +8,6 @@ public interface ResolvableBuilder<T extends Resolvable> {
 
     ResolvableBuilder<T> document(Document document);
 
+    ResolvableBuilder<T> singleValue(Object value);
+
 }
