@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class Template {
 
-    private static final JsonWriterSettings DEFAULT_JWS = JsonWriterSettings.builder().indent(true).build();
+    private static final JsonWriterSettings DEFAULT_JWS = JsonWriterSettings.builder().build();
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final TemplateCodec templateCodec;
     private final Document document;
@@ -93,9 +93,12 @@ public class Template {
 
     public RawBsonDocument generateOne() {
         BasicOutputBuffer buffer = new BasicOutputBuffer();
-        BsonWriter writer = new BsonBinaryWriter(buffer);
-        templateCodec.encode(writer, this, EncoderContext.builder().build());
+        encode(new BsonBinaryWriter(buffer));
         return new RawBsonDocument(buffer.getInternalBuffer());
+    }
+
+    public void encode(BsonWriter writer) {
+        templateCodec.encode(writer, this, EncoderContext.builder().build());
     }
 
     /**
