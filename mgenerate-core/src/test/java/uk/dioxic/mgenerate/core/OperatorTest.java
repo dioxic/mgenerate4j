@@ -18,6 +18,7 @@ import uk.dioxic.mgenerate.core.operator.numeric.NumberDecimalBuilder;
 import uk.dioxic.mgenerate.core.operator.numeric.NumberInt;
 import uk.dioxic.mgenerate.core.operator.numeric.NumberIntBuilder;
 import uk.dioxic.mgenerate.core.operator.sequence.DateSequence;
+import uk.dioxic.mgenerate.core.operator.sequence.DateSequenceBuilder;
 import uk.dioxic.mgenerate.core.operator.text.Character;
 import uk.dioxic.mgenerate.core.operator.text.*;
 import uk.dioxic.mgenerate.core.operator.time.*;
@@ -134,7 +135,7 @@ class OperatorTest {
         long step = 5;
         ChronoUnit chrono = ChronoUnit.MINUTES;
 
-        DateSequence inc = new DateIncBuilder(ReflectiveTransformerRegistry.getInstance())
+        DateSequence inc = new DateSequenceBuilder(ReflectiveTransformerRegistry.getInstance())
                 .start(start)
                 .chronoUnit(chrono)
                 .step(step)
