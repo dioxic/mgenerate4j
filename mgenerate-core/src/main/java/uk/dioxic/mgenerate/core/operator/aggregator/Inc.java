@@ -5,6 +5,8 @@ import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 
+import java.time.LocalDateTime;
+
 @Operator
 public class Inc implements Resolvable<Number> {
 
@@ -16,19 +18,19 @@ public class Inc implements Resolvable<Number> {
 
     @Override
     public Number resolve() {
-        Number in = input.resolve();
-        Number s = step.resolve();
+        Number input = this.input.resolve();
+        Number step = this.step.resolve();
 
-        if (Double.class.isAssignableFrom(in.getClass())) {
-            return in.doubleValue() + s.doubleValue();
+        if (Double.class.isAssignableFrom(input.getClass())) {
+            return input.doubleValue() + step.doubleValue();
         }
-        if (Long.class.isAssignableFrom(in.getClass())) {
-            return in.longValue() + s.longValue();
+        if (Long.class.isAssignableFrom(input.getClass())) {
+            return input.longValue() + step.longValue();
         }
-        if (Integer.class.isAssignableFrom(in.getClass())) {
-            return in.intValue() + s.intValue();
+        if (Integer.class.isAssignableFrom(input.getClass())) {
+            return input.intValue() + step.intValue();
         }
 
-        return null;
+        throw new UnsupportedOperationException("unsupported $inc : { input: " + input.getClass() + ", step: " + input.getClass() + " }");
     }
 }
