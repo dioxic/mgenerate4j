@@ -19,6 +19,8 @@ import uk.dioxic.mgenerate.core.operator.numeric.NumberInt;
 import uk.dioxic.mgenerate.core.operator.numeric.NumberIntBuilder;
 import uk.dioxic.mgenerate.core.operator.sequence.DateSequence;
 import uk.dioxic.mgenerate.core.operator.sequence.DateSequenceBuilder;
+import uk.dioxic.mgenerate.core.operator.sequence.IntSequence;
+import uk.dioxic.mgenerate.core.operator.sequence.IntSequenceBuilder;
 import uk.dioxic.mgenerate.core.operator.text.Character;
 import uk.dioxic.mgenerate.core.operator.text.*;
 import uk.dioxic.mgenerate.core.operator.time.*;
@@ -103,25 +105,9 @@ class OperatorTest {
         int start = 3;
         int step = 2;
 
-        Sequence seq = new SequenceBuilder(ReflectiveTransformerRegistry.getInstance())
+        IntSequence seq = new IntSequenceBuilder(ReflectiveTransformerRegistry.getInstance())
                 .start(start)
                 .step(step)
-                .build();
-
-        assertThat(seq.resolve()).as("check starting value").isEqualTo(start);
-        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step);
-        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step + step);
-    }
-
-    @Test
-    void seqThreadLocal() {
-        int start = 3;
-        int step = 2;
-
-        Sequence seq = new SequenceBuilder(ReflectiveTransformerRegistry.getInstance())
-                .start(start)
-                .step(step)
-                .threadLocal(true)
                 .build();
 
         assertThat(seq.resolve()).as("check starting value").isEqualTo(start);
