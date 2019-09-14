@@ -216,7 +216,7 @@ public class OperatorBuilderPoet implements Poet {
                 .returns(ClassName.get(packageName, className));
 
         for (OperatorPropertyModel property : properties) {
-            if (property.isRequired()) {
+            if (property.isPrimary() || property.isRequired() || properties.size() == 1) {
                 if (property.isRootTypeNameParameterized()) {
                     builder.addStatement("$L = ($T)$T.wrap(value,$T.class,$L)", property.getName(), Resolvable.class, Wrapper.class, property.getRootTypeNameErasure(), TRANSFORMER_REGISTRY);
                 } else {
