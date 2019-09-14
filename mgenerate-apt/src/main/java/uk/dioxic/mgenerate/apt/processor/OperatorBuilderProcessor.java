@@ -16,6 +16,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,10 @@ public class OperatorBuilderProcessor extends AbstractProcessor {
                         poet.generate(writer);
                     }
                 } catch (Exception e) {
-                    this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
+                    String stacktrace = Arrays.stream(e.getStackTrace())
+                            .map(StackTraceElement::toString)
+                            .collect(Collectors.joining("\n"));
+                    this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage() + "\n" + stacktrace);
                 }
             }
         }
