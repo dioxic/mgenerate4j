@@ -1,59 +1,79 @@
 package uk.dioxic.mgenerate.core;
 
-import org.apache.commons.cli.ParseException;
-import uk.dioxic.mgenerate.core.exception.CliArgumentException;
+import org.bson.BsonWriter;
+import org.bson.json.JsonWriter;
+import org.bson.json.JsonWriterSettings;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
+import uk.dioxic.mgenerate.core.operator.OperatorFactory;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Files;
-import java.util.stream.Stream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.Callable;
 
-public class Main {
+@Command(name = "mgenerate")
+public class MainNew implements Callable<Integer> {
 
-    public static void main(String[] args) throws IOException, ParseException, CliArgumentException {
-
-        CliOptions cli = new CliOptions(args);
-
-        Writer writer = null;
-
-        Long start = System.currentTimeMillis();
-
-        if (cli.isConsoleOutput()) {
-            writer = new OutputStreamWriter(System.out);
-        }
-        else if (cli.isSingleFileOuput()) {
-            System.out.println("Writing to " + cli.getOutputPath());
-            writer = Files.newBufferedWriter(cli.getOutputPath());
-        }
-
-        for (Template template : cli.getTemplates()) {
-
-//            if (cli.isMultiFileOutput()) {
-//                Path outputFile = cli.getOutputPath().resolve(template.getName());
-//                System.out.println("Writing to " + outputFile);
-//                writer = Files.newBufferedWriter(outputFile);
-//            }
-            try (PrintWriter pw = new PrintWriter(writer)) {
-                Stream.generate(template::toJson)
-                        .limit(cli.getNumber())
-                        .forEach(pw::println);
-            }
-            if (cli.isMultiFileOutput()) {
-                writer.close();
-            }
-        }
-
-        if (cli.isSingleFileOuput()) {
-            writer.close();
-        }
-
-        Long end = System.currentTimeMillis();
-
-        Long speed = Double.valueOf(cli.getNumber().doubleValue() * 1000 / (end - start)).longValue();
-        System.out.printf("Producting %s documents took %sms (%s docs/s)%n", cli.getNumber(), end - start, speed);
+    static {
+        // add mgenerate operators
+        OperatorFactory.addBuilders("org.mongodb.etl.operator");
     }
 
+    @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
+    private boolean helpRequested = false;
+
+    @Option(names = {"-o", "--out"}, description = "output file path")
+    private Path output;
+
+    //@Option(names = {"--type"}, description = "the output format, either json or bson (default: ${DEFAULT-VALUE})", defaultValue = "json")
+    //private String type;
+
+    @Option(names = {"-n", "--number"}, description = "number of documents to generate (default: ${DEFAULT-VALUE})", defaultValue = "10")
+    private Integer number;
+
+    @Parameters(paramLabel = "TEMPLATE", description = "template file path")
+    private Template template;
+
+    public static void main(String[] args) {
+        CommandLine cl = new CommandLine(new MainNew());
+        cl.registerConverter(Template.class, s -> Template.from(Paths.get(s)));
+        System.exit(cl.execute(args));
+    }
+
+    @Override
+    public Integer call() {
+
+        if (output != null) {
+            //Use try-with-resource to get auto-closeable writer instance
+            try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(output))) {
+
+                for (int i = 0; i < number; i++) {
+                    writer.println(template.toJson());
+                }
+
+            } catch (IOException e) {
+                System.out.println("output file [" + output.toString() + "] not writable");
+                return 1;
+            }
+        }
+        else {
+            try (PrintWriter writer = new PrintWriter(System.out)) {
+                for (int i = 0; i < number; i++) {
+                    writer.println(template.toJson());
+                }
+            }
+
+
+            //PrintWriter consoleWriter = new PrintWriter(System.out);
+
+            //consoleWriter.flush();
+        }
+
+        return 0;
+    }
 
 }
