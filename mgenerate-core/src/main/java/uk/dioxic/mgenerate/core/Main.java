@@ -1,8 +1,5 @@
 package uk.dioxic.mgenerate.core;
 
-import org.bson.BsonWriter;
-import org.bson.json.JsonWriter;
-import org.bson.json.JsonWriterSettings;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -16,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.Callable;
 
 @Command(name = "mgenerate")
-public class MainNew implements Callable<Integer> {
+public class Main implements Callable<Integer> {
 
     static {
         // add mgenerate operators
@@ -39,22 +36,19 @@ public class MainNew implements Callable<Integer> {
     private Template template;
 
     public static void main(String[] args) {
-        CommandLine cl = new CommandLine(new MainNew());
+        CommandLine cl = new CommandLine(new Main());
         cl.registerConverter(Template.class, s -> Template.from(Paths.get(s)));
         System.exit(cl.execute(args));
     }
 
     @Override
     public Integer call() {
-
         if (output != null) {
             //Use try-with-resource to get auto-closeable writer instance
             try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(output))) {
-
                 for (int i = 0; i < number; i++) {
                     writer.println(template.toJson());
                 }
-
             } catch (IOException e) {
                 System.out.println("output file [" + output.toString() + "] not writable");
                 return 1;
@@ -66,11 +60,6 @@ public class MainNew implements Callable<Integer> {
                     writer.println(template.toJson());
                 }
             }
-
-
-            //PrintWriter consoleWriter = new PrintWriter(System.out);
-
-            //consoleWriter.flush();
         }
 
         return 0;
