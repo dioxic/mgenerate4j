@@ -14,7 +14,7 @@ public class Character implements Resolvable<java.lang.Character>, Initializable
     private static final String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String NUMERIC = "0123456789";
 
-    @OperatorProperty
+    @OperatorProperty(primary = true)
     String pool;
 
     @OperatorProperty

@@ -9,7 +9,7 @@ import uk.dioxic.mgenerate.core.operator.numeric.NumberInt;
 @Operator
 public class Timestamp implements Resolvable<BsonTimestamp> {
 
-    @OperatorProperty
+    @OperatorProperty(primary = true)
     Resolvable<Integer> t = new NumberInt();
 
     @OperatorProperty

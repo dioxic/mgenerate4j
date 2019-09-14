@@ -12,7 +12,7 @@ public class StringOp implements Resolvable<String> {
     @OperatorProperty
     java.lang.String pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()[]";
 
-    @OperatorProperty
+    @OperatorProperty(primary = true)
     Resolvable<Integer> length = Wrapper.wrap(5);
 
     @Override
