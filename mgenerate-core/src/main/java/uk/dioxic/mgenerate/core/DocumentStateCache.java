@@ -97,7 +97,7 @@ public class DocumentStateCache {
                     }
                 }
                 // make sure anything stored in the value cache is fully hydrated
-                v = BsonUtil.recursiveResolve(v);
+                v = Resolvable.recursiveResolveObject(v);
                 BsonUtil.map(valueCache, coordinates, v);
                 logger.trace("CREATING state entry for {} = {}", coordinates, v);
             }

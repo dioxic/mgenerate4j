@@ -3,7 +3,6 @@ package uk.dioxic.mgenerate.core.util;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.mgenerate.common.Resolvable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,35 +13,34 @@ public class BsonUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(BsonUtil.class);
 
+    //    public static Object recursiveResolve(Object o) {
+//        //logger.trace("recursively resolving {}", o.toString());
+//        if (o instanceof Resolvable) {
+//            Resolvable r = (Resolvable) o;
+//            o = r.resolve();
+//        }
+//
+//        if (o instanceof Document) {
+//            Document doc = new Document();
+//            ((Document) o).forEach((k, v) -> {
+//                v = recursiveResolve(v);
+//                doc.put(k, v);
+//            });
+//            return doc;
+//        }
+//        else if (o instanceof List) {
+//            List<Object> l = new ArrayList<>((List<?>)o);
+//
+//            for (int i=0; i< l.size(); i++) {
+//                l.set(i, recursiveResolve(l.get(i)));
+//            }
+//
+//            return l;
+//        }
+//        return o;
+//    }
     public static Object resolveCoordinate(String coordinates, Object input) {
         return resolveCoordinate(coordinates, input, null, false);
-    }
-
-    public static Object recursiveResolve(Object o) {
-        //logger.trace("recursively resolving {}", o.toString());
-        if (o instanceof Resolvable) {
-            Resolvable r = (Resolvable) o;
-            Object res = recursiveResolve(r.resolve());
-            return res;
-        }
-        else if (o instanceof Document) {
-            Document doc = new Document();
-            ((Document) o).forEach((k, v) -> {
-                v = recursiveResolve(v);
-                doc.put(k, v);
-            });
-            return doc;
-        }
-        else if (o instanceof List) {
-            List<Object> l = new ArrayList<>((List<?>)o);
-
-            for (int i=0; i< l.size(); i++) {
-                l.set(i, recursiveResolve(l.get(i)));
-            }
-
-            return l;
-        }
-        return o;
     }
 
     private static Object resolveCoordinate(String coordinates, Object input, Object result, boolean hasList) {

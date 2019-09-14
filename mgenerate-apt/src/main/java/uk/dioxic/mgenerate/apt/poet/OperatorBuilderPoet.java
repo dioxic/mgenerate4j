@@ -120,8 +120,9 @@ public class OperatorBuilderPoet implements Poet {
             }
 
             if (!property.isResolvableType()) {
-                requiredBlock.addStatement("obj.$L = $L.resolve()",
+                requiredBlock.addStatement("obj.$L = $T.recursiveResolve($L)",
                         property.getName(),
+                        Resolvable.class,
                         property.getName());
             }
             else {
