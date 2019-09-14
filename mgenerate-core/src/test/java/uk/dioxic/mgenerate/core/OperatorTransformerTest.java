@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.OperatorTransformer;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OperatorTransformerTest {
 

@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FakerUtil {
 
-	private static final Faker faker = Faker.instance(Locale.UK);
+	private static final Faker faker = Faker.instance(Locale.getDefault());
 
 	public static Faker instance() {
 		return faker;

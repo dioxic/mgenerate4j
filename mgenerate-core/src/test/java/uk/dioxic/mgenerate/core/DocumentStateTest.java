@@ -1,16 +1,14 @@
 package uk.dioxic.mgenerate.core;
 
-import org.bson.Document;
 import org.bson.json.JsonWriterSettings;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
 
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DocumentStateTest {
 

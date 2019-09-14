@@ -1,8 +1,8 @@
 package uk.dioxic.mgenerate.apt.processor;
 
-import uk.dioxic.mgenerate.common.annotation.Pojo;
 import uk.dioxic.mgenerate.apt.poet.Poet;
 import uk.dioxic.mgenerate.apt.poet.PojoGeneratorPoet;
+import uk.dioxic.mgenerate.common.annotation.Pojo;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;

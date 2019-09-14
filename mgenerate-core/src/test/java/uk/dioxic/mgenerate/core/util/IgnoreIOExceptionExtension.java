@@ -1,9 +1,9 @@
 package uk.dioxic.mgenerate.core.util;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
+
+import java.io.IOException;
 
 public class IgnoreIOExceptionExtension implements TestExecutionExceptionHandler {
 

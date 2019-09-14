@@ -4,7 +4,6 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.common.State;
 
 import java.util.ArrayList;
 import java.util.HashMap;

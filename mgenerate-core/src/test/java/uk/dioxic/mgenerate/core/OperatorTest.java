@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class OperatorTest {
+class OperatorTest {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
-    public void array() {
+    void array() {
         String of = "turnip";
         int number = 4;
 
@@ -52,7 +52,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void choose() {
+    void choose() {
         List<String> from = Lists.newArrayList("fish", "bread", "turnip");
         List<Integer> weights = Lists.newArrayList(1, 2, 3);
 
@@ -66,7 +66,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void arrayChoose() {
+    void arrayChoose() {
         List<String> from = Lists.newArrayList("fish", "bread", "turnip");
 
         NumberInt number = new NumberIntBuilder(ReflectiveTransformerRegistry.getInstance())
@@ -92,12 +92,12 @@ public class OperatorTest {
     }
 
     @Test
-    public void objectId() {
+    void objectId() {
         assertThat(new ObjectIdBuilder(ReflectiveTransformerRegistry.getInstance()).build().resolve()).isInstanceOf(ObjectId.class);
     }
 
     @Test
-    public void seq() {
+    void seq() {
         int start = 3;
         int step = 2;
 
@@ -112,7 +112,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void seqThreadLocal() {
+    void seqThreadLocal() {
         int start = 3;
         int step = 2;
 
@@ -128,7 +128,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void dateInc() {
+    void dateInc() {
         LocalDateTime start = LocalDateTime.parse("1900-01-01T00:00:00");
         long step = 5;
         ChronoUnit chrono = ChronoUnit.MINUTES;
@@ -145,7 +145,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void join() {
+    void join() {
         String sep = "|";
         List<String> array = Lists.newArrayList("fish", "gofer", "beaver");
 
@@ -155,7 +155,16 @@ public class OperatorTest {
     }
 
     @Test
-    public void timestamp() {
+    void nonDocumentOperatorValue() {
+        List<String> array = Lists.newArrayList("fish", "gofer", "beaver");
+
+        Join join = new JoinBuilder(ReflectiveTransformerRegistry.getInstance()).array(array).build();
+
+        assertThat(join.resolve()).as("check concaternation").isEqualTo("fishgoferbeaver");
+    }
+
+    @Test
+    void timestamp() {
         int i = 333;
         Timestamp timestamp = new TimestampBuilder(ReflectiveTransformerRegistry.getInstance()).i(i).build();
 
@@ -163,7 +172,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void numberDecimal() {
+    void numberDecimal() {
         long min = -20L;
         long max = 25L;
         int fixed = 2;
@@ -175,7 +184,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void pick() {
+    void pick() {
         List<String> array = Lists.newArrayList("fish", "turtle", "badger");
         int element = 2;
 
@@ -185,7 +194,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void character() {
+    void character() {
         String pool = "ABCDE04[]";
 
         Character character = new CharacterBuilder(ReflectiveTransformerRegistry.getInstance()).pool(pool).build();
@@ -205,7 +214,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void string() {
+    void string() {
         String pool = "ABCDE04[]";
         int length = 7;
 
@@ -221,7 +230,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void month() {
+    void month() {
         Month month = new MonthBuilder(ReflectiveTransformerRegistry.getInstance()).build();
         assertThat(month.resolve()).as("full month").isNotNull();
         logger.debug(month.resolve());
@@ -232,7 +241,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void weekday() {
+    void weekday() {
         Weekday weekday = new WeekdayBuilder(ReflectiveTransformerRegistry.getInstance()).build();
         assertThat(weekday.resolve()).as("full weekday").isNotNull();
         logger.debug(weekday.resolve());
@@ -243,7 +252,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void url() {
+    void url() {
         String domain = "www.socialradar.com";
         String path = "images";
 
@@ -265,7 +274,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void hash() {
+    void hash() {
         Hash hash = new HashBuilder(ReflectiveTransformerRegistry.getInstance()).input("canibal halibuts").build();
         assertThat(hash.resolve()).as("INT32").isEqualTo(-855357176);
 
@@ -278,7 +287,7 @@ public class OperatorTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void polygon() {
+    void polygon() {
         int corners = 5;
         List<Number> long_lim = asList(0d, 100d);
         List<Number> lat_lim = asList(-200, 0);
@@ -302,7 +311,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void coordinates() {
+    void coordinates() {
         List<Number> long_lim = asList(0d, 10d);
         List<Number> lat_lim = asList(-20, 0);
 
@@ -313,7 +322,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void point() {
+    void point() {
         List<Number> long_lim = asList(0d, 10d);
         List<Number> lat_lim = asList(-20, 0);
 
@@ -328,7 +337,7 @@ public class OperatorTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void lineString() {
+    void lineString() {
         List<Number> long_lim = asList(0d, 10d);
         List<Number> lat_lim = asList(-20, 0);
 
@@ -342,7 +351,7 @@ public class OperatorTest {
     }
 
     @Test
-    public void sentence() {
+    void sentence() {
         Sentence sentence = new SentenceBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
         assertThat(sentence.resolve()).isNotNull();

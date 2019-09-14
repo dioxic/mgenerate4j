@@ -1,6 +1,5 @@
 package uk.dioxic.mgenerate.core;
 
-import org.bson.Document;
 import org.bson.codecs.Codec;
 import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.OperatorCodec;
 import uk.dioxic.mgenerate.core.operator.internet.Email;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
 
 import java.io.StringWriter;
 import java.net.URISyntaxException;
@@ -20,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ParsingTest {
+class ParsingTest {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -29,7 +27,7 @@ public class ParsingTest {
             .build();
 
     @Test
-    public void encoderTest() {
+    void encoderTest() {
         Codec<Resolvable> codec = new OperatorCodec();
         Email email = new Email();
 
@@ -39,7 +37,7 @@ public class ParsingTest {
     }
 
     @Test
-    public void documentTest() throws URISyntaxException {
+    void documentTest() throws URISyntaxException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("template.json").toURI()));
         logger.debug(template.getDocument().toString());
 
@@ -49,7 +47,7 @@ public class ParsingTest {
 
     @Test
     //@ExtendWith(TimingExtension.class)
-    public void performanceTest() throws URISyntaxException {
+    void performanceTest() throws URISyntaxException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("bson-test.json").toURI()));
         List<String> results = Stream.generate(template::toJson)
                 .limit(100)
@@ -59,7 +57,7 @@ public class ParsingTest {
         results.stream().findFirst().ifPresent(logger::debug);
     }
 
-    protected <T> String encode(T source, Codec<T> codec) {
+    <T> String encode(T source, Codec<T> codec) {
         StringWriter stringWriter = new StringWriter();
         JsonWriter writer = new JsonWriter(stringWriter, jws);
 
