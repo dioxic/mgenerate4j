@@ -2,7 +2,6 @@ package uk.dioxic.mgenerate.core.operator.sequence;
 
 import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 

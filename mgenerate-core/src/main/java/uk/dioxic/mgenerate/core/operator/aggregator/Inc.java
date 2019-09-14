@@ -5,8 +5,6 @@ import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 
-import java.time.LocalDateTime;
-
 @Operator
 public class Inc implements Resolvable<Number> {
 
