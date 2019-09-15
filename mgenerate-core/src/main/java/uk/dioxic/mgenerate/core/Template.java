@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.TemplateCodec;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
+import uk.dioxic.mgenerate.core.util.DocumentUtil;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -57,7 +57,7 @@ public class Template {
     public Template(Document template) {
         this.templateCodec = new TemplateCodec();
         this.document = template;
-        this.dotMap = BsonUtil.flatMap(template);
+        this.dotMap = DocumentUtil.flatMap(template);
         this.resolverCoordinateMap = new HashMap<>();
         dotMap.forEach((k, v) -> {
             if (v instanceof Resolvable) {

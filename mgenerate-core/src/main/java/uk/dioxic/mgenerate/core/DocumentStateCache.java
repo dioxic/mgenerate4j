@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.exception.DocumentNotMappedException;
-import uk.dioxic.mgenerate.core.util.BsonUtil;
+import uk.dioxic.mgenerate.core.util.DocumentUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,11 +81,11 @@ public class DocumentStateCache {
                 v = template.get(coordinates);
                 if (v == null) {
                     String parentCoordinates = getNearestParent(coordinates);
-                    v = BsonUtil.coordinateLookup(coordinates.substring(parentCoordinates.length() + 1), get(parentCoordinates));
+                    v = DocumentUtil.coordinateLookup(coordinates.substring(parentCoordinates.length() + 1), get(parentCoordinates));
                 }
                 // make sure anything stored in the value cache is fully hydrated
                 v = Resolvable.recursiveResolveObject(v);
-                BsonUtil.flatMap(valueCache, coordinates, v);
+                DocumentUtil.flatMap(valueCache, coordinates, v);
                 logger.trace("CREATING state entry for {} = {}", coordinates, v);
             }
             logger.trace("'{}' = {}", coordinates, v);

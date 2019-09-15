@@ -9,14 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BsonUtil {
+public class DocumentUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(BsonUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(DocumentUtil.class);
 
     public static Object coordinateLookup(String coordinates, Object input) {
         return coordinateLookup(coordinates, input, null, false);
     }
 
+    @SuppressWarnings("unchecked")
     private static Object coordinateLookup(String coordinates, Object input, Object result, boolean hasList) {
         String root;
         String childCoordinates;
@@ -36,8 +37,8 @@ public class BsonUtil {
             }
         }
 
-        if (input instanceof List) {
-            List<?> list = (List) input;
+        if (input instanceof Iterable) {
+            Iterable<?> list = (Iterable) input;
             List<?> resList = (List) result;
             if (resList == null) {
                 resList = new ArrayList<>();
@@ -84,9 +85,9 @@ public class BsonUtil {
     public static void flatMap(Map<String, Object> flatMap, String key, Object o) {
         if (o instanceof Map) {
             ((Map) o).forEach((k, v) -> flatMap(flatMap, key + "." + k, v));
-        } else if (o instanceof List) {
+        } else if (o instanceof Iterable) {
             int counter = 0;
-            for (Object item : (List) o) {
+            for (Object item : (Iterable) o) {
                 flatMap(flatMap, key + "." + counter++, item);
             }
         }
@@ -103,9 +104,9 @@ public class BsonUtil {
     public static void flatMap(Map<String, Object> flatMap, Object o) {
         if (o instanceof Map) {
             ((Map<String, Object>) o).forEach((k, v) -> flatMap(flatMap, k, v));
-        } else if (o instanceof List) {
+        } else if (o instanceof Iterable) {
             int counter = 0;
-            for (Object item : (List) o) {
+            for (Object item : (Iterable) o) {
                 flatMap(flatMap, Integer.toString(counter++), item);
             }
         }

@@ -1,6 +1,5 @@
 package uk.dioxic.mgenerate.core.util;
 
-import org.assertj.core.api.Assertions;
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +9,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BsonUtilTest {
+class DocumentUtilTest {
 
     @Test
     void flatMap_NoEmbedding() {
@@ -18,7 +17,7 @@ class BsonUtilTest {
         document.put("name", "bob");
         document.put("age", 20);
 
-        Map<String, Object> flatMap = BsonUtil.flatMap(document);
+        Map<String, Object> flatMap = DocumentUtil.flatMap(document);
 
         assertThat(flatMap).containsEntry("name", "bob");
         assertThat(flatMap).containsEntry("age", 20);
@@ -29,7 +28,7 @@ class BsonUtilTest {
         List<Object> array1 = Arrays.asList("kevin", "perry");
         Document document = new Document("array", array1);
 
-        Map<String, Object> actual = BsonUtil.flatMap(document);
+        Map<String, Object> actual = DocumentUtil.flatMap(document);
 
         assertThat(actual).containsEntry("array", array1);
         assertThat(actual).containsEntry("array.0", "kevin");
@@ -44,7 +43,7 @@ class BsonUtilTest {
 
         Document document = new Document("array", array1);
 
-        Map<String, Object> actual = BsonUtil.flatMap(document);
+        Map<String, Object> actual = DocumentUtil.flatMap(document);
 
         assertThat(actual).containsEntry("array", array1);
         assertThat(actual).containsEntry("array.0", "bob");
@@ -62,7 +61,7 @@ class BsonUtilTest {
         document.put("subdoc", d1);
         document.put("name", "gary");
 
-        Map<String, Object> actual = BsonUtil.flatMap(document);
+        Map<String, Object> actual = DocumentUtil.flatMap(document);
 
         assertThat(actual).containsEntry("name", "gary");
         assertThat(actual).containsEntry("subdoc", d1);
@@ -76,15 +75,15 @@ class BsonUtilTest {
         document.put("name", "bob");
         document.put("age", 20);
 
-        assertThat(BsonUtil.coordinateLookup("name", document)).isEqualTo("bob");
-        assertThat(BsonUtil.coordinateLookup("age", document)).isEqualTo(20);
+        assertThat(DocumentUtil.coordinateLookup("name", document)).isEqualTo("bob");
+        assertThat(DocumentUtil.coordinateLookup("age", document)).isEqualTo(20);
     }
 
     @Test
     void coordinateLookup_EmbeddedSingleField() {
         Document document = new Document("subdoc", new Document("embedded", "bob"));
 
-        assertThat(BsonUtil.coordinateLookup("subdoc.embedded", document)).isEqualTo("bob");
+        assertThat(DocumentUtil.coordinateLookup("subdoc.embedded", document)).isEqualTo("bob");
     }
 
     @Test
@@ -92,7 +91,7 @@ class BsonUtilTest {
         List<Object> array = Arrays.asList("kevin", "perry");
         Document document = new Document("array", array);
 
-        assertThat(BsonUtil.coordinateLookup("array", document)).isEqualTo(array);
+        assertThat(DocumentUtil.coordinateLookup("array", document)).isEqualTo(array);
     }
 
     @Test
@@ -105,7 +104,7 @@ class BsonUtilTest {
         );
         Document document = new Document("array", array);
 
-        Object actual = BsonUtil.coordinateLookup("array.name", document);
+        Object actual = DocumentUtil.coordinateLookup("array.name", document);
 
         assertThat(actual).isInstanceOf(List.class);
         assertThat((List) actual).containsExactlyInAnyOrder("kevin", "bob", "perry");
@@ -123,7 +122,7 @@ class BsonUtilTest {
         );
         Document document = new Document("array", array);
 
-        Object actual = BsonUtil.coordinateLookup("array.people.name", document);
+        Object actual = DocumentUtil.coordinateLookup("array.people.name", document);
 
         assertThat(actual).isInstanceOf(List.class);
         assertThat((List) actual).containsExactlyInAnyOrder("kevin", "bob", "perry");
