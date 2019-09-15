@@ -11,6 +11,7 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.OperatorCodec;
 import uk.dioxic.mgenerate.core.operator.internet.Email;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -37,7 +38,7 @@ class ParsingTest {
     }
 
     @Test
-    void documentTest() throws URISyntaxException {
+    void documentTest() throws URISyntaxException, IOException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("template.json").toURI()));
         logger.debug(template.getDocument().toString());
 
@@ -47,7 +48,7 @@ class ParsingTest {
 
     @Test
     //@ExtendWith(TimingExtension.class)
-    void performanceTest() throws URISyntaxException {
+    void performanceTest() throws URISyntaxException, IOException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("bson-test.json").toURI()));
         List<String> results = Stream.generate(template::toJson)
                 .limit(100)

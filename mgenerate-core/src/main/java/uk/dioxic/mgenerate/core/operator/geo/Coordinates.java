@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.operator.location;
+package uk.dioxic.mgenerate.core.operator.geo;
 
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;

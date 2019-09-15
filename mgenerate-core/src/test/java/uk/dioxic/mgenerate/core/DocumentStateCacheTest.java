@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.List;
@@ -19,7 +20,7 @@ class DocumentStateCacheTest {
             .build();
 
     @Test
-    void get_Lookups() throws URISyntaxException {
+    void get_Lookups() throws URISyntaxException, IOException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("lookup-test.json").toURI()));
 
         String outJson = template.toJson(jws);
@@ -34,7 +35,7 @@ class DocumentStateCacheTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void get_AggregatedLookups() throws URISyntaxException {
+    void get_AggregatedLookups() throws URISyntaxException, IOException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test.json").toURI()));
 
         String outJson = template.toJson(jws);

@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,13 +37,13 @@ public class Template {
     private final Map<Resolvable, String> resolverCoordinateMap;
     private boolean stateCachingRequired = false;
 
-    public static Template from(Path templateFile) {
-        try {
-            String json = new String(Files.readAllBytes(templateFile), StandardCharsets.UTF_8);
-            return parse(json);
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
+    public static Template from(Path templateFile) throws IOException {
+        String json = new String(Files.readAllBytes(templateFile), StandardCharsets.UTF_8);
+        return parse(json);
+    }
+
+    public static Template from(String templateFile) throws IOException {
+        return from(Paths.get(templateFile));
     }
 
     public static Template parse(final String json) {

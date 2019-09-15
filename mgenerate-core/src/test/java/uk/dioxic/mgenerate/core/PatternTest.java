@@ -9,6 +9,7 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.resolver.PatternResolver;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
@@ -39,7 +40,7 @@ class PatternTest {
     }
 
     @Test
-    void dotNotationTest() throws URISyntaxException {
+    void dotNotationTest() throws URISyntaxException, IOException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test.json").toURI()));
 
         System.out.println(template.toJson());

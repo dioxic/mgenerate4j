@@ -15,7 +15,13 @@ public class FileUtil {
         if (Files.exists(path)) {
             if (Files.isDirectory(path)) {
                 return Files.walk(path)
-                        .map(Template::from)
+                        .map(templateFile -> {
+                            try {
+                                return Template.from(templateFile);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
                         .collect(Collectors.toList());
             }
             return Collections.singletonList(Template.from(path));

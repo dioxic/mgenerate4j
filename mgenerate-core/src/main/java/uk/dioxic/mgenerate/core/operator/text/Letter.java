@@ -12,10 +12,10 @@ public class Letter implements Resolvable<java.lang.Character>, Initializable {
     private static final String ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    private String pool;
-
     @OperatorProperty
     String casing;
+
+    private String pool;
 
     @Override
     public java.lang.Character resolve() {

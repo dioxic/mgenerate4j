@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.core.operator.core;
+package uk.dioxic.mgenerate.core.operator.numeric;
 
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;

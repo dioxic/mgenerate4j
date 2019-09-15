@@ -6,11 +6,11 @@ import uk.dioxic.mgenerate.common.annotation.Operator;
 import java.util.UUID;
 
 @Operator
-public class Guid implements Resolvable<String> {
+public class Uuid implements Resolvable<UUID> {
 
     @Override
-    public String resolve() {
-        return UUID.randomUUID().toString();
+    public UUID resolve() {
+        return UUID.randomUUID();
     }
 
 }

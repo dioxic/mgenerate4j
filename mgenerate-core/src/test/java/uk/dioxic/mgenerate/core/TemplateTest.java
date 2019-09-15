@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
@@ -17,7 +18,7 @@ class TemplateTest {
             .build();
 
     @Test
-    void templateTest() throws URISyntaxException {
+    void templateTest() throws URISyntaxException, IOException {
 
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("lookup-test.json").toURI()));
 
