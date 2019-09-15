@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
-public class TemplateTest {
+class TemplateTest {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
     private static JsonWriterSettings jws = JsonWriterSettings.builder()
@@ -17,7 +17,7 @@ public class TemplateTest {
             .build();
 
     @Test
-    public void templateTest() throws URISyntaxException {
+    void templateTest() throws URISyntaxException {
 
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("lookup-test.json").toURI()));
 

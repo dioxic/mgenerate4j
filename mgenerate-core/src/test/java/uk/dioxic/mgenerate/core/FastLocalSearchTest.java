@@ -12,12 +12,12 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FastLocalSearchTest {
+class FastLocalSearchTest {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
-    public void randomPoints() {
+    void randomPoints() {
         Coordinates coord = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance()).build();
         FlsUtil.Point[] points = Stream.generate(coord::resolve)
                 .limit(5)

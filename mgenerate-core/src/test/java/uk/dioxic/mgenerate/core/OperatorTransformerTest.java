@@ -7,10 +7,10 @@ import uk.dioxic.mgenerate.core.codec.OperatorTransformer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OperatorTransformerTest {
+class OperatorTransformerTest {
 
     @Test
-    public void createFaker() {
+    void createFaker() {
         OperatorTransformer transformer = new OperatorTransformer();
 
         Object object = transformer.transform("Dr. #{name.first_name} von #{name.last_name} esq.");
@@ -25,7 +25,7 @@ public class OperatorTransformerTest {
     }
 
     @Test
-    public void createSimpleOperator() {
+    void createSimpleOperator() {
         OperatorTransformer transformer = new OperatorTransformer();
 
         Object object = transformer.transform("$number");
@@ -36,7 +36,7 @@ public class OperatorTransformerTest {
     }
 
     @Test
-    public void createDocumentOperator() {
+    void createDocumentOperator() {
         OperatorTransformer transformer = new OperatorTransformer();
         Document args = new Document();
         args.put("min", 1);

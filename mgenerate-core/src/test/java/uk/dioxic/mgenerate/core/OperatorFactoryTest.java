@@ -8,10 +8,10 @@ import uk.dioxic.mgenerate.core.operator.OperatorFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OperatorFactoryTest {
+class OperatorFactoryTest {
 
     @Test
-    public void create_Resolvable_OperatorKeyExists() {
+    void create_Resolvable_OperatorKeyExists() {
         Resolvable resolvable = OperatorFactory.create("$objectid");
 
         assertThat(resolvable).as("not null").isNotNull();
@@ -19,7 +19,7 @@ public class OperatorFactoryTest {
     }
 
     @Test
-    public void create_Resolvable_OperatorWithDocument() {
+    void create_Resolvable_OperatorWithDocument() {
         Document doc = new Document("min", 1);
 
         Resolvable resolvable = OperatorFactory.create("$number", doc);
@@ -29,7 +29,7 @@ public class OperatorFactoryTest {
     }
 
     @Test
-    public void create_Null_OperatorKeyNotFound() {
+    void create_Null_OperatorKeyNotFound() {
         Resolvable resolvable = OperatorFactory.create("$xxx");
 
         assertThat(resolvable).as("is null").isNull();

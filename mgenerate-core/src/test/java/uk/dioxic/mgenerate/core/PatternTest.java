@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PatternTest {
+class PatternTest {
 
     private static final JsonWriterSettings jws = JsonWriterSettings.builder()
             .indent(true)
@@ -22,7 +22,7 @@ public class PatternTest {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
-    public void staticTemplateValues() {
+    void staticTemplateValues() {
         Resolvable lookup = new PatternResolver("${nested.a} fish #{name.name}", FakerUtil.instance());
         Document nested = new Document("a", 123);
         Document document = new Document();
@@ -39,7 +39,7 @@ public class PatternTest {
     }
 
     @Test
-    public void dotNotationTest() throws URISyntaxException {
+    void dotNotationTest() throws URISyntaxException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test.json").toURI()));
 
         System.out.println(template.toJson());
