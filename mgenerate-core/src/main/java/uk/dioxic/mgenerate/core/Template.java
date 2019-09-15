@@ -55,20 +55,23 @@ public class Template {
     }
 
     public Template(Document template) {
-        templateCodec = new TemplateCodec();
+        this.templateCodec = new TemplateCodec();
         this.document = template;
         this.dotMap = BsonUtil.flatMap(template);
-        resolverCoordinateMap = new HashMap<>();
+        this.resolverCoordinateMap = new HashMap<>();
         dotMap.forEach((k, v) -> {
             if (v instanceof Resolvable) {
                 resolverCoordinateMap.put((Resolvable) v, k);
             }
         });
-        logger.debug(this.toString());
     }
 
-    public Object getValue(String coordinates) {
+    public Object get(String coordinates) {
         return dotMap.get(coordinates);
+    }
+
+    public boolean containsKey(String coordinates) {
+        return dotMap.containsKey(coordinates);
     }
 
     public String getCoordinates(Resolvable resolvable) {

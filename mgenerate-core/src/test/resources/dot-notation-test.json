@@ -1,11 +1,13 @@
 {
   "allColours": "${ducks.colour}",
-  "favBooks": "${ducks.favourites.book.name}",
   "foodAndColours": {
     "$distinct": {
       "values": {
         "$concat": {
-          "values": [ "${ducks.favourites.food}", "${ducks.colour}" ]
+          "values": [
+            "${ducks.favourites.food}",
+            "${ducks.colour}"
+          ]
         }
       }
     }
@@ -16,18 +18,13 @@
     }
   },
   "minAge": {
-    "$min":{
+    "$min": {
       "values": "${ducks.age}"
     }
   },
   "avgAge": {
-    "$avg":{
+    "$avg": {
       "values": "${ducks.age}"
-    }
-  },
-  "duck1AgePlus1": {
-    "$inc": {
-      "input": "${ducks.0.age}"
     }
   },
   "last_check": {
@@ -35,11 +32,9 @@
       "values": "${ducks.last_check}"
     }
   },
-  "duck1": "${ducks.0.favourites.food.0}",
   "ducks": {
     "$array": {
       "of": {
-        "name": "$first",
         "age": {
           "$number": {
             "min": 1,
@@ -58,12 +53,12 @@
             ]
           }
         },
-				"last_check": {
-					"$ts": {
-						"min": "2019-01-01T00:00:00",
-						"max": "2019-09-01T00:00:00"
-					}
-				},        
+        "last_check": {
+          "$ts": {
+            "min": "2019-01-01T00:00:00",
+            "max": "2019-09-01T00:00:00"
+          }
+        },
         "favourites": {
           "food": {
             "$array": {
@@ -85,49 +80,7 @@
                 }
               }
             }
-          },
-          "pastime": [
-            "mounting",
-            "swimming"
-          ],
-          "book": [
-            {
-              "$choose": {
-                "from": [
-                  {
-                    "name": "#{book.title}",
-                    "author": "#{book.author}",
-                    "pages": {
-                      "$number": {
-                        "min": 1,
-                        "max": 600
-                      }
-                    }
-                  },
-                  {
-                    "name": "#{book.title}",
-                    "author": "#{book.author}",
-                    "pages": {
-                      "$number": {
-                        "min": 1,
-                        "max": 600
-                      }
-                    }
-                  },
-                  {
-                    "name": "#{book.title}",
-                    "author": "#{book.author}",
-                    "pages": {
-                      "$number": {
-                        "min": 1,
-                        "max": 600
-                      }
-                    }
-                  }                  
-                ]
-              }
-            }
-          ]
+          }
         }
       },
       "number": 4

@@ -26,10 +26,6 @@ public class DocumentStateCache {
     private DocumentStateCache() {
     }
 
-    public static DocumentState getLocalState() {
-        return instance.localState.get();
-    }
-
     public static void setEncodingContext(Template template) {
         getInstance().localState.get().setTemplate(template);
     }
@@ -46,7 +42,7 @@ public class DocumentStateCache {
         private Template template;
         private Map<String, Object> valueCache = new HashMap<>();
 
-        public void setTemplate(Template template) {
+        void setTemplate(Template template) {
             this.template = template;
             valueCache.clear();
         }
@@ -59,15 +55,11 @@ public class DocumentStateCache {
             String parent = getParentCoordinates(coordinates);
 
             if (parent == null) {
-                return null;
+                throw new DocumentNotMappedException();
             }
 
-            Object v = valueCache.get(parent);
-            if (v == null) {
-                v = template.getValue(parent);
-                if (v == null) {
-                    return getNearestParent(parent);
-                }
+            if (!valueCache.containsKey(parent) && !template.containsKey(parent)) {
+                return getNearestParent(parent);
             }
             logger.trace("nearest parent for {} = {}", coordinates, parent);
             return parent;
@@ -86,19 +78,14 @@ public class DocumentStateCache {
             logger.trace("GET {}", coordinates);
             Object v = valueCache.get(coordinates);
             if (v == null) {
-                v = template.getValue(coordinates);
+                v = template.get(coordinates);
                 if (v == null) {
                     String parentCoordinates = getNearestParent(coordinates);
-                    if (parentCoordinates != null) {
-                        v = BsonUtil.resolveCoordinate(coordinates.substring(parentCoordinates.length()+1), get(parentCoordinates));
-                    }
-                    else {
-                        throw new DocumentNotMappedException();
-                    }
+                    v = BsonUtil.coordinateLookup(coordinates.substring(parentCoordinates.length() + 1), get(parentCoordinates));
                 }
                 // make sure anything stored in the value cache is fully hydrated
                 v = Resolvable.recursiveResolveObject(v);
-                BsonUtil.map(valueCache, coordinates, v);
+                BsonUtil.flatMap(valueCache, coordinates, v);
                 logger.trace("CREATING state entry for {} = {}", coordinates, v);
             }
             logger.trace("'{}' = {}", coordinates, v);
@@ -118,11 +105,10 @@ public class DocumentStateCache {
             logger.trace("GET for resolvable {}", resolvable);
             if (template.isStateCachingRequired()) {
                 String coordinates = template.getCoordinates(resolvable);
-                // an embedded resolver with no coordinate in the template
-                if (coordinates == null) {
-                    return resolvable.resolve();
+                // embedded resolvers will not have any coordinates in the template
+                if (coordinates != null) {
+                    return get(coordinates);
                 }
-                return get(coordinates);
             }
             return resolvable.resolve();
         }
