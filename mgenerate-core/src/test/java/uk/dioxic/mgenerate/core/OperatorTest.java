@@ -12,7 +12,6 @@ import uk.dioxic.mgenerate.core.operator.geo.*;
 import uk.dioxic.mgenerate.core.operator.internet.Url;
 import uk.dioxic.mgenerate.core.operator.internet.UrlBuilder;
 import uk.dioxic.mgenerate.core.operator.geo.Coordinates;
-import uk.dioxic.mgenerate.core.operator.location.CoordinatesBuilder;
 import uk.dioxic.mgenerate.core.operator.numeric.NumberDecimal;
 import uk.dioxic.mgenerate.core.operator.numeric.NumberDecimalBuilder;
 import uk.dioxic.mgenerate.core.operator.sequence.DateSequence;
