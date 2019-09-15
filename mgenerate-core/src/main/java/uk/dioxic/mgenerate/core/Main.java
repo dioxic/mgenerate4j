@@ -1,5 +1,11 @@
 package uk.dioxic.mgenerate.core;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -21,6 +27,9 @@ public class Main implements Callable<Integer> {
     @Option(names = {"-o", "--out"}, description = "output file path")
     private Path output;
 
+    @Option(names = {"--debug"}, description = "debug logging")
+    private boolean debug = false;
+
     //@Option(names = {"--type"}, description = "the output format, either json or bson (default: ${DEFAULT-VALUE})", defaultValue = "json")
     //private String type;
 
@@ -38,6 +47,14 @@ public class Main implements Callable<Integer> {
 
     @Override
     public Integer call() {
+        if (debug) {
+            LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+            Configuration config = ctx.getConfiguration();
+            LoggerConfig loggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME);
+            loggerConfig.setLevel(Level.DEBUG);
+            ctx.updateLoggers();
+        }
+
         if (output != null) {
             //Use try-with-resource to get auto-closeable writer instance
             try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(output))) {
