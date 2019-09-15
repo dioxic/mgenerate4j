@@ -14,13 +14,11 @@ public class Pick implements Resolvable<Object> {
     Resolvable<List> array;
 
     @OperatorProperty
-    Resolvable<Integer> element = Wrapper.wrap(Integer.valueOf(0));
+    Resolvable<Integer> element = Wrapper.wrap(0);
 
     @Override
     public Object resolve() {
         return array.resolve().get(element.resolve());
     }
-
-
 
 }
