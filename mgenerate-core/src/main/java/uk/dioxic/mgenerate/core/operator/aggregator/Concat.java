@@ -23,6 +23,7 @@ public class Concat implements Resolvable<List> {
                 .collect(Collectors.toList());
     }
 
+    @SuppressWarnings("unchecked")
     private Stream<Object> getStream(Object o) {
         if (o instanceof List) {
             return ((List<Object>) o).stream();

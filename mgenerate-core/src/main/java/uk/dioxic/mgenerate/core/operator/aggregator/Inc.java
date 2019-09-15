@@ -4,6 +4,7 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.common.exception.ResolveException;
 
 @Operator
 public class Inc implements Resolvable<Number> {
@@ -29,6 +30,6 @@ public class Inc implements Resolvable<Number> {
             return input.intValue() + step.intValue();
         }
 
-        throw new UnsupportedOperationException("unsupported $inc : { input: " + input.getClass() + ", step: " + input.getClass() + " }");
+        throw new ResolveException("unsupported $inc : { input: " + input.getClass() + ", step: " + input.getClass() + " }");
     }
 }

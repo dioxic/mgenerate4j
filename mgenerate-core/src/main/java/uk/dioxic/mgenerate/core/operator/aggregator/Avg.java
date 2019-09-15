@@ -3,6 +3,7 @@ package uk.dioxic.mgenerate.core.operator.aggregator;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.common.exception.ResolveException;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Avg implements Resolvable<Number> {
             return numbers.stream().mapToInt(Number::intValue).average().orElse(0);
         }
 
-        return null;
+        throw new ResolveException("cannot calculate average for type of " + firstClass.getSimpleName());
     }
 
 }

@@ -13,6 +13,7 @@ public class Min implements Resolvable<Comparable> {
     Resolvable<List<Comparable>> values;
 
     @Override
+    @SuppressWarnings("unchecked")
     public Comparable resolve() {
         return values
                 .resolve()
