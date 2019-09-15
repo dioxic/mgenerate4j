@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Operator
-public class Array implements Resolvable<List> {
+public class Array implements Resolvable<List<?>> {
     private static final int DEFAULT_NUMBER = 5;
 
     @OperatorProperty(required = true)

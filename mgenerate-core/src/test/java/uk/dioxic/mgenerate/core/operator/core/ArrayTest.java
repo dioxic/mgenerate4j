@@ -1,6 +1,8 @@
 package uk.dioxic.mgenerate.core.operator.core;
 
 import org.junit.jupiter.api.Test;
+import uk.dioxic.mgenerate.common.Resolvable;
+import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.core.operator.aggregator.Concat;
 import uk.dioxic.mgenerate.core.operator.aggregator.ConcatBuilder;
 import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
@@ -13,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ArrayTest {
 
     @Test
-    @SuppressWarnings("unchecked")
     void resolve_SingleValues() {
         List<Object> list = Arrays.asList("bob", "gertrude");
         Concat concat = new ConcatBuilder(ReflectiveTransformerRegistry.getInstance())
@@ -24,27 +25,33 @@ class ArrayTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void resolve_ArrayValues() {
-        List<Object> list = Arrays.asList("bob", "gertrude", "kevin", "perry");
+    void resolve_StaticValues() {
+        String of = "turnip";
+        int number = 4;
 
-        Concat concat = new ConcatBuilder(ReflectiveTransformerRegistry.getInstance())
-                .values(Arrays.asList(list.subList(0, 2), list.subList(2, 4)))
+        Array array = new ArrayBuilder(ReflectiveTransformerRegistry.getInstance())
+                .of(of)
+                .number(number)
                 .build();
 
-        assertThat(concat.resolve()).containsExactlyElementsOf(list);
+        assertThat(array).as("null check").isNotNull();
+        assertThat(array.resolve()).as("has correct size").hasSize(number);
+        assertThat(array.resolve()).as("is subset of expected values").containsOnly(of);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void resolve_MixedValues() {
-        List<Object> list = Arrays.asList("bob", "gertrude", "kevin", "perry");
+    void resolve_DynamicValues() {
+        Resolvable<String> of = Wrapper.wrap("turnip");
+        int number = 4;
 
-        Concat concat = new ConcatBuilder(ReflectiveTransformerRegistry.getInstance())
-                .values(Arrays.asList(list.subList(0, 1), list.get(1), list.subList(2, 4)))
+        Array array = new ArrayBuilder(ReflectiveTransformerRegistry.getInstance())
+                .of(of)
+                .number(number)
                 .build();
 
-        assertThat(concat.resolve()).containsExactlyElementsOf(list);
+        assertThat(array).as("null check").isNotNull();
+        assertThat(array.resolve()).as("has correct size").hasSize(number);
+        assertThat(array.resolve()).as("is subset of expected values").containsOnly(of.resolve());
     }
 
 }

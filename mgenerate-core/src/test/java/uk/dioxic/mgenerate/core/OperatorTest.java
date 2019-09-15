@@ -41,61 +41,6 @@ class OperatorTest {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
-    void array() {
-        String of = "turnip";
-        int number = 4;
-
-        Array array = new ArrayBuilder(ReflectiveTransformerRegistry.getInstance())
-                .of(of)
-                .number(number)
-                .build();
-
-        assertThat(array).as("null check").isNotNull();
-        assertThat(array.resolve()).as("has correct size").hasSize(number);
-        assertThat(array.resolve()).as("is subset of expected values").containsOnly(of);
-    }
-
-    @Test
-    void choose() {
-        List<String> from = Lists.newArrayList("fish", "bread", "turnip");
-        List<Integer> weights = Lists.newArrayList(1, 2, 3);
-
-        Choose choose = new ChooseBuilder(ReflectiveTransformerRegistry.getInstance())
-                .from(from)
-                .weights(weights)
-                .build();
-
-        assertThat(choose).as("null check").isNotNull();
-        assertThat(choose.resolve()).as("an expected value").isIn(from);
-    }
-
-    @Test
-    void arrayChoose() {
-        List<String> from = Lists.newArrayList("fish", "bread", "turnip");
-
-        NumberInt number = new NumberIntBuilder(ReflectiveTransformerRegistry.getInstance())
-                .min(0)
-                .max(5)
-                .build();
-
-        Choose choose = new ChooseBuilder(ReflectiveTransformerRegistry.getInstance())
-                .from(from)
-                .build();
-
-        Array array = new ArrayBuilder(ReflectiveTransformerRegistry.getInstance())
-                .of(choose)
-                .number(number)
-                .build();
-
-        List<Object> resolved = array.resolve();
-
-        assertThat(resolved).as("null check").isNotNull();
-        assertThat(resolved).as("instance of array").isInstanceOf(List.class);
-        assertThat(resolved).as("is subset of expected values").isSubsetOf(from);
-        assertThat(resolved.size()).as("has correct size").isBetween(0, 5);
-    }
-
-    @Test
     void objectId() {
         assertThat(new ObjectIdBuilder(ReflectiveTransformerRegistry.getInstance()).build().resolve()).isInstanceOf(ObjectId.class);
     }

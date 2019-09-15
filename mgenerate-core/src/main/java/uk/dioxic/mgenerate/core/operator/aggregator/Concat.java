@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Operator
-public class Concat implements Resolvable<List> {
+public class Concat implements Resolvable<List<?>> {
 
     @OperatorProperty(required = true)
     Resolvable<List<Object>> values;
 
     @Override
-    public List resolve() {
+    public List<Object> resolve() {
         return values
                 .resolve()
                 .stream()
