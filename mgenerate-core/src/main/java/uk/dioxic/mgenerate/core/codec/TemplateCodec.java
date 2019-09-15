@@ -16,7 +16,8 @@ public class TemplateCodec implements Codec<Template> {
             new BsonValueCodecProvider(),
             new DocumentCodecProvider(new OperatorTransformer()),
             new ExtendedCodecProvider(),
-            new OperatorCodecProvider()));
+            new OperatorCodecProvider(),
+            new TemplateCodecProvider()));
     private static ThreadLocal<Boolean> keyResolverCount = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     private DocumentCodec documentCodec;
