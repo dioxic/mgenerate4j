@@ -50,7 +50,7 @@ class DocumentStateCacheTest {
 
         actual = DocumentStateCache.get("foodAndColours");
         assertThat(actual).isInstanceOf(List.class);
-        assertThat((List) actual).hasSizeGreaterThan(5);
+        assertThat((List) actual).hasSizeGreaterThanOrEqualTo(2);
         assertThat((List) actual).containsAnyOf("blue", "red", "white", "yellow", "orange", "worms", "petals", "slugs", "snails", "duckweed");
 
         actual = DocumentStateCache.get("distinctFood");
