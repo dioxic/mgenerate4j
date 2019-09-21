@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Operator
-public class Sentence implements Resolvable<String> {
+public class Sentence implements Resolvable<java.lang.String> {
 
     @OperatorProperty
     Resolvable<Integer> words = Wrapper.wrap(12);
 
     @Override
-    public String resolve() {
+    public java.lang.String resolve() {
         return Stream.generate(() -> FakerUtil.getValue("lorem.words"))
                 .limit(words.resolve())
                 .collect(Collectors.joining(" ","","."));

@@ -9,13 +9,13 @@ import uk.dioxic.mgenerate.core.util.FakerUtil;
 @Operator
 public class Character implements Resolvable<java.lang.Character>, Initializable {
 
-    private static final String SYMBOLS = "!@#$%^&*()";
-    private static final String ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
-    private static final String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String NUMERIC = "0123456789";
+    private static final java.lang.String SYMBOLS = "!@#$%^&*()";
+    private static final java.lang.String ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
+    private static final java.lang.String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final java.lang.String NUMERIC = "0123456789";
 
     @OperatorProperty(primary = true)
-    String pool;
+    java.lang.String pool;
 
     @OperatorProperty
     Boolean alpha = Boolean.FALSE;
@@ -27,7 +27,7 @@ public class Character implements Resolvable<java.lang.Character>, Initializable
     Boolean numeric = Boolean.FALSE;
 
     @OperatorProperty
-    String casing;
+    java.lang.String casing;
 
     @Override
     public java.lang.Character resolve() {
@@ -37,7 +37,7 @@ public class Character implements Resolvable<java.lang.Character>, Initializable
     @Override
     public void initialize() {
         if (pool == null) {
-            StringBuilder sb = new StringBuilder();
+            java.lang.StringBuilder sb = new java.lang.StringBuilder();
             if (alpha || symbols || numeric || casing != null) {
                 if ("lower".equals(casing)) {
                     sb.append(ALPHA_LOWER);

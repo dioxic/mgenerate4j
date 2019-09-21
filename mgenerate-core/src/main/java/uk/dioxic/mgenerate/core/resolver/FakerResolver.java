@@ -3,7 +3,7 @@ package uk.dioxic.mgenerate.core.resolver;
 import uk.dioxic.faker.Faker;
 import uk.dioxic.mgenerate.common.Resolvable;
 
-public class FakerResolver implements Resolvable {
+public class FakerResolver implements Resolvable<String> {
 
     private Faker faker;
     private String key;
@@ -14,7 +14,7 @@ public class FakerResolver implements Resolvable {
     }
 
     @Override
-    public Object resolve() {
+    public String resolve() {
         return faker.get(key);
     }
 

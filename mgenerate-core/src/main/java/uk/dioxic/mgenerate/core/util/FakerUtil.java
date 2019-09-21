@@ -33,26 +33,35 @@ public class FakerUtil {
         return ThreadLocalRandom.current();
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random number between bounds
+     */
     public static int numberBetween(int min, int max) {
-	    return random().ints(min, max).findFirst().getAsInt();
+	    return random().ints(min, max).findFirst().orElse(0);
         //return random().nextInt(max - min +1) + min;
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random number between bounds
+     */
     public static long numberBetween(long min, long max) {
-	    return random().longs(min, max).findFirst().getAsLong();
-        //return Double.valueOf(random().nextDouble() * (max - min)).longValue() + min;
+	    return random().longs(min, max).findFirst().orElse(0L);
     }
 
     public static double randomDouble(Number min, Number max) {
-        return random().doubles(min.doubleValue(), max.doubleValue()).findFirst().getAsDouble();
+        return randomDouble(min.doubleValue(), max.doubleValue());
     }
 
     public static double randomDouble(double min, double max) {
-	    return random().doubles(min, max).findFirst().getAsDouble();
+	    return random().doubles(min, max).findFirst().orElse(0d);
     }
 
     public static double randomDouble(int min, int max) {
-	    return random().doubles(min, max).findFirst().getAsDouble();
+	    return random().doubles(min, max).findFirst().orElse(0d);
     }
 
     public static BigDecimal randomDecimal(long min, long max, int scale) {

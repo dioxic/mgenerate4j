@@ -7,7 +7,6 @@ import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
-import uk.dioxic.mgenerate.core.util.FlsUtil;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -33,9 +32,9 @@ public class LineString implements Resolvable<Document>, Initializable {
 
     @Override
     public Document resolve() {
-        FlsUtil.Point[] polygon = Stream.generate(coordinates::resolve)
+        uk.dioxic.mgenerate.core.operator.type.Coordinates[] polygon = Stream.generate(coordinates::resolve)
                 .limit(locs.resolve())
-                .toArray(FlsUtil.Point[]::new);
+                .toArray(uk.dioxic.mgenerate.core.operator.type.Coordinates[]::new);
 
         Document doc = new Document();
         doc.put("type", "LineString");

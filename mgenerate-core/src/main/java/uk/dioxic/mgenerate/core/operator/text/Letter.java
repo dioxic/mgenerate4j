@@ -9,13 +9,13 @@ import uk.dioxic.mgenerate.core.util.FakerUtil;
 @Operator
 public class Letter implements Resolvable<java.lang.Character>, Initializable {
 
-    private static final String ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
-    private static final String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final java.lang.String ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
+    private static final java.lang.String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     @OperatorProperty
-    String casing;
+    java.lang.String casing;
 
-    private String pool;
+    private java.lang.String pool;
 
     @Override
     public java.lang.Character resolve() {
@@ -24,7 +24,7 @@ public class Letter implements Resolvable<java.lang.Character>, Initializable {
 
     @Override
     public void initialize() {
-        StringBuilder sb = new StringBuilder();
+        java.lang.StringBuilder sb = new java.lang.StringBuilder();
         if ("lower".equals(casing)) {
             sb.append(ALPHA_LOWER);
         }

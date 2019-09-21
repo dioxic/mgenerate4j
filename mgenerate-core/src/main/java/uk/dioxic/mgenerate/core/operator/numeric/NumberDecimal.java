@@ -8,7 +8,7 @@ import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.math.BigDecimal;
 
-@Operator({"numberdecimal", "decimal"})
+@Operator({"mgNumberDecimal", "decimal"})
 public class NumberDecimal implements Resolvable<BigDecimal> {
 
     private static final Long DEFAULT_MIN = 0L;

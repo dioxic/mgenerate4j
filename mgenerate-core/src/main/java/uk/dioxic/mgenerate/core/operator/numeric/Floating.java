@@ -5,7 +5,7 @@ import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
-@Operator({"floating", "float", "double"})
+@Operator({"floating", "float", "double", "mgNumberDouble"})
 public class Floating implements Resolvable<Double> {
 
     @OperatorProperty

@@ -5,16 +5,16 @@ import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
-import uk.dioxic.mgenerate.core.util.FlsUtil;
+import uk.dioxic.mgenerate.core.operator.type.Coordinates;
 
-public class PointCodec implements Codec<FlsUtil.Point> {
+public class PointCodec implements Codec<Coordinates> {
     @Override
-    public FlsUtil.Point decode(BsonReader reader, DecoderContext decoderContext) {
+    public Coordinates decode(BsonReader reader, DecoderContext decoderContext) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void encode(BsonWriter writer, FlsUtil.Point value, EncoderContext encoderContext) {
+    public void encode(BsonWriter writer, Coordinates value, EncoderContext encoderContext) {
         writer.writeStartArray();
         writer.writeDouble(value.getX());
         writer.writeDouble(value.getY());
@@ -22,7 +22,7 @@ public class PointCodec implements Codec<FlsUtil.Point> {
     }
 
     @Override
-    public Class<FlsUtil.Point> getEncoderClass() {
-        return FlsUtil.Point.class;
+    public Class<Coordinates> getEncoderClass() {
+        return Coordinates.class;
     }
 }

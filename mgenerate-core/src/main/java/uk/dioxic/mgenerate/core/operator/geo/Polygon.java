@@ -7,7 +7,7 @@ import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
-import uk.dioxic.mgenerate.core.util.FlsUtil;
+import uk.dioxic.mgenerate.core.util.GeoUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,15 +35,15 @@ public class Polygon implements Resolvable<Document>, Initializable {
 
     @Override
     public Document resolve() {
-        FlsUtil.Point[] polygon = Stream.generate(() -> coordinates.resolve())
+        uk.dioxic.mgenerate.core.operator.type.Coordinates[] polygon = Stream.generate(() -> coordinates.resolve())
                 .limit(corners.resolve())
-                .toArray(FlsUtil.Point[]::new);
+                .toArray(uk.dioxic.mgenerate.core.operator.type.Coordinates[]::new);
 
         if (valid) {
-            FlsUtil.optimise(polygon);
+            GeoUtil.optimise(polygon);
         }
 
-        List<FlsUtil.Point> polygonList = new ArrayList<>(polygon.length+1);
+        List<uk.dioxic.mgenerate.core.operator.type.Coordinates> polygonList = new ArrayList<>(polygon.length+1);
         polygonList.addAll(asList(polygon));
         polygonList.add(polygonList.get(0));
 

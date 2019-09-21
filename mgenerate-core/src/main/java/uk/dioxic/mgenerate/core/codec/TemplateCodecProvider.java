@@ -3,7 +3,6 @@ package uk.dioxic.mgenerate.core.codec;
 import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
-import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.Template;
 
 public final class TemplateCodecProvider implements CodecProvider {

@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.OperatorCodec;
-import uk.dioxic.mgenerate.core.operator.internet.Email;
+import uk.dioxic.mgenerate.core.operator.faker.internet.Email;
 
 import java.io.IOException;
 import java.io.StringWriter;

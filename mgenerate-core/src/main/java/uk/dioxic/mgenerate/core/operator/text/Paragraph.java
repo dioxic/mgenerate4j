@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Operator
-public class Paragraph implements Resolvable<String> {
+public class Paragraph implements Resolvable<java.lang.String> {
 
     @OperatorProperty
     Resolvable<Integer> sentences = Wrapper.wrap(3);
 
     @Override
-    public String resolve() {
+    public java.lang.String resolve() {
         return Stream.generate(() ->
                 Stream.generate(() -> FakerUtil.getValue("lorem.words"))
                         .limit(FakerUtil.numberBetween(12, 18))
