@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CoordinatesTest {
 
     @Test
-    void coordinates() {
+    void resolve() {
         List<Number> longBounds = asList(0d, 10d);
         List<Number> latBounds = asList(-20, 0);
 

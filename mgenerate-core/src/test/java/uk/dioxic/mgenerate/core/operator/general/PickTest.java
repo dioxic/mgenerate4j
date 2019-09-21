@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PickTest {
 
     @Test
-    void pick() {
+    void resolve() {
         List<String> array = Lists.newArrayList("fish", "turtle", "badger");
         int element = 2;
 

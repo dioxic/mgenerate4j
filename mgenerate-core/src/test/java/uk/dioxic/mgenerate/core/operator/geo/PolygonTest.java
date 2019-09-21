@@ -12,7 +12,7 @@ class PolygonTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void polygon() {
+    void resolve() {
         int corners = 5;
         List<Number> longBounds = asList(0d, 100d);
         List<Number> latBounds = asList(-200, 0);

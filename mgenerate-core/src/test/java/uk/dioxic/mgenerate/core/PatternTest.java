@@ -23,7 +23,7 @@ class PatternTest {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Test
-    void staticTemplateValues() {
+    void resolve_StaticTemplateValues() {
         Resolvable lookup = new PatternResolver("${nested.a} fish #{name.name}", FakerUtil.instance());
         Document nested = new Document("a", 123);
         Document document = new Document();
@@ -40,7 +40,7 @@ class PatternTest {
     }
 
     @Test
-    void dotNotationTest() throws URISyntaxException, IOException {
+    void resolve_DotNotation() throws URISyntaxException, IOException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test.json").toURI()));
 
         System.out.println(template.toJson());

@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UrlTest {
     @Test
-    void url() {
+    void resolve() {
         java.lang.String domain = "www.socialradar.com";
         java.lang.String path = "images";
 

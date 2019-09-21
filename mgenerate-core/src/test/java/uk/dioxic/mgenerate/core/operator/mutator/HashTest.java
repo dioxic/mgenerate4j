@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HashTest {
 
     @Test
-    void hash() {
+    void resolve() {
         Hash hash = new HashBuilder(ReflectiveTransformerRegistry.getInstance()).input("canibal halibuts").build();
         assertThat(hash.resolve()).as("INT32").isEqualTo(-855357176);
 
