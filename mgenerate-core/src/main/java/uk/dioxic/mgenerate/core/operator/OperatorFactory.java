@@ -46,8 +46,8 @@ public class OperatorFactory {
     }
 
     public static void addBuilder(String key, Class<ResolvableBuilder> builderClass) {
-        logger.trace("adding [{}] to operator registry", key);
-        builderMap.put(key, builderClass);
+        logger.trace("adding [{}] to operator registry", key.toLowerCase());
+        builderMap.put(key.toLowerCase(), builderClass);
     }
 
     public static boolean canHandle(String operatorKey) {
@@ -60,7 +60,7 @@ public class OperatorFactory {
     }
 
     private static String getOperatorKey(String key) {
-        return key.substring(1);
+        return key.substring(1).toLowerCase();
     }
 
     public static Resolvable create(String operatorKey) {
