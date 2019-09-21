@@ -23,7 +23,7 @@ class EpochTest {
     @Test
     void resolve_FromDate() {
         Epoch epoch = new EpochBuilder(ReflectiveTransformerRegistry.getInstance())
-                .input(ldt)
+                .date(ldt)
                 .build();
 
         assertThat(epoch.resolve()).isEqualTo(ldt.toInstant(ZoneOffset.UTC).toEpochMilli());
@@ -32,7 +32,7 @@ class EpochTest {
     @Test
     void resolve_FromDateWithChronoUnit() {
         Epoch epoch = new EpochBuilder(ReflectiveTransformerRegistry.getInstance())
-                .input(ldt)
+                .date(ldt)
                 .unit(ChronoUnit.DAYS)
                 .build();
 

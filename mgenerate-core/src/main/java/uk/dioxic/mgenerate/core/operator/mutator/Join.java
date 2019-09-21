@@ -16,11 +16,11 @@ public class Join implements Resolvable<String> {
     Resolvable<List<? extends CharSequence>> array;
 
     @OperatorProperty
-    Resolvable<String> sep = Wrapper.wrap(DEFAULT_SEP);
+    String sep = DEFAULT_SEP;
 
     @Override
     public String resolve() {
-        return String.join(sep.resolve(), array.resolve());
+        return String.join(sep, array.resolve());
     }
 
 }

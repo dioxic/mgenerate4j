@@ -6,7 +6,7 @@ import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.common.exception.ResolveException;
 
-@Operator
+@Operator({"increment", "inc"})
 public class Inc implements Resolvable<Number> {
 
     @OperatorProperty(required = true)

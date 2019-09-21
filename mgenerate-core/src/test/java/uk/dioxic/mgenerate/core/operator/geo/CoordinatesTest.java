@@ -15,7 +15,7 @@ class CoordinatesTest {
         List<Number> longBounds = asList(0d, 10d);
         List<Number> latBounds = asList(-20, 0);
 
-        Coordinates coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance()).long_lim(longBounds).lat_lim(latBounds).build();
+        Coordinates coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance()).longBounds(longBounds).latBounds(latBounds).build();
 
         assertThat(coordinates.resolve()).isNotNull();
         assertThat(coordinates.resolve()).isInstanceOf(uk.dioxic.mgenerate.core.operator.type.Coordinates.class);

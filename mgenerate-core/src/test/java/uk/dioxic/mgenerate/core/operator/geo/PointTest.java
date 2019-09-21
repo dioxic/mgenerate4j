@@ -15,7 +15,7 @@ class PointTest {
         List<Number> longBounds = asList(0d, 10d);
         List<Number> latBounds = asList(-20, 0);
 
-        Point point = new PointBuilder(ReflectiveTransformerRegistry.getInstance()).long_lim(longBounds).lat_lim(latBounds).build();
+        Point point = new PointBuilder(ReflectiveTransformerRegistry.getInstance()).longBounds(longBounds).latBounds(latBounds).build();
 
         assertThat(point.resolve()).isNotNull();
         assertThat(point.resolve().get("type")).as("geo type").isEqualTo("Point");

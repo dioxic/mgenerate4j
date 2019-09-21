@@ -18,8 +18,8 @@ class PolygonTest {
         List<Number> latBounds = asList(-200, 0);
         Polygon polygon = new PolygonBuilder(ReflectiveTransformerRegistry.getInstance())
                 .corners(corners)
-                .long_lim(longBounds)
-                .lat_lim(latBounds)
+                .longBounds(longBounds)
+                .latBounds(latBounds)
                 .build();
 
         assertThat(polygon.resolve().get("type")).as("geo type").isEqualTo("Polygon");

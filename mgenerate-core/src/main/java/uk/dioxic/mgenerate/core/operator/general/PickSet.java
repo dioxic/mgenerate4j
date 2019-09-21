@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-@Operator({"pickset", "pickSet"})
+@Operator
 public class PickSet implements Resolvable<Set<Object>>, Initializable {
 
     @OperatorProperty(required = true)

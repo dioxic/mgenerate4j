@@ -5,7 +5,7 @@ import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
-@Operator({"number", "int", "mgNumberInt"})
+@Operator({"integer", "number", "int", "mgNumberInt", "int32"})
 public class NumberInt implements Resolvable<Integer> {
 
     @OperatorProperty

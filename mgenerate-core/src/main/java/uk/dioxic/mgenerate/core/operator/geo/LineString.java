@@ -17,28 +17,25 @@ import static java.util.Arrays.asList;
 public class LineString implements Resolvable<Document>, Initializable {
 
     @OperatorProperty
-    List<Number> long_lim = asList(-180d, 180d);
+    List<Number> longBounds = asList(-180d, 180d);
 
     @OperatorProperty
-    List<Number> lat_lim = asList(-90d, 90d);
+    List<Number> latBounds = asList(-90d, 90d);
 
     @OperatorProperty
-    Resolvable<Integer> locs = Wrapper.wrap(3);
-
-    @OperatorProperty
-    Boolean valid = true;
+    Resolvable<Integer> locs = Wrapper.wrap(2);
 
     private Coordinates coordinates;
 
     @Override
     public Document resolve() {
-        uk.dioxic.mgenerate.core.operator.type.Coordinates[] polygon = Stream.generate(coordinates::resolve)
+        uk.dioxic.mgenerate.core.operator.type.Coordinates[] lineString = Stream.generate(coordinates::resolve)
                 .limit(locs.resolve())
                 .toArray(uk.dioxic.mgenerate.core.operator.type.Coordinates[]::new);
 
         Document doc = new Document();
         doc.put("type", "LineString");
-        doc.put("coordinates", asList(polygon));
+        doc.put("coordinates", asList(lineString));
 
         return doc;
     }
@@ -46,8 +43,8 @@ public class LineString implements Resolvable<Document>, Initializable {
     @Override
     public void initialize() {
         coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance())
-                .long_lim(long_lim)
-                .lat_lim(lat_lim)
+                .longBounds(longBounds)
+                .latBounds(latBounds)
                 .build();
     }
 }

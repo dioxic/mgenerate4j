@@ -3,7 +3,7 @@ package uk.dioxic.mgenerate.core.operator.general;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 
-@Operator("objectid")
+@Operator
 public class ObjectId implements Resolvable<org.bson.types.ObjectId> {
 
 	@Override

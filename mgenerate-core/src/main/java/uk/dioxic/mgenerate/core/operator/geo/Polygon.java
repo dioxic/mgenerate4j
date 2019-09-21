@@ -10,8 +10,10 @@ import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.util.GeoUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -20,10 +22,10 @@ import static java.util.Arrays.asList;
 public class Polygon implements Resolvable<Document>, Initializable {
 
     @OperatorProperty
-    List<Number> long_lim = asList(-180d, 180d);
+    List<Number> longBounds = asList(-180d, 180d);
 
     @OperatorProperty
-    List<Number> lat_lim = asList(-90d, 90d);
+    List<Number> latBounds = asList(-90d, 90d);
 
     @OperatorProperty
     Resolvable<Integer> corners = Wrapper.wrap(3);
@@ -57,8 +59,8 @@ public class Polygon implements Resolvable<Document>, Initializable {
     @Override
     public void initialize() {
         coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance())
-                .long_lim(long_lim)
-                .lat_lim(lat_lim)
+                .longBounds(longBounds)
+                .latBounds(latBounds)
                 .build();
     }
 }

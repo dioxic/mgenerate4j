@@ -15,7 +15,7 @@ class LineStringTest {
         List<Number> longBounds = asList(0d, 10d);
         List<Number> latBounds = asList(-20, 0);
 
-        LineString lineString = new LineStringBuilder(ReflectiveTransformerRegistry.getInstance()).long_lim(longBounds).lat_lim(latBounds).build();
+        LineString lineString = new LineStringBuilder(ReflectiveTransformerRegistry.getInstance()).longBounds(longBounds).latBounds(latBounds).build();
 
         assertThat(lineString.resolve()).isNotNull();
         assertThat(lineString.resolve().get("type")).as("geo type").isEqualTo("LineString");

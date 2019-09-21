@@ -15,10 +15,10 @@ import static java.util.Arrays.asList;
 public class Point implements Resolvable<Document>, Initializable {
 
     @OperatorProperty
-    List<Number> long_lim = asList(-180d, 180d);
+    List<Number> longBounds = asList(-180d, 180d);
 
     @OperatorProperty
-    List<Number> lat_lim = asList(-90d, 90d);
+    List<Number> latBounds = asList(-90d, 90d);
 
     private Coordinates coordinates;
 
@@ -34,8 +34,8 @@ public class Point implements Resolvable<Document>, Initializable {
     @Override
     public void initialize() {
         coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance())
-                .long_lim(long_lim)
-                .lat_lim(lat_lim)
+                .longBounds(longBounds)
+                .latBounds(latBounds)
                 .build();
     }
 }
