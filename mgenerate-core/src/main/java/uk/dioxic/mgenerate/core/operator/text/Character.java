@@ -4,6 +4,7 @@ import uk.dioxic.mgenerate.common.Initializable;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.type.Casing;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
@@ -27,7 +28,7 @@ public class Character implements Resolvable<java.lang.Character>, Initializable
     Boolean numeric = Boolean.FALSE;
 
     @OperatorProperty
-    java.lang.String casing;
+    Casing casing;
 
     @Override
     public java.lang.Character resolve() {
@@ -39,15 +40,18 @@ public class Character implements Resolvable<java.lang.Character>, Initializable
         if (pool == null) {
             java.lang.StringBuilder sb = new java.lang.StringBuilder();
             if (alpha || symbols || numeric || casing != null) {
-                if ("lower".equals(casing)) {
-                    sb.append(ALPHA_LOWER);
-                }
-                else if ("upper".equals(casing)) {
-                    sb.append(ALPHA_UPPER);
-                }
-                else if (alpha) {
-                    sb.append(ALPHA_UPPER);
-                    sb.append(ALPHA_LOWER);
+                switch (casing) {
+                    case UPPER:
+                        sb.append(ALPHA_UPPER);
+                        break;
+                    case LOWER:
+                        sb.append(ALPHA_LOWER);
+                        break;
+                    default:
+                        if (alpha) {
+                            sb.append(ALPHA_UPPER);
+                            sb.append(ALPHA_LOWER);
+                        }
                 }
 
                 if (symbols) {
