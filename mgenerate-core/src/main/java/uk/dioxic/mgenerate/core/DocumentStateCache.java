@@ -13,13 +13,10 @@ import java.util.Map;
 public class DocumentStateCache {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static DocumentStateCache instance;
+    private static DocumentStateCache instance = new DocumentStateCache();
     private ThreadLocal<DocumentState> localState = ThreadLocal.withInitial(DocumentState::new);
 
     public static DocumentStateCache getInstance() {
-        if (instance == null) {
-            instance = new DocumentStateCache();
-        }
         return instance;
     }
 
