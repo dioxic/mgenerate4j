@@ -5,7 +5,6 @@ import uk.dioxic.mgenerate.common.Transformer;
 import uk.dioxic.mgenerate.common.annotation.ValueTransformer;
 import uk.dioxic.mgenerate.common.exception.TransformerException;
 
-import java.time.temporal.ChronoField;
 import java.util.Locale;
 
 @ValueTransformer(Locale.class)
