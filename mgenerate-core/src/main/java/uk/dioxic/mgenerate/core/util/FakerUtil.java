@@ -52,18 +52,38 @@ public class FakerUtil {
 	    return random().longs(min, max).findFirst().orElse(0L);
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random double between bounds
+     */
     public static double randomDouble(Number min, Number max) {
         return randomDouble(min.doubleValue(), max.doubleValue());
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random double between bounds
+     */
     public static double randomDouble(double min, double max) {
 	    return random().doubles(min, max).findFirst().orElse(0d);
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random double between bounds
+     */
     public static double randomDouble(int min, int max) {
 	    return random().doubles(min, max).findFirst().orElse(0d);
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random number between bounds
+     */
     public static BigDecimal randomDecimal(long min, long max, int scale) {
         BigDecimal decimal = new BigDecimal(randomDouble(min, max));
         return decimal.setScale(scale, RoundingMode.FLOOR);
@@ -73,12 +93,22 @@ public class FakerUtil {
 	    return random().nextBoolean();
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random date between bounds
+     */
     public static LocalDateTime randomDate(LocalDateTime min, LocalDateTime max) {
         Instant minInstant = min.toInstant(ZoneOffset.UTC);
         Instant maxInstant = max.toInstant(ZoneOffset.UTC);
 	    return LocalDateTime.ofInstant(randomInstant(minInstant, maxInstant), ZoneOffset.UTC);
     }
 
+    /**
+     * @param min inclusive
+     * @param max exclusive
+     * @return random instant between bounds
+     */
     public static Instant randomInstant(Instant min, Instant max) {
 	    return Instant.ofEpochMilli(numberBetween(min.toEpochMilli(), max.toEpochMilli()));
     }
