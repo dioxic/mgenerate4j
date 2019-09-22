@@ -3,6 +3,7 @@ package uk.dioxic.mgenerate.apt.poet;
 import com.squareup.javapoet.*;
 import org.bson.Document;
 import org.bson.assertions.Assertions;
+import uk.dioxic.mgenerate.apt.model.AbstractFieldModel;
 import uk.dioxic.mgenerate.apt.model.OperatorPropertyModel;
 import uk.dioxic.mgenerate.apt.util.ModelUtil;
 import uk.dioxic.mgenerate.apt.util.StringUtil;
@@ -15,7 +16,11 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,14 +103,24 @@ public class OperatorBuilderPoet implements Poet {
     }
 
     private List<OperatorPropertyModel> getProperties() {
-        return typeElement
-                .getEnclosedElements().stream().filter(this::filterOperatorProperties)
+        List<Element> elements = new ArrayList<>();
+
+        TypeMirror superClass = typeElement.getSuperclass();
+
+        if (!"java.lang.Object".equals(superClass.toString())) {
+            elements.addAll(((DeclaredType) superClass).asElement().getEnclosedElements());
+        }
+
+        elements.addAll(typeElement.getEnclosedElements());
+
+        return elements.stream().filter(this::filterOperatorProperties)
                 .map(OperatorPropertyModel::new)
                 .collect(Collectors.toList());
     }
 
     private boolean filterOperatorProperties(Element el) {
-        return el.getKind() == ElementKind.FIELD
+        return (el.getKind() == ElementKind.FIELD
+                || el.getKind() == ElementKind.METHOD)
                 && !el.getModifiers().contains(Modifier.PRIVATE)
                 && el.getAnnotation(OperatorProperty.class) != null;
     }
@@ -120,13 +135,25 @@ public class OperatorBuilderPoet implements Poet {
             }
 
             if (!property.isResolvableType()) {
-                requiredBlock.addStatement("obj.$L = $T.recursiveResolve($L)",
-                        property.getName(),
-                        Resolvable.class,
-                        property.getName());
-            }
-            else {
-                requiredBlock.addStatement("obj.$L = $L", property.getName(), property.getName());
+                if (property.isMethod()) {
+                    requiredBlock.addStatement("obj.$L($T.recursiveResolve($L))",
+                            property.getMethodName(),
+                            Resolvable.class,
+                            property.getName());
+                }
+                else {
+                    requiredBlock.addStatement("obj.$L = $T.recursiveResolve($L)",
+                            property.getName(),
+                            Resolvable.class,
+                            property.getName());
+                }
+            } else {
+                if (property.isMethod()) {
+                    requiredBlock.addStatement("obj.$L($L)", property.getMethodName(), property.getName());
+                }
+                else {
+                    requiredBlock.addStatement("obj.$L = $L", property.getName(), property.getName());
+                }
             }
 
             if (!property.isRequired()) {
@@ -192,10 +219,9 @@ public class OperatorBuilderPoet implements Poet {
 
         for (OperatorPropertyModel property : properties) {
             if (property.isRootTypeNameParameterized()) {
-                builder.addStatement("$L = ($T)$T.wrap(document.get($S),$T.class,$L)", property.getName(), Resolvable.class, Wrapper.class, property.getName(), property.getRootTypeNameErasure(), TRANSFORMER_REGISTRY);
-            }
-            else {
-                builder.addStatement("$L = $T.wrap(document.get($S),$T.class,$L)", property.getName(), Wrapper.class, property.getName(), property.getRootTypeName(), TRANSFORMER_REGISTRY);
+                builder.addStatement("this.$L = ($T)$T.wrap(document.get($S),$T.class,$L)", property.getName(), Resolvable.class, Wrapper.class, property.getName(), property.getRootTypeNameErasure(), TRANSFORMER_REGISTRY);
+            } else {
+                builder.addStatement("this.$L = $T.wrap(document.get($S),$T.class,$L)", property.getName(), Wrapper.class, property.getName(), property.getRootTypeName(), TRANSFORMER_REGISTRY);
             }
         }
 
@@ -216,12 +242,14 @@ public class OperatorBuilderPoet implements Poet {
                 .addParameter(Object.class, "value")
                 .returns(ClassName.get(packageName, className));
 
+        long concretePropCount = properties.stream().filter(AbstractFieldModel::isFromConcreteClass).count();
+
         for (OperatorPropertyModel property : properties) {
-            if (property.isPrimary() || property.isRequired() || properties.size() == 1) {
+            if (!property.isFromSuperClass() && (property.isPrimary() || property.isRequired() || concretePropCount == 1)) {
                 if (property.isRootTypeNameParameterized()) {
-                    builder.addStatement("$L = ($T)$T.wrap(value,$T.class,$L)", property.getName(), Resolvable.class, Wrapper.class, property.getRootTypeNameErasure(), TRANSFORMER_REGISTRY);
+                    builder.addStatement("this.$L = ($T)$T.wrap(value,$T.class,$L)", property.getName(), Resolvable.class, Wrapper.class, property.getRootTypeNameErasure(), TRANSFORMER_REGISTRY);
                 } else {
-                    builder.addStatement("$L = $T.wrap(value,$T.class,$L)", property.getName(), Wrapper.class, property.getRootTypeName(), TRANSFORMER_REGISTRY);
+                    builder.addStatement("this.$L = $T.wrap(value,$T.class,$L)", property.getName(), Wrapper.class, property.getRootTypeName(), TRANSFORMER_REGISTRY);
                 }
             }
         }

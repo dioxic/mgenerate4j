@@ -6,6 +6,7 @@ import com.squareup.javapoet.TypeName;
 import uk.dioxic.mgenerate.common.Resolvable;
 
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.time.LocalDateTime;
@@ -16,20 +17,61 @@ import static uk.dioxic.mgenerate.apt.util.ModelUtil.*;
 public abstract class AbstractFieldModel {
 
     private final String name;
-    private final TypeMirror type;
+    private TypeMirror type;
     private List<? extends TypeMirror> typeParameters;
+    private String methodName;
+    private boolean fromSuperClass;
 
     public AbstractFieldModel(String name, TypeMirror type) {
-        this.name = name;
-        this.type = type;
+
+        if (type.getKind() == TypeKind.EXECUTABLE) {
+            List<? extends TypeMirror> parms = ((ExecutableType)type).getParameterTypes();
+            if (parms.size() != 1) {
+                throw new IllegalStateException("Operator property methods must have a single argment only");
+            }
+            methodName = name;
+            fromSuperClass = true;
+            name = removeSetPrefix(name);
+            type = ((ExecutableType)type).getParameterTypes().get(0);
+        }
 
         if (type.getKind() == TypeKind.DECLARED) {
+            this.type = type;
             typeParameters = ((DeclaredType) type).getTypeArguments();
         }
+        else {
+            throw new IllegalStateException("Cannot process " + name);
+        }
+
+        this.name = name;
+    }
+
+    private String removeSetPrefix(String s) {
+        if (s.startsWith("set")) {
+            s = s.substring("set".length());
+            s = Character.toLowerCase(s.charAt(0)) + s.substring(1);
+        }
+        return s;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public boolean isFromSuperClass() {
+        return fromSuperClass;
+    }
+
+    public boolean isFromConcreteClass() {
+        return !fromSuperClass;
+    }
+
+    public boolean isMethod() {
+        return methodName != null;
     }
 
     public TypeMirror getType() {

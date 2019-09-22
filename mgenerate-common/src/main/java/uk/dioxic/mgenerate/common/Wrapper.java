@@ -8,10 +8,12 @@ public class Wrapper<T> implements Resolvable<T> {
     private Resolvable resolvable;
     private Transformer<T> transformer;
 
+    @SuppressWarnings("unchecked")
     public static <T> Resolvable<T> wrap(T value) {
         return (value instanceof Resolvable) ? (Resolvable) value : new Wrapper<>(value);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Resolvable wrap(Object object, Class<T> desiredType, TransformerRegistry transformRegistry) {
         if (object != null) {
             if (object instanceof Resolvable) {
@@ -47,6 +49,9 @@ public class Wrapper<T> implements Resolvable<T> {
     public T resolve() {
         if (value != null) {
             return value;
+        }
+        if (resolvable == null) {
+            return null;
         }
 
         return transformer.transform(resolvable.resolve());

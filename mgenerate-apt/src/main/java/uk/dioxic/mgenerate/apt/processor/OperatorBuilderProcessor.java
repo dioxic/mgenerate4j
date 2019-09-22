@@ -53,7 +53,7 @@ public class OperatorBuilderProcessor extends AbstractProcessor {
                     .getElementsAnnotatedWith(annotation).stream()
                     .filter(el -> el.getKind() == ElementKind.CLASS
                             && !el.getModifiers().contains(Modifier.ABSTRACT))
-                    .map(o -> (TypeElement)o)
+                    .map(TypeElement.class::cast)
                     .collect(Collectors.toSet());
 
             for (TypeElement typeElement : typeElements) {
