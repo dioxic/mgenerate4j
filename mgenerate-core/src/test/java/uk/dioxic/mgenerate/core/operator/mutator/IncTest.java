@@ -13,7 +13,7 @@ class IncTest {
                 .input(500)
                 .build();
 
-        assertThat(inc.resolve()).isEqualTo(501);
+        assertThat(inc.resolveInternal()).isEqualTo(501);
     }
 
     @Test
@@ -23,7 +23,7 @@ class IncTest {
                 .step(10)
                 .build();
 
-        assertThat(inc.resolve()).isEqualTo(510);
+        assertThat(inc.resolveInternal()).isEqualTo(510);
     }
 
 }

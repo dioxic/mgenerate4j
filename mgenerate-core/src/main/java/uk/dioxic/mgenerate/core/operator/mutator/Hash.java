@@ -6,13 +6,14 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.codec.TemplateCodec;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.operator.type.HashType;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Operator
-public class Hash implements Resolvable<Object> {
+public class Hash extends AbstractOperator<Object> {
 
     @OperatorProperty(required = true)
     Resolvable<Object> input;
@@ -24,7 +25,7 @@ public class Hash implements Resolvable<Object> {
     HashType output = HashType.INT32;
 
     @Override
-    public Object resolve() {
+    public Object resolveInternal() {
         Object value = input.resolve();
         byte[] valBytes;
 

@@ -1,9 +1,9 @@
 package uk.dioxic.mgenerate.core.operator.sequence;
 
 import uk.dioxic.mgenerate.common.Initializable;
-import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Operator({"dateSeq","dateSequence"})
-public class DateSequence implements Resolvable<LocalDateTime>, Initializable {
+public class DateSequence extends AbstractOperator<LocalDateTime> implements Initializable {
 
     @OperatorProperty(primary = true)
     Long step = 1L;
@@ -26,7 +26,7 @@ public class DateSequence implements Resolvable<LocalDateTime>, Initializable {
     private AtomicLong counter;
 
     @Override
-    public LocalDateTime resolve() {
+    public LocalDateTime resolveInternal() {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(counter.getAndUpdate(n -> n + step)), ZoneOffset.UTC);
     }
 

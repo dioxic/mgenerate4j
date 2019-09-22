@@ -15,7 +15,7 @@ class DayOfMonthTest {
     void resolve_Random() {
         DayOfMonth dom = new DayOfMonthBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(dom.resolve()).isBetween(1,32);
+        assertThat(dom.resolveInternal()).isBetween(1,32);
     }
 
     @Test
@@ -24,7 +24,7 @@ class DayOfMonthTest {
                 .date(ldt)
                 .build();
 
-        assertThat(dow.resolve()).isEqualTo(ldt.getDayOfMonth());
+        assertThat(dow.resolveInternal()).isEqualTo(ldt.getDayOfMonth());
     }
 
 }

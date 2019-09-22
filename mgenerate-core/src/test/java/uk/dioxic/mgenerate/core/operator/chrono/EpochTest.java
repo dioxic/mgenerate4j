@@ -17,7 +17,7 @@ class EpochTest {
     void resolve_Random() {
         Epoch epoch = new EpochBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(epoch.resolve().longValue()).isPositive();
+        assertThat(epoch.resolveInternal().longValue()).isPositive();
     }
 
     @Test
@@ -26,7 +26,7 @@ class EpochTest {
                 .date(ldt)
                 .build();
 
-        assertThat(epoch.resolve()).isEqualTo(ldt.toInstant(ZoneOffset.UTC).toEpochMilli());
+        assertThat(epoch.resolveInternal()).isEqualTo(ldt.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
     @Test
@@ -36,6 +36,6 @@ class EpochTest {
                 .unit(ChronoUnit.DAYS)
                 .build();
 
-        assertThat(epoch.resolve()).isEqualTo(ChronoUnit.DAYS.between(LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.UTC), ldt));
+        assertThat(epoch.resolveInternal()).isEqualTo(ChronoUnit.DAYS.between(LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.UTC), ldt));
     }
 }

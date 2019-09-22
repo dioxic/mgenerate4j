@@ -17,9 +17,9 @@ class CoordinatesTest {
 
         Coordinates coordinates = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance()).longBounds(longBounds).latBounds(latBounds).build();
 
-        assertThat(coordinates.resolve()).isNotNull();
-        assertThat(coordinates.resolve()).isInstanceOf(uk.dioxic.mgenerate.core.operator.type.Coordinates.class);
-        uk.dioxic.mgenerate.core.operator.type.Coordinates p = coordinates.resolve();
+        assertThat(coordinates.resolveInternal()).isNotNull();
+        assertThat(coordinates.resolveInternal()).isInstanceOf(uk.dioxic.mgenerate.core.operator.type.Coordinates.class);
+        uk.dioxic.mgenerate.core.operator.type.Coordinates p = coordinates.resolveInternal();
         assertThat(p.getX()).as("longitude").isBetween(longBounds.get(0).doubleValue(), longBounds.get(1).doubleValue());
         assertThat(p.getY()).as("latitude").isBetween(latBounds.get(0).doubleValue(), latBounds.get(1).doubleValue());
     }

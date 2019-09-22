@@ -1,0 +1,9 @@
+{
+  "name": {
+    "$pickset": {
+      "from": ["fish", "badger"],
+      "quantity": -1
+    }
+  },
+  "nullValue": null
+}

@@ -17,6 +17,6 @@ class PickTest {
 
         Pick pick = new PickBuilder(ReflectiveTransformerRegistry.getInstance()).array(array).element(element).build();
 
-        assertThat(pick.resolve()).as("correct element").isEqualTo(array.get(element));
+        assertThat(pick.resolveInternal()).as("correct element").isEqualTo(array.get(element));
     }
 }

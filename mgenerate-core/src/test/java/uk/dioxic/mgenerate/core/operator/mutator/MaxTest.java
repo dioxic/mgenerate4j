@@ -16,7 +16,7 @@ class MaxTest {
                 .values(Arrays.asList(1d, 2d, 3d))
                 .build();
 
-        assertThat(max.resolve()).isEqualTo(3d);
+        assertThat(max.resolveInternal()).isEqualTo(3d);
     }
 
     @Test
@@ -26,7 +26,7 @@ class MaxTest {
                 .values(Arrays.asList(1, 2, 3))
                 .build();
 
-        assertThat(max.resolve()).isEqualTo(3);
+        assertThat(max.resolveInternal()).isEqualTo(3);
     }
 
     @Test
@@ -36,7 +36,7 @@ class MaxTest {
                 .values(Arrays.asList(1L, 2L, 3L))
                 .build();
 
-        assertThat(max.resolve()).isEqualTo(3L);
+        assertThat(max.resolveInternal()).isEqualTo(3L);
     }
 
     @Test
@@ -46,6 +46,6 @@ class MaxTest {
                 .values(Arrays.asList("alice", "bob", "badger"))
                 .build();
 
-        assertThat(max.resolve()).isEqualTo("bob");
+        assertThat(max.resolveInternal()).isEqualTo("bob");
     }
 }

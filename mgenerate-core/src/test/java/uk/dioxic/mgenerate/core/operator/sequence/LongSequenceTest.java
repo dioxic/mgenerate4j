@@ -17,8 +17,8 @@ class LongSequenceTest {
                 .step(step)
                 .build();
 
-        assertThat(seq.resolve()).as("check starting value").isEqualTo(start);
-        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step);
-        assertThat(seq.resolve()).as("check next value").isEqualTo(start + step + step);
+        assertThat(seq.resolveInternal()).as("check starting value").isEqualTo(start);
+        assertThat(seq.resolveInternal()).as("check next value").isEqualTo(start + step);
+        assertThat(seq.resolveInternal()).as("check next value").isEqualTo(start + step + step);
     }
 }

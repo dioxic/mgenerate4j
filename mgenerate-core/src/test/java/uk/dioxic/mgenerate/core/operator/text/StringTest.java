@@ -18,9 +18,9 @@ class StringTest {
 
         String string = new StringBuilder(ReflectiveTransformerRegistry.getInstance()).pool(pool).length(length).build();
 
-        assertThat(string.resolve()).as("size").hasSize(length);
+        assertThat(string.resolveInternal()).as("size").hasSize(length);
 
-        for (char c : string.resolve().toCharArray()) {
+        for (char c : string.resolveInternal().toCharArray()) {
             assertThat(c).isIn(poolChars);
         }
 

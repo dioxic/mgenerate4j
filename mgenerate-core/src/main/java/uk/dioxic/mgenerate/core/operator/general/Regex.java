@@ -5,9 +5,10 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 @Operator
-public class Regex implements Resolvable<BsonRegularExpression> {
+public class Regex extends AbstractOperator<BsonRegularExpression> {
 
     @OperatorProperty
     Resolvable<String> string = Wrapper.wrap(".*");
@@ -16,7 +17,7 @@ public class Regex implements Resolvable<BsonRegularExpression> {
     Resolvable<String> flags = Wrapper.wrap("");
 
     @Override
-    public BsonRegularExpression resolve() {
+    public BsonRegularExpression resolveInternal() {
         return new BsonRegularExpression(string.resolve(), flags.resolve());
     }
 

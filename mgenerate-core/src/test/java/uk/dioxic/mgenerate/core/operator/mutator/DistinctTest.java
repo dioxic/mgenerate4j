@@ -15,7 +15,7 @@ class DistinctTest {
                 .values(Arrays.asList("badger", "badger", "badger"))
                 .build();
 
-        assertThat(distinct.resolve()).hasSize(1);
+        assertThat(distinct.resolveInternal()).hasSize(1);
     }
 
 }

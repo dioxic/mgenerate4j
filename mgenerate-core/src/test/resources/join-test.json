@@ -1,5 +1,6 @@
 {
   "name": {
     "$join": ["bob", "sarah"]
-  }
+  },
+  "nullValue": null
 }

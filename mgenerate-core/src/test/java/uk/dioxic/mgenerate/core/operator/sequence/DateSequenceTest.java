@@ -21,8 +21,8 @@ class DateSequenceTest {
                 .step(step)
                 .build();
 
-        Assertions.assertThat(inc.resolve()).as("check starting value").isEqualTo(start);
-        Assertions.assertThat(inc.resolve()).as("check next value").isEqualTo(start.plus(step, chrono));
-        Assertions.assertThat(inc.resolve()).as("check next value").isEqualTo(start.plus(step, chrono).plus(step, chrono));
+        Assertions.assertThat(inc.resolveInternal()).as("check starting value").isEqualTo(start);
+        Assertions.assertThat(inc.resolveInternal()).as("check next value").isEqualTo(start.plus(step, chrono));
+        Assertions.assertThat(inc.resolveInternal()).as("check next value").isEqualTo(start.plus(step, chrono).plus(step, chrono));
     }
 }

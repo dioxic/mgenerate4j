@@ -21,7 +21,7 @@ class ArrayTest {
                 .values(list)
                 .build();
 
-        assertThat(concat.resolve()).containsExactlyElementsOf(list);
+        assertThat(concat.resolveInternal()).containsExactlyElementsOf(list);
     }
 
     @Test
@@ -35,8 +35,8 @@ class ArrayTest {
                 .build();
 
         assertThat(array).as("null check").isNotNull();
-        assertThat(array.resolve()).as("has correct size").hasSize(number);
-        assertThat(array.resolve()).as("is subset of expected values").containsOnly(of);
+        assertThat(array.resolveInternal()).as("has correct size").hasSize(number);
+        assertThat(array.resolveInternal()).as("is subset of expected values").containsOnly(of);
     }
 
     @Test
@@ -50,8 +50,8 @@ class ArrayTest {
                 .build();
 
         assertThat(array).as("null check").isNotNull();
-        assertThat(array.resolve()).as("has correct size").hasSize(number);
-        assertThat(array.resolve()).as("is subset of expected values").containsOnly(of.resolve());
+        assertThat(array.resolveInternal()).as("has correct size").hasSize(number);
+        assertThat(array.resolveInternal()).as("is subset of expected values").containsOnly(of.resolve());
     }
 
 }

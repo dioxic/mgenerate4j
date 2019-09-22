@@ -20,8 +20,8 @@ class MonthTest {
     void resolve_RandomNumeric() {
         Month month = new MonthBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(month.resolve()).isInstanceOf(Integer.class);
-        assertThat((Integer)month.resolve()).isBetween(1,12);
+        assertThat(month.resolveInternal()).isInstanceOf(Integer.class);
+        assertThat((Integer)month.resolveInternal()).isBetween(1,12);
     }
 
     @Test
@@ -30,8 +30,8 @@ class MonthTest {
                 .type(DateDisplayType.LONG_TEXT)
                 .build();
 
-        assertThat(month.resolve()).isInstanceOf(String.class);
-        assertThat((String)month.resolve()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getMonths()));
+        assertThat(month.resolveInternal()).isInstanceOf(String.class);
+        assertThat((String)month.resolveInternal()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getMonths()));
     }
 
     @Test
@@ -40,8 +40,8 @@ class MonthTest {
                 .type(DateDisplayType.SHORT_TEXT)
                 .build();
 
-        assertThat(month.resolve()).isInstanceOf(String.class);
-        assertThat((String)month.resolve()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getShortMonths()));
+        assertThat(month.resolveInternal()).isInstanceOf(String.class);
+        assertThat((String)month.resolveInternal()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getShortMonths()));
     }
 
     @Test
@@ -50,7 +50,7 @@ class MonthTest {
                 .date(ldt)
                 .build();
 
-        assertThat(month.resolve()).isEqualTo(ldt.getMonth().getValue());
+        assertThat(month.resolveInternal()).isEqualTo(ldt.getMonth().getValue());
     }
 
     @Test
@@ -60,7 +60,7 @@ class MonthTest {
                 .type(DateDisplayType.LONG_TEXT)
                 .build();
 
-        assertThat(month.resolve()).isEqualTo(ldt.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        assertThat(month.resolveInternal()).isEqualTo(ldt.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
     }
 
     @Test
@@ -70,7 +70,7 @@ class MonthTest {
                 .type(DateDisplayType.SHORT_TEXT)
                 .build();
 
-        assertThat(month.resolve()).isEqualTo(ldt.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+        assertThat(month.resolveInternal()).isEqualTo(ldt.getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
     }
 
     @Test
@@ -81,6 +81,6 @@ class MonthTest {
                 .type(DateDisplayType.LONG_TEXT)
                 .build();
 
-        assertThat(month.resolve()).isEqualTo(ldt.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALIAN));
+        assertThat(month.resolveInternal()).isEqualTo(ldt.getMonth().getDisplayName(TextStyle.FULL, Locale.ITALIAN));
     }
 }

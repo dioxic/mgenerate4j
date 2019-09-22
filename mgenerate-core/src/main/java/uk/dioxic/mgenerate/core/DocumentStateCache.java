@@ -52,7 +52,7 @@ public class DocumentStateCache {
             String parent = getParentCoordinates(coordinates);
 
             if (parent == null) {
-                throw new DocumentNotMappedException();
+                return null;
             }
 
             if (!valueCache.containsKey(parent) && !template.containsKey(parent)) {
@@ -78,7 +78,9 @@ public class DocumentStateCache {
                 v = template.get(coordinates);
                 if (v == null) {
                     String parentCoordinates = getNearestParent(coordinates);
-                    v = DocumentUtil.coordinateLookup(coordinates.substring(parentCoordinates.length() + 1), get(parentCoordinates));
+                    if (parentCoordinates != null) {
+                        v = DocumentUtil.coordinateLookup(coordinates.substring(parentCoordinates.length() + 1), get(parentCoordinates));
+                    }
                 }
                 // make sure anything stored in the value cache is fully hydrated
                 v = Resolvable.recursiveResolveObject(v);
@@ -107,7 +109,7 @@ public class DocumentStateCache {
                     return get(coordinates);
                 }
             }
-            return resolvable.resolve();
+            return Resolvable.recursiveResolveObject(resolvable);
         }
     }
 

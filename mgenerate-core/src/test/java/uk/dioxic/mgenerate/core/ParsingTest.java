@@ -1,5 +1,6 @@
 package uk.dioxic.mgenerate.core;
 
+import org.assertj.core.api.Assertions;
 import org.bson.codecs.Codec;
 import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonWriter;
@@ -47,9 +48,20 @@ class ParsingTest {
     }
 
     @Test
+    void optionalityTest() throws URISyntaxException, IOException {
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("optionality-test.json").toURI()));
+        logger.debug(template.getDocument().toString());
+
+        String outJson = template.toJson(jws);
+        Assertions.assertThat(outJson).doesNotContain("SHOULD_NOT_EXIST");
+
+        logger.info(outJson);
+    }
+
+    @Test
     //@ExtendWith(TimingExtension.class)
     void performanceTest() throws URISyntaxException, IOException {
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("bson-test.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("pickset-test.json").toURI()));
         List<String> results = Stream.generate(template::toJson)
                 .limit(100)
                 .parallel()

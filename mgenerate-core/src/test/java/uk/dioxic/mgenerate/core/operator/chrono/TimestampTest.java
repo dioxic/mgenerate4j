@@ -12,6 +12,6 @@ class TimestampTest {
         int i = 333;
         Timestamp timestamp = new TimestampBuilder(ReflectiveTransformerRegistry.getInstance()).i(i).build();
 
-        assertThat(timestamp.resolve().getInc()).as("check increment value").isEqualTo(i);
+        assertThat(timestamp.resolveInternal().getInc()).as("check increment value").isEqualTo(i);
     }
 }

@@ -1,12 +1,12 @@
 package uk.dioxic.mgenerate.core.operator.numeric;
 
-import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator({"mgNumberLong", "long", "int64"})
-public class NumberLong implements Resolvable<Long> {
+public class NumberLong extends AbstractOperator<Long> {
 
     @OperatorProperty
 	Long min = Long.MIN_VALUE;
@@ -15,7 +15,7 @@ public class NumberLong implements Resolvable<Long> {
 	Long max = Long.MAX_VALUE;
 
 	@Override
-	public Long resolve() {
+	public Long resolveInternal() {
 		return FakerUtil.numberBetween(min, max);
 	}
 

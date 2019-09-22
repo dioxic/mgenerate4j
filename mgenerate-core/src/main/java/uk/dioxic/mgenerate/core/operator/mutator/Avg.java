@@ -4,17 +4,18 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.common.exception.ResolveException;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 import java.util.List;
 
 @Operator
-public class Avg implements Resolvable<Number> {
+public class Avg extends AbstractOperator<Number> {
 
     @OperatorProperty(required = true)
     Resolvable<List<Number>> values;
 
     @Override
-    public Number resolve() {
+    public Number resolveInternal() {
         List<Number> numbers = values.resolve();
         Class<? extends Number> firstClass = numbers.get(0).getClass();
 

@@ -20,8 +20,8 @@ class DayOfWeekTest {
     void resolve_RandomNumeric() {
         DayOfWeek dow = new DayOfWeekBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(dow.resolve()).isInstanceOf(Integer.class);
-        assertThat((Integer)dow.resolve()).isBetween(1,7);
+        assertThat(dow.resolveInternal()).isInstanceOf(Integer.class);
+        assertThat((Integer)dow.resolveInternal()).isBetween(1,7);
     }
 
     @Test
@@ -30,8 +30,8 @@ class DayOfWeekTest {
                 .type(DateDisplayType.LONG_TEXT)
                 .build();
 
-        assertThat(dow.resolve()).isInstanceOf(String.class);
-        assertThat((String)dow.resolve()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getWeekdays()));
+        assertThat(dow.resolveInternal()).isInstanceOf(String.class);
+        assertThat((String)dow.resolveInternal()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getWeekdays()));
     }
 
     @Test
@@ -40,8 +40,8 @@ class DayOfWeekTest {
                 .type(DateDisplayType.SHORT_TEXT)
                 .build();
 
-        assertThat(dow.resolve()).isInstanceOf(String.class);
-        assertThat((String)dow.resolve()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getShortWeekdays()));
+        assertThat(dow.resolveInternal()).isInstanceOf(String.class);
+        assertThat((String)dow.resolveInternal()).isIn(Arrays.asList(DateFormatSymbols.getInstance().getShortWeekdays()));
     }
 
     @Test
@@ -50,7 +50,7 @@ class DayOfWeekTest {
                 .date(ldt)
                 .build();
 
-        assertThat(dow.resolve()).isEqualTo(ldt.getDayOfWeek().getValue());
+        assertThat(dow.resolveInternal()).isEqualTo(ldt.getDayOfWeek().getValue());
     }
 
     @Test
@@ -60,7 +60,7 @@ class DayOfWeekTest {
                 .type(DateDisplayType.LONG_TEXT)
                 .build();
 
-        assertThat(dow.resolve()).isEqualTo(ldt.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()));
+        assertThat(dow.resolveInternal()).isEqualTo(ldt.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()));
     }
 
     @Test
@@ -70,7 +70,7 @@ class DayOfWeekTest {
                 .type(DateDisplayType.SHORT_TEXT)
                 .build();
 
-        assertThat(dow.resolve()).isEqualTo(ldt.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+        assertThat(dow.resolveInternal()).isEqualTo(ldt.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault()));
     }
 
     @Test
@@ -81,6 +81,6 @@ class DayOfWeekTest {
                 .type(DateDisplayType.LONG_TEXT)
                 .build();
 
-        assertThat(dow.resolve()).isEqualTo(ldt.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.FRENCH));
+        assertThat(dow.resolveInternal()).isEqualTo(ldt.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.FRENCH));
     }
 }

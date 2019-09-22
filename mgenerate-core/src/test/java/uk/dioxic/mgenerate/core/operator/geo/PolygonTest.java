@@ -22,11 +22,11 @@ class PolygonTest {
                 .latBounds(latBounds)
                 .build();
 
-        assertThat(polygon.resolve().get("type")).as("geo type").isEqualTo("Polygon");
-        assertThat(polygon.resolve().get("coordinates")).as("coordinates class").isInstanceOf(List.class);
-        assertThat(polygon.resolve().get("coordinates")).asList().hasSize(1);
+        assertThat(polygon.resolveInternal().get("type")).as("geo type").isEqualTo("Polygon");
+        assertThat(polygon.resolveInternal().get("coordinates")).as("coordinates class").isInstanceOf(List.class);
+        assertThat(polygon.resolveInternal().get("coordinates")).asList().hasSize(1);
 
-        List<uk.dioxic.mgenerate.core.operator.type.Coordinates> polygonPoints = (List<uk.dioxic.mgenerate.core.operator.type.Coordinates>) ((List) polygon.resolve().get("coordinates")).get(0);
+        List<uk.dioxic.mgenerate.core.operator.type.Coordinates> polygonPoints = (List<uk.dioxic.mgenerate.core.operator.type.Coordinates>) ((List) polygon.resolveInternal().get("coordinates")).get(0);
 
         assertThat(polygonPoints).hasSize(corners+1);
         assertThat(polygonPoints.get(0)).as("first and last points equivalent").isEqualTo(polygonPoints.get(polygonPoints.size()-1));

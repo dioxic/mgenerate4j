@@ -5,11 +5,12 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 @Operator({"longSeq", "intSequence"})
-public class LongSequence implements Resolvable<Long>, Initializable {
+public class LongSequence extends AbstractOperator<Long> implements Initializable {
 
     @OperatorProperty(primary = true)
     Resolvable<Long> step = Wrapper.wrap(1L);
@@ -20,7 +21,7 @@ public class LongSequence implements Resolvable<Long>, Initializable {
     private AtomicLong counter;
 
     @Override
-    public Long resolve() {
+    public Long resolveInternal() {
         return counter.getAndUpdate(n -> n + step.resolve());
     }
 

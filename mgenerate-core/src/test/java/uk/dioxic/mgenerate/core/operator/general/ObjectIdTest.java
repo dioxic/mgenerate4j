@@ -10,6 +10,6 @@ class ObjectIdTest {
 
     @Test
     void resolve() {
-        assertThat(new ObjectIdBuilder(ReflectiveTransformerRegistry.getInstance()).build().resolve()).isInstanceOf(ObjectId.class);
+        assertThat(new ObjectIdBuilder(ReflectiveTransformerRegistry.getInstance()).build().resolveInternal()).isInstanceOf(ObjectId.class);
     }
 }

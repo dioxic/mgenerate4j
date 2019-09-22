@@ -15,7 +15,7 @@ class HourTest {
     void resolve_Random() {
         Hour hour = new HourBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(hour.resolve()).isBetween(0, 24);
+        assertThat(hour.resolveInternal()).isBetween(0, 24);
     }
 
     @Test
@@ -24,6 +24,6 @@ class HourTest {
                 .date(ldt)
                 .build();
 
-        assertThat(hour.resolve()).isEqualTo(ldt.getHour());
+        assertThat(hour.resolveInternal()).isEqualTo(ldt.getHour());
     }
 }

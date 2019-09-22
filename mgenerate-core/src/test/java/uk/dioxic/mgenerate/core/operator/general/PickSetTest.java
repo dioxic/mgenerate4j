@@ -29,7 +29,7 @@ class PickSetTest {
 
         // make sure the choice is dynamic
         Set<Object> actual = new HashSet<>();
-        Stream.generate(pick::resolve)
+        Stream.generate(pick::resolveInternal)
                 .limit(100)
                 .forEach(l -> {
                     assertThat(l).hasSize(2);
@@ -52,7 +52,7 @@ class PickSetTest {
                 .quantity(2)
                 .build();
 
-        assertThat(pick.resolve()).containsExactlyInAnyOrderElementsOf(from.subList(0, 2));
+        assertThat(pick.resolveInternal()).containsExactlyInAnyOrderElementsOf(from.subList(0, 2));
     }
 
     @Test
@@ -69,7 +69,7 @@ class PickSetTest {
 
         // make sure the choice is dynamic
         Set<Object> actual = new HashSet<>();
-        Stream.generate(pick::resolve)
+        Stream.generate(pick::resolveInternal)
                 .limit(100)
                 .forEach(actual::addAll);
 
@@ -86,7 +86,7 @@ class PickSetTest {
                 .quantity(10)
                 .build();
 
-        assertThatThrownBy(pick::resolve).isInstanceOf(ResolveException.class);
+        assertThatThrownBy(pick::resolveInternal).isInstanceOf(ResolveException.class);
     }
 
     @Test
@@ -99,6 +99,6 @@ class PickSetTest {
                 .quantity(2)
                 .build();
 
-        assertThatThrownBy(pick::resolve).isInstanceOf(ResolveException.class);
+        assertThatThrownBy(pick::resolveInternal).isInstanceOf(ResolveException.class);
     }
 }

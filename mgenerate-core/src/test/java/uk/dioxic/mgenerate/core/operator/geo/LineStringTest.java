@@ -17,11 +17,11 @@ class LineStringTest {
 
         LineString lineString = new LineStringBuilder(ReflectiveTransformerRegistry.getInstance()).longBounds(longBounds).latBounds(latBounds).build();
 
-        assertThat(lineString.resolve()).isNotNull();
-        assertThat(lineString.resolve().get("type")).as("geo type").isEqualTo("LineString");
-        assertThat(lineString.resolve().get("coordinates")).as("coordinates class type").isInstanceOf(List.class);
+        assertThat(lineString.resolveInternal()).isNotNull();
+        assertThat(lineString.resolveInternal().get("type")).as("geo type").isEqualTo("LineString");
+        assertThat(lineString.resolveInternal().get("coordinates")).as("coordinates class type").isInstanceOf(List.class);
 
-        List<?> coordinates = (List<?>)lineString.resolve().get("coordinates");
+        List<?> coordinates = (List<?>)lineString.resolveInternal().get("coordinates");
 
         coordinates.forEach(c -> {
             assertThat(c).isInstanceOf(uk.dioxic.mgenerate.core.operator.type.Coordinates.class);

@@ -15,7 +15,7 @@ class MinuteTest {
     void resolve_Random() {
         Minute minute = new MinuteBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(minute.resolve()).isBetween(0, 59);
+        assertThat(minute.resolveInternal()).isBetween(0, 59);
     }
 
     @Test
@@ -24,6 +24,6 @@ class MinuteTest {
                 .date(ldt)
                 .build();
 
-        assertThat(minute.resolve()).isEqualTo(ldt.getMinute());
+        assertThat(minute.resolveInternal()).isEqualTo(ldt.getMinute());
     }
 }

@@ -5,6 +5,7 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import uk.dioxic.mgenerate.common.Resolvable;
 
+@Deprecated
 public final class OperatorCodecProvider implements CodecProvider {
 
     @Override

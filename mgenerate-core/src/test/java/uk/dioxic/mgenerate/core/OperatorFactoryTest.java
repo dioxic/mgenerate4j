@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OperatorFactoryTest {
 
     @Test
-    void create_Resolvable_OperatorKeyExists() {
+    void create_Default() {
         Resolvable resolvable = OperatorFactory.create("$objectid");
 
         assertThat(resolvable).as("not null").isNotNull();
@@ -19,13 +19,29 @@ class OperatorFactoryTest {
     }
 
     @Test
-    void create_Resolvable_OperatorWithDocument() {
+    void create_FromDocument() {
         Document doc = new Document("min", 1);
 
         Resolvable resolvable = OperatorFactory.create("$number", doc);
 
         assertThat(resolvable).as("not null").isNotNull();
         assertThat(resolvable.resolve()).as("integer result").isInstanceOf(Integer.class);
+    }
+
+    @Test
+    void create_FromSingleValue() {
+        Resolvable resolvable = OperatorFactory.create("$optional", "something");
+
+        assertThat(resolvable).as("not null").isNotNull();
+        assertThat(resolvable.resolve()).isEqualTo("something");
+    }
+
+    @Test
+    void create_FromSingleValue2() {
+        Resolvable resolvable = OperatorFactory.create("$sentence", 0);
+
+        assertThat(resolvable).as("not null").isNotNull();
+        assertThat(resolvable.resolve()).asString().isEqualTo(".");
     }
 
     @Test

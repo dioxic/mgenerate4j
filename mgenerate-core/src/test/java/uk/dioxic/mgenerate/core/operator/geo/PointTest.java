@@ -17,11 +17,11 @@ class PointTest {
 
         Point point = new PointBuilder(ReflectiveTransformerRegistry.getInstance()).longBounds(longBounds).latBounds(latBounds).build();
 
-        assertThat(point.resolve()).isNotNull();
-        assertThat(point.resolve().get("type")).as("geo type").isEqualTo("Point");
-        assertThat(point.resolve().get("coordinates")).as("coordinates class type").isInstanceOf(uk.dioxic.mgenerate.core.operator.type.Coordinates.class);
+        assertThat(point.resolveInternal()).isNotNull();
+        assertThat(point.resolveInternal().get("type")).as("geo type").isEqualTo("Point");
+        assertThat(point.resolveInternal().get("coordinates")).as("coordinates class type").isInstanceOf(uk.dioxic.mgenerate.core.operator.type.Coordinates.class);
 
-        uk.dioxic.mgenerate.core.operator.type.Coordinates p = (uk.dioxic.mgenerate.core.operator.type.Coordinates) point.resolve().get("coordinates");
+        uk.dioxic.mgenerate.core.operator.type.Coordinates p = (uk.dioxic.mgenerate.core.operator.type.Coordinates) point.resolveInternal().get("coordinates");
         assertThat(p.getX()).as("longitude").isBetween(longBounds.get(0).doubleValue(), longBounds.get(1).doubleValue());
         assertThat(p.getY()).as("latitude").isBetween(latBounds.get(0).doubleValue(), latBounds.get(1).doubleValue());
     }

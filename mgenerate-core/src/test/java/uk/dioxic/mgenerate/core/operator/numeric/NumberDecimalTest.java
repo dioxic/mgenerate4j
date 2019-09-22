@@ -17,7 +17,7 @@ class NumberDecimalTest {
 
         NumberDecimal decimal = new NumberDecimalBuilder(ReflectiveTransformerRegistry.getInstance()).fixed(fixed).min(min).max(max).build();
 
-        assertThat(decimal.resolve()).as("check value").isBetween(BigDecimal.valueOf(min), BigDecimal.valueOf(max));
-        assertThat(decimal.resolve().scale()).as("check scale").isEqualTo(fixed);
+        assertThat(decimal.resolveInternal()).as("check value").isBetween(BigDecimal.valueOf(min), BigDecimal.valueOf(max));
+        assertThat(decimal.resolveInternal().scale()).as("check scale").isEqualTo(fixed);
     }
 }

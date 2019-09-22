@@ -12,15 +12,15 @@ class UrlTest {
         java.lang.String path = "images";
 
         Url url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).domain(domain).path(path).extension(true).build();
-        assertThat(url.resolve()).as("all args").startsWith("http://" + domain).contains(path);
+        assertThat(url.resolveInternal()).as("all args").startsWith("http://" + domain).contains(path);
 
         url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).path(path).extension(true).build();
-        assertThat(url.resolve()).as("all args").contains(path);
+        assertThat(url.resolveInternal()).as("all args").contains(path);
 
         url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).extension(true).build();
-        assertThat(url.resolve()).as("all args").isNotNull();
+        assertThat(url.resolveInternal()).as("all args").isNotNull();
 
         url = new UrlBuilder(ReflectiveTransformerRegistry.getInstance()).build();
-        assertThat(url.resolve()).as("all args").isNotNull();
+        assertThat(url.resolveInternal()).as("all args").isNotNull();
     }
 }

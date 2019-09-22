@@ -5,6 +5,7 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.common.exception.ResolveException;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 import uk.dioxic.mgenerate.core.util.ResolverUtil;
 
@@ -14,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 @Operator
-public class PickSet implements Resolvable<Set<Object>>, Initializable {
+public class PickSet extends AbstractOperator<Set<Object>> implements Initializable {
 
     @OperatorProperty(required = true)
     List<?> from;
@@ -28,11 +29,14 @@ public class PickSet implements Resolvable<Set<Object>>, Initializable {
     private long minQuantity;
 
     @Override
-    public Set<Object> resolve() {
+    public Set<Object> resolveInternal() {
         Integer quantity = this.quantity.resolve();
 
         if (quantity > minQuantity) {
             throw new ResolveException("specified quanitity of " + quantity + " is greater than the number of unique values available (" + minQuantity + ")");
+        }
+        if (quantity < 0) {
+            return null;
         }
 
         Set<Object> result = new HashSet<>(quantity);

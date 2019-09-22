@@ -4,11 +4,12 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.operator.text.Word;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
-public class Url implements Resolvable<String> {
+public class Url extends AbstractOperator<String> {
 
     @OperatorProperty
     Resolvable<String> domain = new Domain();
@@ -20,7 +21,7 @@ public class Url implements Resolvable<String> {
     Resolvable<Boolean> extension = Wrapper.wrap(Boolean.FALSE);
 
     @Override
-    public String resolve() {
+    public String resolveInternal() {
         StringBuilder sb = new StringBuilder("http://");
         sb.append(domain.resolve());
         sb.append('/');

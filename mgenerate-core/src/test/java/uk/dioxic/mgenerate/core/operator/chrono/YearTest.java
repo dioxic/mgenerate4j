@@ -15,7 +15,7 @@ class YearTest {
     void resolve_Random() {
         Year year = new YearBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(year.resolve()).isPositive();
+        assertThat(year.resolveInternal()).isPositive();
     }
 
     @Test
@@ -24,6 +24,6 @@ class YearTest {
                 .date(ldt)
                 .build();
 
-        assertThat(year.resolve()).isEqualTo(ldt.getYear());
+        assertThat(year.resolveInternal()).isEqualTo(ldt.getYear());
     }
 }

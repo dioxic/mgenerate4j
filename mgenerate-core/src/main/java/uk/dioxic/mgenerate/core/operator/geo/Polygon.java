@@ -6,20 +6,19 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 import uk.dioxic.mgenerate.core.util.GeoUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 
 @Operator
-public class Polygon implements Resolvable<Document>, Initializable {
+public class Polygon extends AbstractOperator<Document> implements Initializable {
 
     @OperatorProperty
     List<Number> longBounds = asList(-180d, 180d);
@@ -36,8 +35,8 @@ public class Polygon implements Resolvable<Document>, Initializable {
     private Coordinates coordinates;
 
     @Override
-    public Document resolve() {
-        uk.dioxic.mgenerate.core.operator.type.Coordinates[] polygon = Stream.generate(() -> coordinates.resolve())
+    public Document resolveInternal() {
+        uk.dioxic.mgenerate.core.operator.type.Coordinates[] polygon = Stream.generate(() -> coordinates.resolveInternal())
                 .limit(corners.resolve())
                 .toArray(uk.dioxic.mgenerate.core.operator.type.Coordinates[]::new);
 

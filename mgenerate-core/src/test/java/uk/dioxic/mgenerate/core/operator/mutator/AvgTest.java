@@ -17,7 +17,7 @@ class AvgTest {
                 .values(Arrays.asList(1d, 2d, 3d))
                 .build();
 
-        assertThat(avg.resolve()).isEqualTo(2d);
+        assertThat(avg.resolveInternal()).isEqualTo(2d);
     }
 
     @Test
@@ -26,7 +26,7 @@ class AvgTest {
                 .values(Arrays.asList(1, 2, 3))
                 .build();
 
-        assertThat(avg.resolve()).isEqualTo(2d);
+        assertThat(avg.resolveInternal()).isEqualTo(2d);
     }
 
     @Test
@@ -35,7 +35,7 @@ class AvgTest {
                 .values(Arrays.asList(1L, 2L, 3L))
                 .build();
 
-        assertThat(avg.resolve()).isEqualTo(2d);
+        assertThat(avg.resolveInternal()).isEqualTo(2d);
     }
 
     @Test
@@ -46,6 +46,6 @@ class AvgTest {
                 .values(array)
                 .build();
 
-        assertThatThrownBy(avg::resolve).isInstanceOf(ClassCastException.class);
+        assertThatThrownBy(avg::resolveInternal).isInstanceOf(ClassCastException.class);
     }
 }

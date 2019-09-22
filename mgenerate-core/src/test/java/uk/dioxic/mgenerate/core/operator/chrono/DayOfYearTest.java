@@ -15,7 +15,7 @@ class DayOfYearTest {
     void resolve_Random() {
         DayOfYear doy = new DayOfYearBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(doy.resolve()).isBetween(1, 365);
+        assertThat(doy.resolveInternal()).isBetween(1, 365);
     }
 
     @Test
@@ -24,7 +24,7 @@ class DayOfYearTest {
                 .date(ldt)
                 .build();
 
-        assertThat(doy.resolve()).isEqualTo(ldt.getDayOfYear());
+        assertThat(doy.resolveInternal()).isEqualTo(ldt.getDayOfYear());
     }
 
 }

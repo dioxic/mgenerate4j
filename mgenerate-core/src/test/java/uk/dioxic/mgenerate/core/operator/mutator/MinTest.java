@@ -16,7 +16,7 @@ class MinTest {
                 .values(Arrays.asList(1d, 2d, 3d))
                 .build();
 
-        assertThat(min.resolve()).isEqualTo(1d);
+        assertThat(min.resolveInternal()).isEqualTo(1d);
     }
 
     @Test
@@ -26,7 +26,7 @@ class MinTest {
                 .values(Arrays.asList(1, 2, 3))
                 .build();
 
-        assertThat(min.resolve()).isEqualTo(1);
+        assertThat(min.resolveInternal()).isEqualTo(1);
     }
 
     @Test
@@ -36,7 +36,7 @@ class MinTest {
                 .values(Arrays.asList(1L, 2L, 3L))
                 .build();
 
-        assertThat(min.resolve()).isEqualTo(1L);
+        assertThat(min.resolveInternal()).isEqualTo(1L);
     }
 
     @Test
@@ -46,6 +46,6 @@ class MinTest {
                 .values(Arrays.asList("alice", "bob", "badger"))
                 .build();
 
-        assertThat(min.resolve()).isEqualTo("alice");
+        assertThat(min.resolveInternal()).isEqualTo("alice");
     }
 }

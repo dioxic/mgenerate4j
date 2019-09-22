@@ -6,6 +6,7 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 
 @Operator
-public class LineString implements Resolvable<Document>, Initializable {
+public class LineString extends AbstractOperator<Document> implements Initializable {
 
     @OperatorProperty
     List<Number> longBounds = asList(-180d, 180d);
@@ -28,8 +29,8 @@ public class LineString implements Resolvable<Document>, Initializable {
     private Coordinates coordinates;
 
     @Override
-    public Document resolve() {
-        uk.dioxic.mgenerate.core.operator.type.Coordinates[] lineString = Stream.generate(coordinates::resolve)
+    public Document resolveInternal() {
+        uk.dioxic.mgenerate.core.operator.type.Coordinates[] lineString = Stream.generate(coordinates::resolveInternal)
                 .limit(locs.resolve())
                 .toArray(uk.dioxic.mgenerate.core.operator.type.Coordinates[]::new);
 

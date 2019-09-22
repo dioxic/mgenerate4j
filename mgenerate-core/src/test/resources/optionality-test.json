@@ -1,0 +1,26 @@
+{
+  "repeatName": {
+    "$optional": {
+      "value": "${name}",
+      "isNull": "${name}"
+    }
+  },
+  "name": "$first",
+  "numbers": [
+    { "number":  1 },
+    { "number":  2 },
+    { "number":  3 }
+  ],
+  "minNumbers": {
+    "$min": "${numbers.number}"
+  },
+  "SHOULD_NOT_EXIST": {
+    "$optional": {
+      "value": 123,
+      "isNull": "${NONE-EXISTANT-FIELD}"
+    }
+  },
+  "SHOULD_NOT_EXIST2": {
+    "$min": "${NONE-EXISTANT-FIELD}"
+  }
+}

@@ -1,14 +1,14 @@
 package uk.dioxic.mgenerate.core.operator.mutator;
 
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 import java.util.List;
 
 @Operator
-public class Join implements Resolvable<String> {
+public class Join extends AbstractOperator<String> {
 
     private static final String DEFAULT_SEP = "";
 
@@ -19,7 +19,7 @@ public class Join implements Resolvable<String> {
     String sep = DEFAULT_SEP;
 
     @Override
-    public String resolve() {
+    public String resolveInternal() {
         return String.join(sep, array.resolve());
     }
 

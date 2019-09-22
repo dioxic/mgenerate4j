@@ -4,12 +4,13 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.math.BigDecimal;
 
 @Operator({"mgNumberDecimal", "decimal", "decimal128"})
-public class NumberDecimal implements Resolvable<BigDecimal> {
+public class NumberDecimal extends AbstractOperator<BigDecimal> {
 
     private static final Long DEFAULT_MIN = 0L;
     private static final Long DEFAULT_MAX = 1000L;
@@ -25,7 +26,7 @@ public class NumberDecimal implements Resolvable<BigDecimal> {
     Resolvable<Integer> fixed = DEFAULT_FIXED;
 
     @Override
-    public BigDecimal resolve() {
+    public BigDecimal resolveInternal() {
         return FakerUtil.randomDecimal(min, max, fixed.resolve());
     }
 }

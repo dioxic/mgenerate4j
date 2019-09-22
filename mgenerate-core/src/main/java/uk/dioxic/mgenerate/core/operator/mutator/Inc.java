@@ -5,9 +5,10 @@ import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.common.exception.ResolveException;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 @Operator({"increment", "inc"})
-public class Inc implements Resolvable<Number> {
+public class Inc extends AbstractOperator<Number> {
 
     @OperatorProperty(required = true)
     Resolvable<Number> input;
@@ -16,7 +17,7 @@ public class Inc implements Resolvable<Number> {
     Resolvable<Number> step = Wrapper.wrap(1);
 
     @Override
-    public Number resolve() {
+    public Number resolveInternal() {
         Number input = this.input.resolve();
         Number step = this.step.resolve();
 

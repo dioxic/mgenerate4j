@@ -18,7 +18,7 @@ class FastLocalSearchTest {
     @Test
     void randomPoints() {
         Coordinates coord = new CoordinatesBuilder(ReflectiveTransformerRegistry.getInstance()).build();
-        uk.dioxic.mgenerate.core.operator.type.Coordinates[] points = Stream.generate(coord::resolve)
+        uk.dioxic.mgenerate.core.operator.type.Coordinates[] points = Stream.generate(coord::resolveInternal)
                 .limit(5)
                 .toArray(uk.dioxic.mgenerate.core.operator.type.Coordinates[]::new);
 

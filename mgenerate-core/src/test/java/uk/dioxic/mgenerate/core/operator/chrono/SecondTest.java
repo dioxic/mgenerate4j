@@ -15,7 +15,7 @@ class SecondTest {
     void resolve_Random() {
         Second second = new SecondBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(second.resolve()).isBetween(0, 59);
+        assertThat(second.resolveInternal()).isBetween(0, 59);
     }
 
     @Test
@@ -24,6 +24,6 @@ class SecondTest {
                 .date(ldt)
                 .build();
 
-        assertThat(second.resolve()).isEqualTo(ldt.getSecond());
+        assertThat(second.resolveInternal()).isEqualTo(ldt.getSecond());
     }
 }

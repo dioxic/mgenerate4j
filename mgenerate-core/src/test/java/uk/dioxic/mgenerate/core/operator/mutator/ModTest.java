@@ -14,7 +14,7 @@ class ModTest {
                 .mod(11)
                 .build();
 
-        assertThat(mod.resolve()).isEqualTo(1);
+        assertThat(mod.resolveInternal()).isEqualTo(1);
     }
 
     @Test
@@ -24,7 +24,7 @@ class ModTest {
                 .mod(11)
                 .build();
 
-        assertThat(mod.resolve()).isEqualTo(1);
+        assertThat(mod.resolveInternal()).isEqualTo(1);
     }
 
     @Test
@@ -34,7 +34,7 @@ class ModTest {
                 .mod(11)
                 .build();
 
-        assertThat(mod.resolve()).isEqualTo(1);
+        assertThat(mod.resolveInternal()).isEqualTo(1);
     }
 
 }

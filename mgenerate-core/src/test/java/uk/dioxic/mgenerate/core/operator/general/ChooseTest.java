@@ -25,7 +25,7 @@ class ChooseTest {
 
         // make sure the choice is dynamic
         Set<String> actual = new HashSet<>();
-        Stream.generate(choose::resolve)
+        Stream.generate(choose::resolveInternal)
                 .limit(100)
                 .map(Object::toString)
                 .forEach(actual::add);
@@ -43,7 +43,7 @@ class ChooseTest {
                 .weights(weights)
                 .build();
 
-        assertThat(choose.resolve()).as("an expected value").isEqualTo(from.get(0));
+        assertThat(choose.resolveInternal()).as("an expected value").isEqualTo(from.get(0));
     }
 
     @Test
@@ -60,7 +60,7 @@ class ChooseTest {
 
         // make sure the choice is dynamic
         Set<Object> actual = new HashSet<>();
-        Stream.generate(choose::resolve)
+        Stream.generate(choose::resolveInternal)
                 .limit(100)
                 .map(Document.class::cast)
                 .map(d -> d.get("number"))

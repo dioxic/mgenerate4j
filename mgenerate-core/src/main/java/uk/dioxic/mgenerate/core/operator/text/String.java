@@ -4,10 +4,11 @@ import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.Wrapper;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator("string")
-public class String implements Resolvable<java.lang.String> {
+public class String extends AbstractOperator<java.lang.String> {
 
     @OperatorProperty
     java.lang.String pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()[]";
@@ -16,7 +17,7 @@ public class String implements Resolvable<java.lang.String> {
     Resolvable<Integer> length = Wrapper.wrap(5);
 
     @Override
-    public java.lang.String resolve() {
+    public java.lang.String resolveInternal() {
         Integer length = this.length.resolve();
 
         java.lang.StringBuilder sb = new java.lang.StringBuilder(length);

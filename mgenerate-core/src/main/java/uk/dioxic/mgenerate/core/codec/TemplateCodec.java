@@ -14,9 +14,8 @@ public class TemplateCodec implements Codec<Template> {
 
     private static final CodecRegistry DEFAULT_REGISTRY = fromProviders(asList(new ValueCodecProvider(),
             new BsonValueCodecProvider(),
-            new DocumentCodecProvider(new OperatorTransformer()),
+            new MgenDocumentCodecProvider(new OperatorTransformer()),
             new ExtendedCodecProvider(),
-            new OperatorCodecProvider(),
             new TemplateCodecProvider()));
     private static ThreadLocal<Boolean> keyResolverCount = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
@@ -24,7 +23,7 @@ public class TemplateCodec implements Codec<Template> {
 
 
     public TemplateCodec() {
-        documentCodec = new DocumentCodec(DEFAULT_REGISTRY, new BsonTypeClassMap(), new OperatorTransformer());
+        documentCodec = new MgenDocumentCodec(DEFAULT_REGISTRY, new BsonTypeClassMap(), new OperatorTransformer());
     }
 
     public static CodecRegistry getCodeRegistry() {

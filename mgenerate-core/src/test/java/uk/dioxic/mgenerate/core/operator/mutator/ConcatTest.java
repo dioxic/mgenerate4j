@@ -17,7 +17,7 @@ class ConcatTest {
                 .values(list)
                 .build();
 
-        assertThat(concat.resolve()).containsExactlyElementsOf(list);
+        assertThat(concat.resolveInternal()).containsExactlyElementsOf(list);
     }
 
     @Test
@@ -28,7 +28,7 @@ class ConcatTest {
                 .values(Arrays.asList(list.subList(0, 2), list.subList(2, 4)))
                 .build();
 
-        assertThat(concat.resolve()).containsExactlyElementsOf(list);
+        assertThat(concat.resolveInternal()).containsExactlyElementsOf(list);
     }
 
     @Test
@@ -39,7 +39,7 @@ class ConcatTest {
                 .values(Arrays.asList(list.subList(0, 1), list.get(1), list.subList(2, 4)))
                 .build();
 
-        assertThat(concat.resolve()).containsExactlyElementsOf(list);
+        assertThat(concat.resolveInternal()).containsExactlyElementsOf(list);
     }
 
 }

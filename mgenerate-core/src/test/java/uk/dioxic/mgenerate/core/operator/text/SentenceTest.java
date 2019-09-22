@@ -11,7 +11,7 @@ class SentenceTest {
     void reolve() {
         Sentence sentence = new SentenceBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        assertThat(sentence.resolve()).isNotNull();
-        assertThat(sentence.resolve()).isInstanceOf(java.lang.String.class);
+        assertThat(sentence.resolveInternal()).isNotNull();
+        assertThat(sentence.resolveInternal()).isInstanceOf(java.lang.String.class);
     }
 }

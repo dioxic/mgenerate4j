@@ -1,16 +1,16 @@
 package uk.dioxic.mgenerate.core.operator.general;
 
 import uk.dioxic.mgenerate.common.Initializable;
-import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 import uk.dioxic.mgenerate.core.util.ResolverUtil;
 
 import java.util.List;
 
 @Operator
-public class Choose implements Resolvable<Object>, Initializable {
+public class Choose extends AbstractOperator<Object> implements Initializable {
 
     @OperatorProperty(required = true)
     List<?> from;
@@ -19,7 +19,7 @@ public class Choose implements Resolvable<Object>, Initializable {
     List<Integer> weights;
 
     @Override
-    public Object resolve() {
+    public Object resolveInternal() {
         return from.get(FakerUtil.random().nextInt(from.size()));
     }
 

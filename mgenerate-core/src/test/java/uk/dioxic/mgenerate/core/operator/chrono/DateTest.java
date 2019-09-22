@@ -13,7 +13,7 @@ class DateTest {
 
         Date date = new DateBuilder(ReflectiveTransformerRegistry.getInstance()).build();
 
-        Assertions.assertThat(date.resolve()).isBetween(Date.DEFAULT_MIN, Date.DEFAULT_MAX);
+        Assertions.assertThat(date.resolveInternal()).isBetween(Date.DEFAULT_MIN, Date.DEFAULT_MAX);
     }
 
     @Test
@@ -26,6 +26,6 @@ class DateTest {
                 .max(max)
                 .build();
 
-        Assertions.assertThat(date.resolve()).isBetween(min, max);
+        Assertions.assertThat(date.resolveInternal()).isBetween(min, max);
     }
 }

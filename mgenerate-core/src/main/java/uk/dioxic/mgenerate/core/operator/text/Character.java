@@ -1,14 +1,14 @@
 package uk.dioxic.mgenerate.core.operator.text;
 
 import uk.dioxic.mgenerate.common.Initializable;
-import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.operator.type.Casing;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
-public class Character implements Resolvable<java.lang.Character>, Initializable {
+public class Character extends AbstractOperator<java.lang.Character> implements Initializable {
 
     private static final java.lang.String SYMBOLS = "!@#$%^&*()";
     private static final java.lang.String ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
@@ -28,10 +28,10 @@ public class Character implements Resolvable<java.lang.Character>, Initializable
     Boolean numeric = Boolean.FALSE;
 
     @OperatorProperty
-    Casing casing;
+    Casing casing = Casing.BOTH;
 
     @Override
-    public java.lang.Character resolve() {
+    protected java.lang.Character resolveInternal() {
         return pool.charAt(FakerUtil.numberBetween(0, pool.length()));
     }
 
@@ -47,7 +47,7 @@ public class Character implements Resolvable<java.lang.Character>, Initializable
                     case LOWER:
                         sb.append(ALPHA_LOWER);
                         break;
-                    default:
+                    case BOTH:
                         if (alpha) {
                             sb.append(ALPHA_UPPER);
                             sb.append(ALPHA_LOWER);

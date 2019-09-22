@@ -3,6 +3,7 @@ package uk.dioxic.mgenerate.core.operator.chrono;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.operator.type.DateDisplayType;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
@@ -12,7 +13,7 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 
 @Operator
-public class DayOfWeek implements Resolvable<Object> {
+public class DayOfWeek extends AbstractOperator<Object> {
 
     private static final String[] weekDays = DateFormatSymbols.getInstance().getWeekdays();
     private static final String[] shortWeekDays = DateFormatSymbols.getInstance().getShortWeekdays();
@@ -27,7 +28,7 @@ public class DayOfWeek implements Resolvable<Object> {
     Locale locale = Locale.getDefault();
 
     @Override
-    public Object resolve() {
+    public Object resolveInternal() {
         if (date != null) {
             java.time.DayOfWeek dayOfWeek = date.resolve().getDayOfWeek();
             switch (type) {

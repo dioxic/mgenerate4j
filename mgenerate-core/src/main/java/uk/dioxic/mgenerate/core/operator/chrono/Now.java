@@ -1,15 +1,15 @@
 package uk.dioxic.mgenerate.core.operator.chrono;
 
-import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
+import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 import java.time.LocalDateTime;
 
 @Operator
-public class Now implements Resolvable<LocalDateTime> {
+public class Now extends AbstractOperator<LocalDateTime> {
 
 	@Override
-	public LocalDateTime resolve() {
+	public LocalDateTime resolveInternal() {
 		return LocalDateTime.now();
 	}
 

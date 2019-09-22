@@ -17,7 +17,7 @@ class JoinTest {
 
         Join join = new JoinBuilder(ReflectiveTransformerRegistry.getInstance()).array(array).sep(sep).build();
 
-        assertThat(join.resolve()).as("check concaternation").isEqualTo("fish|gofer|beaver");
+        assertThat(join.resolveInternal()).as("check concaternation").isEqualTo("fish|gofer|beaver");
     }
 
     @Test
@@ -26,7 +26,7 @@ class JoinTest {
 
         Join join = new JoinBuilder(ReflectiveTransformerRegistry.getInstance()).array(array).build();
 
-        assertThat(join.resolve()).as("check concaternation").isEqualTo("fishgoferbeaver");
+        assertThat(join.resolveInternal()).as("check concaternation").isEqualTo("fishgoferbeaver");
     }
 
 }
