@@ -5,7 +5,7 @@ import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 @Operator
-public class MartialStatus extends AbstractOperator<String> {
+public class MaritalStatus extends AbstractOperator<String> {
 
     @Override
     public String resolveInternal() {
