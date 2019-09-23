@@ -1,0 +1,24 @@
+{
+  "cities": "${people.addresses.city}",
+  "people": {
+    "$array": {
+      "of": {
+        "name": "$first",
+        "addresses": {
+          "$array": {
+            "of": {
+              "city": "$city"
+            },
+            "number": {
+              "$int": {
+                "min": 0,
+                "max": 3
+              }
+            }
+          }
+        }
+      },
+      "number": 3
+    }
+  }
+}

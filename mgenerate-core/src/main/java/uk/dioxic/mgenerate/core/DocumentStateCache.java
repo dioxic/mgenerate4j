@@ -14,7 +14,11 @@ public class DocumentStateCache {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static DocumentStateCache instance = new DocumentStateCache();
-    private ThreadLocal<DocumentState> localState = ThreadLocal.withInitial(DocumentState::new);
+    private ThreadLocal<DocumentState> localState = ThreadLocal.withInitial(() -> {
+        DocumentState state = new DocumentState();
+        logger.trace("creating thread local document state {}", state.hashCode());
+        return state;
+    });
 
     public static DocumentStateCache getInstance() {
         return instance;
@@ -40,6 +44,7 @@ public class DocumentStateCache {
         private Map<String, Object> valueCache = new HashMap<>();
 
         void setTemplate(Template template) {
+            logger.trace("setting template for document state {}", this.hashCode());
             this.template = template;
             valueCache.clear();
         }
@@ -82,12 +87,11 @@ public class DocumentStateCache {
                         v = DocumentUtil.coordinateLookup(coordinates.substring(parentCoordinates.length() + 1), get(parentCoordinates));
                     }
                 }
-                // make sure anything stored in the value cache is fully hydrated
-                v = Resolvable.recursiveResolveObject(v);
-                DocumentUtil.flatMap(valueCache, coordinates, v);
-                logger.trace("CREATING state entry for {} = {}", coordinates, v);
+                // make sure anything stored in the value cache is flatmapped and fully hydrated
+                logger.trace("CREATING state entry for {}", coordinates);
+                v = DocumentUtil.flatMap(valueCache, coordinates, true, v);
             }
-            logger.trace("'{}' = {}", coordinates, v);
+            logger.trace("RETURNED {} = {}", coordinates, v);
             return v;
         }
 
@@ -109,7 +113,7 @@ public class DocumentStateCache {
                     return get(coordinates);
                 }
             }
-            return Resolvable.recursiveResolveObject(resolvable);
+            return resolvable.resolve();
         }
     }
 

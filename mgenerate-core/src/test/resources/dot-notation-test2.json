@@ -1,0 +1,8 @@
+{
+  "cities": "${people.addresses.city}",
+  "people": [
+    { "name": "Shaina", "addresses": [ { "city": "$city" }, { "city": "$city" } ] },
+    { "name": "Callie", "addresses": { "city": "$city" } },
+    { "name": "Maximilian" }
+  ]
+}

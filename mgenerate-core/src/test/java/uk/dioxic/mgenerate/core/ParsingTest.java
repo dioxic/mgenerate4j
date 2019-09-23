@@ -39,6 +39,24 @@ class ParsingTest {
     }
 
     @Test
+    void dotNotationTest() throws URISyntaxException, IOException {
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test.json").toURI()));
+        logger.debug(template.getDocument().toString());
+
+        String outJson = template.toJson(jws);
+        logger.info(outJson);
+    }
+
+    @Test
+    void dotNotation3Test() throws URISyntaxException, IOException {
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test3.json").toURI()));
+        logger.debug(template.getDocument().toString());
+
+        String outJson = template.toJson(jws);
+        logger.info(outJson);
+    }
+
+    @Test
     void documentTest() throws URISyntaxException, IOException {
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("template.json").toURI()));
         logger.debug(template.getDocument().toString());

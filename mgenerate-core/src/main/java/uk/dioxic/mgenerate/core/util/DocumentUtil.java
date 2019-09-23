@@ -3,6 +3,7 @@ package uk.dioxic.mgenerate.core.util;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.dioxic.mgenerate.common.Resolvable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,19 +80,39 @@ public class DocumentUtil {
      * Maps the input {@link Object} to a one-dimension map suitable for dot-notation lookups.
      * @param flatMap target map
      * @param key dot-notation key for the input object
+     * @param hydrate hydrate {@link uk.dioxic.mgenerate.common.Resolvable} objects
      * @param o input object
      */
     @SuppressWarnings("unchecked")
-    public static void flatMap(Map<String, Object> flatMap, String key, Object o) {
-        if (o instanceof Map) {
-            ((Map) o).forEach((k, v) -> flatMap(flatMap, key + "." + k, v));
-        } else if (o instanceof Iterable) {
-            int counter = 0;
-            for (Object item : (Iterable) o) {
-                flatMap(flatMap, key + "." + counter++, item);
-            }
+    public static Object flatMap(Map<String, Object> flatMap, String key, boolean hydrate, Object o) {
+        if (flatMap.containsKey(key)) {
+            return flatMap.get(key);
         }
+
+        if (hydrate && o instanceof Resolvable) {
+            Resolvable r = (Resolvable) o;
+            o = r.resolve();
+        }
+
+        if (o instanceof Map) {
+            Document doc = new Document();
+            ((Map<String, Object>) o).forEach((k, v) -> {
+                doc.put(k, flatMap(flatMap, key + "." + k, hydrate, v));
+            });
+            flatMap.put(key, doc);
+            return doc;
+        } else if (o instanceof Iterable) {
+            List<Object> l = new ArrayList<>((List<?>)o);
+            for (int i=0; i< l.size(); i++) {
+                l.set(i, flatMap(flatMap, key + "." + i, hydrate, l.get(i)));
+            }
+            flatMap.put(key, l);
+            return l;
+        }
+        logger.trace("adding {} to flat map", key);
         flatMap.put(key, o);
+
+        return o;
     }
 
     /**
@@ -103,11 +124,11 @@ public class DocumentUtil {
     @SuppressWarnings("unchecked")
     public static void flatMap(Map<String, Object> flatMap, Object o) {
         if (o instanceof Map) {
-            ((Map<String, Object>) o).forEach((k, v) -> flatMap(flatMap, k, v));
+            ((Map<String, Object>) o).forEach((k, v) -> flatMap(flatMap, k, false, v));
         } else if (o instanceof Iterable) {
             int counter = 0;
             for (Object item : (Iterable) o) {
-                flatMap(flatMap, Integer.toString(counter++), item);
+                flatMap(flatMap, Integer.toString(counter++), false, item);
             }
         }
     }
