@@ -1,10 +1,10 @@
 package uk.dioxic.mgenerate.core.operator.mutator;
 
 import org.bson.Document;
-import org.bson.codecs.DocumentCodec;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
+import uk.dioxic.mgenerate.core.codec.MgenDocumentCodec;
 import uk.dioxic.mgenerate.core.codec.TemplateCodec;
 import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 import uk.dioxic.mgenerate.core.operator.type.HashType;
@@ -30,7 +30,7 @@ public class Hash extends AbstractOperator<Object> {
         byte[] valBytes;
 
         if (value instanceof Document) {
-            valBytes = ((Document) value).toJson(new DocumentCodec(TemplateCodec.getCodeRegistry())).getBytes();
+            valBytes = ((Document) value).toJson(new MgenDocumentCodec()).getBytes();
         } else {
             valBytes = value.toString().getBytes();
         }
