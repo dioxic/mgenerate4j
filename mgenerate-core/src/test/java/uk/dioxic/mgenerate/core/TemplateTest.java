@@ -22,7 +22,7 @@ class TemplateTest {
 
         Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("lookup-test.json").toURI()));
 
-        RawBsonDocument rbd = template.generateOne();
+        RawBsonDocument rbd = template.toRawBson();
 
         System.out.println(rbd);
 

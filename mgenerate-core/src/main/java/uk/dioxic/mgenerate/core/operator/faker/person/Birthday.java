@@ -25,6 +25,4 @@ public class Birthday extends AbstractOperator<Object> {
         AgeType ageType = type.resolve();
         return Date.from(FakerUtil.randomDate(ageType.getMinBirthday(), ageType.getMaxBirthday()).toInstant(ZoneOffset.UTC));
     }
-
-
 }

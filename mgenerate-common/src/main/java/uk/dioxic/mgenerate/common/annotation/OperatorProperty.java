@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.SOURCE)
 public @interface OperatorProperty {
-    //String value();
     boolean required() default false;
     boolean primary() default false;
 }

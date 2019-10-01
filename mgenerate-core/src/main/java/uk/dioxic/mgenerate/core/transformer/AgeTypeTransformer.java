@@ -19,4 +19,5 @@ public class AgeTypeTransformer implements Transformer<AgeType> {
 
         throw new TransformerException(objectToTransform.getClass(), AgeType.class);
     }
+
 }

@@ -9,16 +9,8 @@ import java.util.Map;
 
 public class TransformerRegistry {
 
-    private static TransformerRegistry instance = new TransformerRegistry();
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
-    protected final Map<Class, Transformer> transformerMap = new HashMap<>();
-
-    protected TransformerRegistry() {
-    }
-
-    public static TransformerRegistry getInstance() {
-        return instance;
-    }
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Map<Class, Transformer> transformerMap = new HashMap<>();
 
     public void addTransformer(Transformer transformer) {
         ValueTransformer annotation = transformer.getClass().getAnnotation(ValueTransformer.class);
@@ -26,6 +18,7 @@ public class TransformerRegistry {
         transformerMap.put(annotation.value(), transformer);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> Transformer<T> get(Class<T> desiredClass) {
         return (Transformer<T>) transformerMap.get(desiredClass);
     }

@@ -6,7 +6,7 @@ import org.bson.Transformer;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.core.DocumentStateCache;
+import uk.dioxic.mgenerate.core.TemplateStateCache;
 
 import java.util.Map;
 
@@ -14,14 +14,19 @@ import static java.util.Arrays.asList;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 
 public class MgenDocumentCodec extends DocumentCodec {
-
-    private static final String ID_FIELD_NAME = "_id";
     private static final CodecRegistry DEFAULT_REGISTRY = fromProviders(asList(new ValueCodecProvider(),
             new BsonValueCodecProvider(),
-            new MgenDocumentCodecProvider()));
+            new MgenDocumentCodecProvider(new OperatorTransformer()),
+            new ExtendedCodecProvider(),
+            new TemplateCodecProvider()));
     private static final BsonTypeClassMap DEFAULT_BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
+    private static final String ID_FIELD_NAME = "_id";
 
     private final CodecRegistry registry;
+
+    public static CodecRegistry getCodecRegistry() {
+        return DEFAULT_REGISTRY;
+    }
 
     /**
      * Construct a new instance with a default {@code CodecRegistry}.
@@ -34,7 +39,6 @@ public class MgenDocumentCodec extends DocumentCodec {
      * Construct a new instance with the given registry.
      *
      * @param registry         the registry
-     * @since 3.5
      */
     public MgenDocumentCodec(final CodecRegistry registry) {
         this(registry, DEFAULT_BSON_TYPE_CLASS_MAP);
@@ -47,7 +51,7 @@ public class MgenDocumentCodec extends DocumentCodec {
      * @param bsonTypeClassMap the BSON type class map
      */
     public MgenDocumentCodec(final CodecRegistry registry, final BsonTypeClassMap bsonTypeClassMap) {
-        this(registry, bsonTypeClassMap, null);
+        this(registry, bsonTypeClassMap, new OperatorTransformer());
     }
 
     /**
@@ -81,7 +85,7 @@ public class MgenDocumentCodec extends DocumentCodec {
     }
 
     private Object resolve(Object o) {
-        return (o instanceof Resolvable) ? DocumentStateCache.get((Resolvable)o) : o;
+        return (o instanceof Resolvable) ? TemplateStateCache.get((Resolvable) o) : o;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

@@ -10,24 +10,25 @@ import uk.dioxic.mgenerate.core.util.DocumentUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DocumentStateCache {
+public class TemplateStateCache {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static DocumentStateCache instance = new DocumentStateCache();
+    private static TemplateStateCache instance = new TemplateStateCache();
+
     private ThreadLocal<DocumentState> localState = ThreadLocal.withInitial(() -> {
         DocumentState state = new DocumentState();
         logger.trace("creating thread local document state {}", state.hashCode());
         return state;
     });
 
-    public static DocumentStateCache getInstance() {
+    public static TemplateStateCache getInstance() {
         return instance;
     }
 
-    private DocumentStateCache() {
+    private TemplateStateCache() {
     }
 
-    public static void setEncodingContext(Template template) {
+    public static void setTemplateContext(Template template) {
         getInstance().localState.get().setTemplate(template);
     }
 

@@ -1,7 +1,7 @@
 package uk.dioxic.mgenerate.core.resolver;
 
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.core.DocumentStateCache;
+import uk.dioxic.mgenerate.core.TemplateStateCache;
 import uk.dioxic.mgenerate.core.codec.TemplateCodec;
 
 public class DocumentKeyResolver implements Resolvable {
@@ -9,12 +9,12 @@ public class DocumentKeyResolver implements Resolvable {
 
     DocumentKeyResolver(String documentKey) {
         this.documentKey = documentKey;
-        TemplateCodec.keyResolverFound();
+        TemplateCodec.enableStateCaching();
     }
 
     @Override
     public Object resolve() {
-        return DocumentStateCache.get(documentKey);
+        return TemplateStateCache.get(documentKey);
     }
 
 }

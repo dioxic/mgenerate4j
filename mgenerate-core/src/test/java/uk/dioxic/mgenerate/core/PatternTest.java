@@ -30,13 +30,13 @@ class PatternTest {
         document.put("lkp", lookup);
         document.put("nested", nested);
 
-        Template template = new Template(document);
-        DocumentStateCache.setEncodingContext(template);
+        Template template = Template.from(document, true);
+        TemplateStateCache.setTemplateContext(template);
 
-        assertThat(DocumentStateCache.get(lookup)).as("string").isInstanceOf(String.class);
-        assertThat(DocumentStateCache.get(lookup).toString()).as("equal").startsWith("123 fish");
+        assertThat(TemplateStateCache.get(lookup)).as("string").isInstanceOf(String.class);
+        assertThat(TemplateStateCache.get(lookup).toString()).as("equal").startsWith("123 fish");
 
-        logger.debug(DocumentStateCache.get(lookup).toString());
+        logger.debug(TemplateStateCache.get(lookup).toString());
     }
 
     @Test

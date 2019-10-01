@@ -2,36 +2,32 @@ package uk.dioxic.mgenerate.core.codec;
 
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
-import org.bson.codecs.*;
-import org.bson.codecs.configuration.CodecRegistry;
-import uk.dioxic.mgenerate.core.DocumentStateCache;
+import org.bson.codecs.Codec;
+import org.bson.codecs.DecoderContext;
+import org.bson.codecs.DocumentCodec;
+import org.bson.codecs.EncoderContext;
 import uk.dioxic.mgenerate.core.Template;
-
-import static java.util.Arrays.asList;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import uk.dioxic.mgenerate.core.TemplateStateCache;
+import uk.dioxic.mgenerate.core.resolver.DocumentKeyResolver;
 
 public class TemplateCodec implements Codec<Template> {
 
-    private static final CodecRegistry DEFAULT_REGISTRY = fromProviders(asList(new ValueCodecProvider(),
-            new BsonValueCodecProvider(),
-            new MgenDocumentCodecProvider(new OperatorTransformer()),
-            new ExtendedCodecProvider(),
-            new TemplateCodecProvider()));
-    private static ThreadLocal<Boolean> keyResolverCount = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private static ThreadLocal<Boolean> stateCachingRequired = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     private DocumentCodec documentCodec;
 
-
+    /**
+     * Construct a new instance with a default {@code CodecRegistry}.
+     */
     public TemplateCodec() {
-        documentCodec = new MgenDocumentCodec(DEFAULT_REGISTRY, new BsonTypeClassMap(), new OperatorTransformer());
+        documentCodec = new MgenDocumentCodec();
     }
 
-    public static CodecRegistry getCodeRegistry() {
-        return DEFAULT_REGISTRY;
-    }
-
-    public static void keyResolverFound() {
-        keyResolverCount.set(Boolean.TRUE);
+    /**
+     * Enable state caching for this template. This is set during decoding by the {@link DocumentKeyResolver}
+     */
+    public static void enableStateCaching() {
+        stateCachingRequired.set(Boolean.TRUE);
     }
 
     @Override
@@ -39,20 +35,19 @@ public class TemplateCodec implements Codec<Template> {
         // determine whether the document tree contains a DocumentKeyResolver and we need document state caching.
         // the constructor of the DocumentKeyResolver sets the threadlocal flag
 
-        keyResolverCount.set(Boolean.FALSE);
-        Template template = new Template(documentCodec.decode(reader, decoderContext));
-        template.setStateCachingRequired(keyResolverCount.get());
-        return template;
+        stateCachingRequired.set(Boolean.FALSE);
+        return Template.from(documentCodec.decode(reader, decoderContext), stateCachingRequired.get());
     }
 
     @Override
-    public void encode(BsonWriter writer, Template value, EncoderContext encoderContext) {
-        DocumentStateCache.setEncodingContext(value);
-        documentCodec.encode(writer, value.getDocument(), encoderContext);
+    public void encode(BsonWriter writer, Template template, EncoderContext encoderContext) {
+        TemplateStateCache.setTemplateContext(template);
+        documentCodec.encode(writer, template.getDocument(), encoderContext);
     }
 
     @Override
     public Class<Template> getEncoderClass() {
         return Template.class;
     }
+
 }
