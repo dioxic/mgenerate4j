@@ -2,7 +2,7 @@
 
 [![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
 
-_mgenerate4j_ is a tool for generating rich JSON documents from a template. It can be used as a standalone application or
+**mgenerate4j** is a tool for generating rich JSON documents from a template. It can be used as a standalone application or
  as a library. It is also extendable if you need to do something that isn't covered by the out-of-the-box functions. 
  
 The core syntax is largely the same as [mgeneratejs](https://github.com/rueckstiess/mgeneratejs) by Thomas Rueckstiess.
@@ -10,6 +10,8 @@ The core syntax is largely the same as [mgeneratejs](https://github.com/ruecksti
 See the [Wiki](https://github.com/dioxic/mgenerate4j/wiki) for details.
 
 ## Example
+
+Here we have a template that defines 3 fields; a random name, a random age and an array with 2 random email address.
 
 #### Template
 ```json
