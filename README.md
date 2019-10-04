@@ -1,6 +1,6 @@
 <p align="center"><img src="https://github.com/dioxic/mgenerate4j/blob/master/logo.png"></p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
+[![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
 
 _mgenerate4j_ is a tool for generating rich JSON documents from a template. It can be used as a standalone application or
  as a library. It is also extendable if you need to do something that isn't covered by the out-of-the-box functions. 
