@@ -2,12 +2,13 @@
 
 [![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
 
-**mgenerate4j** is a tool for generating rich JSON documents from a template. It can be used as a standalone application or
- as a library. It is also extendable if you need to do something that isn't covered by the out-of-the-box functions. 
+**mgenerate4j** is a tool for generating rich JSON documents from a template.
+
+It can be used as a standalone application or as a library and is also extendable if you need to do something that isn't covered by the out-of-the-box functions. 
  
 The core syntax is largely the same as [mgeneratejs](https://github.com/rueckstiess/mgeneratejs) by Thomas Rueckstiess.
 
-See the [Wiki](https://github.com/dioxic/mgenerate4j/wiki) for details.
+**To find out more, please check out the [mgenerate4j wiki][wiki].**
 
 ## Example
 
@@ -26,6 +27,35 @@ Here we have a template that defines 3 fields; a random name, a random age and a
 {"name": "Naomi Nicolas", "age": 117, "emails": ["ottilie.murazik@gmail.com", "dillon.marvin@hotmail.com"]}
 {"name": "Athena Buckridge", "age": 36, "emails": ["aryanna.tromp@gmail.com", "celestino.buckridge@gmail.com"]}
 ```
+## Quickstart
+
+Assuming git and [Maven](https://maven.apache.org/) installed:
+
+```bash
+$ git clone https://github.com/dioxic/mgenerate4j.git
+$ mvn clean package
+$ java -jar mgenerate-core/target/mgenerate.jar example-template.json
+```
+
+To import as a maven dependency:
+
+```xml
+<dependency>
+    <groupId>uk.dioxic.mgenerate</groupId>
+    <artifactId>mgenerate-core</artifactId>
+    <version>0.0.5</version>
+</dependency>
+```
+
+To import as a gradle dependency:
+```groovy
+dependencies {
+    compile 'uk.dioxic.mgenerate:mgenerate-core:0.0.5'
+}
+```
+
+**Note:** precompiled executable jars are also available in [releases](https://github.com/dioxic/mgenerate4j/releases).
+
 ## Usage
 
 ### Standalone
@@ -40,7 +70,7 @@ Usage: mgenerate [-h] [--debug] [-n=<number>] [-o=<output>] TEMPLATE
 ```
 
 ```
-java -jar mgenerate.jar template.json
+$ java -jar mgenerate.jar template.json
 ```
 
 ### Library
@@ -72,3 +102,4 @@ Apache 2.0
 [travis_url]: https://travis-ci.org/dioxic/mgenerate4j
 [maven_img]: https://img.shields.io/maven-central/v/uk.dioxic.mgenerate/mgenerate-parent
 [maven_url]: https://search.maven.org/search?q=g:uk.dioxic.mgenerate
+[wiki]: https://github.com/dioxic/mgenerate4j/wiki
