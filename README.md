@@ -77,7 +77,7 @@ $ java -jar mgenerate.jar template.json
 
 ```java
 MongoClientSettings mcs = MongoClientSettings.builder()
-        .codecRegistry(TemplateCodec.getCodecRegistry())
+        .codecRegistry(MgenDocumentCodec.getCodecRegistry())
         .build();
 
 Template template = Template.from("c:\\tmp\\mongo.json");
