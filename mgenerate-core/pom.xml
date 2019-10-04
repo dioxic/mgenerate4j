@@ -108,7 +108,6 @@
                 <configuration>
                     <!-- Show annotation processing logging -->
                     <showWarnings>true</showWarnings>
-                    <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>uk.dioxic.mgenerate</groupId>
@@ -116,9 +115,6 @@
                             <version>${project.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <annotationProcessors>
-                        <annotationProcessor>uk.dioxic.mgenerate.apt.processor.OperatorBuilderProcessor</annotationProcessor>
-                    </annotationProcessors>
                 </configuration>
             </plugin>
             <plugin>
