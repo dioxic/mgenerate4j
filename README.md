@@ -54,7 +54,7 @@ dependencies {
 }
 ```
 
-**Note:** precompiled executable jars are also available in [releases](https://github.com/dioxic/mgenerate4j/releases).
+**Precompiled executable jars are also available in [releases](https://github.com/dioxic/mgenerate4j/releases).**
 
 ## Usage
 
