@@ -33,6 +33,7 @@ Assuming git and [Maven](https://maven.apache.org/) installed:
 
 ```bash
 $ git clone https://github.com/dioxic/mgenerate4j.git
+$ cd mgenerate4j
 $ mvn clean package
 $ java -jar mgenerate-core/target/mgenerate.jar example-template.json
 ```
