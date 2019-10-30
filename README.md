@@ -81,10 +81,11 @@ MongoClientSettings mcs = MongoClientSettings.builder()
         .codecRegistry(MgenDocumentCodec.getCodecRegistry())
         .build();
 
-Template template = Template.from("c:\\tmp\\mongo.json");
 MongoCollection<Template> collection = MongoClients.create(mcs)
         .getDatabase("test")
         .getCollection("mgen", Template.class);
+        
+Template template = Template.from("c:\\tmp\\mongo.json");
 
 collection.insertOne(template);
 collection.insertOne(template);
