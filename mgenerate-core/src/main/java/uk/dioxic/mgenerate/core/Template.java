@@ -29,12 +29,11 @@ import java.util.Map;
 public class Template {
 
     private static final JsonWriterSettings DEFAULT_JWS = JsonWriterSettings.builder().build();
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final TemplateCodec templateCodec;
     private final Document document;
     private final Map<String, Object> dotMap;
     private final Map<Resolvable, String> resolverCoordinateMap;
-    private boolean stateCachingRequired = false;
+    private boolean stateCachingRequired;
 
     /**
      * Parses the input template file into a {@link Template}
@@ -166,7 +165,7 @@ public class Template {
      */
     public String toJson(final JsonWriterSettings writerSettings, final Encoder<Template> encoder) {
         JsonWriter writer = new JsonWriter(new StringWriter(), writerSettings);
-        encoder.encode(writer, this, EncoderContext.builder().build());
+        encoder.encode(writer, this, EncoderContext.builder().isEncodingCollectibleDocument(true).build());
         return writer.getWriter().toString();
     }
 
