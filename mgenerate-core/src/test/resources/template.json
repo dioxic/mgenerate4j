@@ -1,5 +1,6 @@
 {
   "_id": "$objectid",
+  "uuid": "$uuid",
   "oidHashes": {
     "hexHash": {
       "$hash": {

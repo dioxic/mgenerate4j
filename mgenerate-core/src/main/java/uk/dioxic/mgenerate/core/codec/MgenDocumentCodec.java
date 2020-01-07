@@ -3,6 +3,7 @@ package uk.dioxic.mgenerate.core.codec;
 import org.bson.BsonWriter;
 import org.bson.Document;
 import org.bson.Transformer;
+import org.bson.UuidRepresentation;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
 import uk.dioxic.mgenerate.common.Resolvable;
@@ -11,14 +12,18 @@ import uk.dioxic.mgenerate.core.TemplateStateCache;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.*;
 
 public class MgenDocumentCodec extends DocumentCodec {
-    private static final CodecRegistry DEFAULT_REGISTRY = fromProviders(asList(new ValueCodecProvider(),
-            new BsonValueCodecProvider(),
-            new MgenDocumentCodecProvider(new OperatorTransformer()),
-            new ExtendedCodecProvider(),
-            new TemplateCodecProvider()));
+    private static final CodecRegistry DEFAULT_REGISTRY = fromRegistries(
+            fromCodecs(new UuidCodec(UuidRepresentation.STANDARD)),
+            fromProviders(
+                    new ExtendedCodecProvider(),
+                    new ValueCodecProvider(),
+                    new BsonValueCodecProvider(),
+                    new MgenDocumentCodecProvider()
+            )
+    );
     private static final BsonTypeClassMap DEFAULT_BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();
     private static final String ID_FIELD_NAME = "_id";
 
@@ -89,7 +94,8 @@ public class MgenDocumentCodec extends DocumentCodec {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void writeValue(final BsonWriter writer, final EncoderContext encoderContext, final Object value) {
+    private void writeValue(final BsonWriter writer, final EncoderContext encoderContext, Object value) {
+        value = resolve(value);
         if (value == null) {
             writer.writeNull();
         } else if (value instanceof Iterable) {

@@ -20,11 +20,10 @@ class TemplateTest {
     @Test
     void templateTest() throws URISyntaxException, IOException {
 
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("lookup-test.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("template.json").toURI()));
 
-        RawBsonDocument rbd = template.toRawBson();
-
-        System.out.println(rbd);
+        String outJson = template.toJson(jws);
+        logger.info(outJson);
 
     }
 }
