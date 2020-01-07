@@ -47,7 +47,7 @@ public class MgenDocumentCodecProvider implements CodecProvider {
      *                         ListCodec}
      */
     public MgenDocumentCodecProvider(final BsonTypeClassMap bsonTypeClassMap) {
-        this(bsonTypeClassMap, null);
+        this(bsonTypeClassMap, new OperatorTransformer());
     }
 
     /**
