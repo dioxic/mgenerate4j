@@ -4,15 +4,17 @@ import uk.dioxic.mgenerate.common.Transformer;
 import uk.dioxic.mgenerate.common.annotation.ValueTransformer;
 import uk.dioxic.mgenerate.common.exception.TransformerException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @ValueTransformer(LocalDateTime.class)
 public class DateTransformer implements Transformer<LocalDateTime> {
 
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ISO_DATE_TIME;
-    private static final DateTimeFormatter DT = DateTimeFormatter.ISO_DATE;
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private static final DateTimeFormatter DT = DateTimeFormatter.ISO_LOCAL_DATE;
 
     @Override
     public LocalDateTime transform(Object objectToTransform) throws TransformerException {
@@ -31,7 +33,7 @@ public class DateTransformer implements Transformer<LocalDateTime> {
                     return LocalDateTime.parse(dateString, DTF);
                 }
 
-                return LocalDateTime.parse(dateString, DT);
+                return LocalDateTime.of(LocalDate.parse(dateString, DT), LocalTime.MIN);
             }
             catch (DateTimeParseException e) {
                 throw new TransformerException(e);
