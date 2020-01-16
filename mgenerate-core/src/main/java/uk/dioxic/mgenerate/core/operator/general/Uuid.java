@@ -3,6 +3,7 @@ package uk.dioxic.mgenerate.core.operator.general;
 import uk.dioxic.mgenerate.common.annotation.Operator;
 import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.operator.AbstractOperator;
+import uk.dioxic.mgenerate.core.operator.type.UuidType;
 
 import java.util.UUID;
 
@@ -10,12 +11,11 @@ import java.util.UUID;
 public class Uuid extends AbstractOperator<Object> {
 
     @OperatorProperty
-    Boolean asString = Boolean.FALSE;
+    UuidType type = UuidType.BINARY;
 
     @Override
     public Object resolveInternal() {
-        UUID uuid = UUID.randomUUID();
-        return asString ? uuid.toString() : uuid;
+        return type.toOutputType(UUID.randomUUID());
     }
 
 }

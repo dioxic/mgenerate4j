@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.core.operator.general;
 
 import org.junit.jupiter.api.Test;
+import uk.dioxic.mgenerate.core.operator.type.UuidType;
 import uk.dioxic.mgenerate.core.transformer.ReflectiveTransformerRegistry;
 
 import java.util.UUID;
@@ -18,7 +19,7 @@ class UuidTest {
 
     @Test
     void resolveAsString() {
-        Uuid uuid = new UuidBuilder(ReflectiveTransformerRegistry.getInstance()).asString(true).build();
+        Uuid uuid = new UuidBuilder(ReflectiveTransformerRegistry.getInstance()).type(UuidType.STRING).build();
 
         assertThat(uuid.resolveInternal()).as("is string").isInstanceOf(String.class);
     }
