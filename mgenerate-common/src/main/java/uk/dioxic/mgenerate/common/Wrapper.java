@@ -2,18 +2,22 @@ package uk.dioxic.mgenerate.common;
 
 import uk.dioxic.mgenerate.common.exception.WrapException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class Wrapper<T> implements Resolvable<T> {
 
     private T value;
     private Resolvable resolvable;
     private Transformer<T> transformer;
+    private boolean valueContainsResolvable;
 
-    @SuppressWarnings("unchecked")
     public static <T> Resolvable<T> wrap(T value) {
         return (value instanceof Resolvable) ? (Resolvable) value : new Wrapper<>(value);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> Resolvable wrap(Object object, Class<T> desiredType, TransformerRegistry transformRegistry) {
         if (object != null) {
             if (object instanceof Resolvable) {
@@ -31,6 +35,11 @@ public class Wrapper<T> implements Resolvable<T> {
     }
 
     private Wrapper(T value) {
+        if (value instanceof List) {
+            valueContainsResolvable = ((List<?>) value).stream()
+                    .map(item -> item instanceof Resolvable)
+                    .reduce(false, Boolean::logicalOr);
+        }
         this.value = value;
     }
 
@@ -48,6 +57,13 @@ public class Wrapper<T> implements Resolvable<T> {
     @Override
     public T resolve() {
         if (value != null) {
+            if (value instanceof List && valueContainsResolvable) {
+                List<?> list = (List<?>)value;
+                return (T)list.stream()
+                        .map(item -> (item instanceof Resolvable) ? ((Resolvable) item).resolve() : item)
+                        .collect(Collectors.toList());
+            }
+
             return value;
         }
         if (resolvable == null) {
