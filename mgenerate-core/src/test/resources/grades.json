@@ -1,0 +1,10 @@
+{
+  "scores": [
+    { "type": "homework", "score": 9 },
+    { "type": "exam", "score": { "$number": { "min": 0, "max":  100 } } },
+    { "type": "coursework", "score": 13 }
+  ],
+  "topScore": {
+    "$max": "${scores.score}"
+  }
+}

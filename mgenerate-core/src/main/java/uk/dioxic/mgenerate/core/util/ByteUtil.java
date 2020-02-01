@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.core.util;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import uk.dioxic.mgenerate.core.codec.MgenDocumentCodec;
 
 public class ByteUtil {
@@ -60,10 +61,13 @@ public class ByteUtil {
 
     public static byte[] getBytes(Object o) {
         if (o instanceof Long) {
-            return ByteUtil.longToBytes((Long) o);
+            return longToBytes((Long) o);
         }
         else if (o instanceof Integer) {
-            return ByteUtil.intToBytes((Integer) o);
+            return intToBytes((Integer) o);
+        }
+        else if (o instanceof ObjectId) {
+            return ((ObjectId) o).toByteArray();
         }
         else if (o instanceof Document) {
             return ((Document) o).toJson(new MgenDocumentCodec()).getBytes();
@@ -73,14 +77,14 @@ public class ByteUtil {
         }
     }
 
-    public static int bitShift(int i, int bits) {
+    public static int bitShiftLeft(int i, int bits) {
         if (bits > 32 || bits < 1) {
             throw new IllegalArgumentException("cannot bit shift an integer by more than 32 bits or less than 1 bit");
         }
         return(i & intBitMask[bits]) << bits;
     }
 
-    public static long bitShift(long i, int bits) {
+    public static long bitShiftLeft(long i, int bits) {
         if (bits > 64 || bits < 1) {
             throw new IllegalArgumentException("cannot bit shift a long by more than 64 bits or less than 1 bit");
         }

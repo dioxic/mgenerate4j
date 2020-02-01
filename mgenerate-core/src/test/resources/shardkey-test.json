@@ -1,0 +1,39 @@
+{
+  "_id": {
+    "hashMod": {
+      "$mod": {
+        "$hash": "${_id.key}"
+      }
+    },
+    "key": {
+      "$int64": {
+        "min": 0,
+        "max": 18014398509481983
+      }
+    }
+  },
+  "binaryCombination": {
+    "$binaryOr": [
+      {
+        "$bitShift": {
+          "input": {
+            "$toLong": "${_id.hashMod}"
+          },
+          "bits": 54
+        }
+      },
+      "${_id.key}"
+    ]
+  },
+  "binary": {
+    "key": {
+      "$toBinary": "${_id.key}"
+    },
+    "hashMod": {
+      "$toBinary": "${_id.hashMod}"
+    },
+    "combination": {
+      "$toBinary": "${binaryCombination}"
+    }
+  }
+}
