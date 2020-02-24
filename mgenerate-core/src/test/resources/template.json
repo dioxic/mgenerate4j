@@ -227,5 +227,6 @@
   "names": {
     "$join": ["bob","mary","kevin"]
   },
-  "binary": { "$bin": 4048}
+  "binary": { "$bin": 4048},
+  "ipv6": "$ipv6"
 }

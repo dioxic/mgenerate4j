@@ -12,7 +12,7 @@ public class Ipv6 extends AbstractOperator<String> {
 
     @Override
     public String resolveInternal() {
-        return Stream.generate(() -> Integer.toHexString(FakerUtil.random().nextInt(16)))
+        return Stream.generate(() -> Integer.toHexString(FakerUtil.random().nextInt(0xFFFF)))
                 .limit(8)
                 .collect(Collectors.joining(":"));
     }
