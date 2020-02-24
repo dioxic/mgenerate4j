@@ -226,5 +226,6 @@
   "lineString": "$lineString",
   "names": {
     "$join": ["bob","mary","kevin"]
-  }
+  },
+  "binary": { "$bin": 4048}
 }
