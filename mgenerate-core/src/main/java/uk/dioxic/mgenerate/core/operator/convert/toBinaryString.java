@@ -6,7 +6,7 @@ import uk.dioxic.mgenerate.common.annotation.OperatorProperty;
 import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 @Operator
-public class toBinary extends AbstractOperator<String> {
+public class toBinaryString extends AbstractOperator<String> {
 
     @OperatorProperty(required = true)
     Resolvable<Number> input;
