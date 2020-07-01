@@ -17,7 +17,7 @@
     <properties>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <junit.platform.version>1.5.2</junit.platform.version>
-        <log4j.version>2.12.1</log4j.version>
+        <log4j.version>2.13.3</log4j.version>
         <bson.version>3.11.2</bson.version>
         <assertj.version>3.14.0</assertj.version>
         <slf4j.version>1.7.25</slf4j.version>
