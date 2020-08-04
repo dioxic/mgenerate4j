@@ -1,13 +1,29 @@
-sudo: false
+#sudo: false
+language: java
+install: skip
+
+os: linux
+dist: xenial
+
+jdk:
+  - openjdk8
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
 #addons:
 #  apt:
 #    packages:
 #      - oracle-java10-installer
 
-language: java
 
-jdk:
-  - openjdk8
+
 
 #script:
 #  - chmod 700 ./mvnw
@@ -15,9 +31,9 @@ jdk:
 #  - cd test
 #  - ../mvnw clean test
 
-env:
-  global:
-  - SONATYPE_USERNAME=dioxic
+#env:
+#  global:
+#  - SONATYPE_USERNAME=dioxic
 
 #after_success:
 #  - cd ..
