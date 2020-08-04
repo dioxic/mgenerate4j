@@ -1,4 +1,4 @@
-rootProject.name = "mgenerate-parent"
+rootProject.name = "mgenerate"
 include(":mgenerate-common")
 include(":mgenerate-apt")
 include(":mgenerate-core")
