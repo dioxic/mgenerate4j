@@ -5,22 +5,53 @@ plugins {
 allprojects {
     group = "uk.dioxic.mgenerate"
     version = "0.0.6-SNAPSHOT"
-    apply(plugin = "maven-publish")
 //    java.sourceCompatibility = JavaVersion.VERSION_11
 }
 
 subprojects {
-    apply(plugin = "java")
+
+    apply(plugin = "maven-publish")
 
     repositories {
         mavenCentral()
         jcenter()
     }
 
-//    configurations.all {
-//    }
-
     publishing {
+        publications {
+            create<MavenPublication>(project.name) {
+                afterEvaluate {
+                    if (project.components.names.contains("java")) {
+                        from(project.components["java"])
+                    } else if (project.components.names.contains("javaPlatform")) {
+                        from(project.components["javaPlatform"])
+                    }
+                }
+
+                pom {
+                    url.set("https://github.com/dioxic/mgenerate4j")
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                            distribution.set("repo")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:git://github.com/dioxic/mgenerate4j.git")
+                        developerConnection.set("scm:git:git@github.com:dioxic/mgenerate4j.git")
+                        url.set("git://github.com/dioxic/mgenerate4j.git")
+                    }
+                    developers {
+                        developer {
+                            id.set("dioxic")
+                            name.set("Mark Baker-Munton")
+                            email.set("dioxic@gmail.com")
+                        }
+                    }
+                }
+            }
+        }
         repositories {
             val repoUsername: String? by project
             val repoPassword: String? by project
@@ -31,8 +62,8 @@ subprojects {
                         password = repoPassword
                     }
                     url = uri(
-                            if (version.toString().endsWith("-SNAPSHOT")) "https://repo.spring.io/libs-snapshot-local/"
-                            else "https://repo.spring.io/libs-milestone-local/"
+                            if (version.toString().endsWith("-SNAPSHOT")) "https://oss.sonatype.org/content/repositories/snapshots"
+                            else "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
                     )
 
                 } else {
@@ -50,47 +81,5 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("common") {
-            val project = project(":mgenerate-common")
-            groupId = project.group as String
-            artifactId = "mgenerate-common"
-
-            from(project.components["java"])
-
-            pom {
-                name.set("Common")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("apt") {
-            val project = project(":mgenerate-apt")
-            groupId = project.group as String
-            artifactId = "mgenerate-apt"
-
-            from(project.components["java"])
-
-            pom {
-                name.set("Apt")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("core") {
-            val project = project(":mgenerate-core")
-            groupId = project.group as String
-            artifactId = "mgenerate-core"
-
-            from(project.components["java"])
-
-            pom {
-                name.set("Core")
-            }
-        }
     }
 }
