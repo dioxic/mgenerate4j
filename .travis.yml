@@ -1,6 +1,6 @@
 #sudo: false
 language: java
-install: skip
+#install: skip
 
 os: linux
 dist: xenial
