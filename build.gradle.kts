@@ -67,6 +67,10 @@ subprojects {
             targetCompatibility = JavaVersion.VERSION_1_8
         }
 
+        tasks.withType<JavaCompile> {
+            options.encoding = "UTF-8"
+        }
+
         dependencies {
             // add logging dependencies
             implementation("org.slf4j:slf4j-api")
@@ -87,7 +91,6 @@ subprojects {
         // Reusable license copySpec
         val licenseSpec = copySpec {
             from("${project.rootDir}/LICENSE")
-//        from("${project.rootDir}/NOTICE")
         }
 
         // Set up tasks that build source and javadoc jars.
