@@ -7,7 +7,7 @@ extra["displayName"] = "Mgenerate Core"
 extra["moduleName"] = "uk.dioxic.mgenerate.core"
 
 dependencies {
-    implementation(platform(project(":mgenerate-platform")))
+    implementation(platform(project(":mgenerate-bom")))
     annotationProcessor(project(":mgenerate-apt"))
     api(project(":mgenerate-common"))
 
