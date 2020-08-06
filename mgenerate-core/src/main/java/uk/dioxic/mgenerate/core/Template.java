@@ -19,6 +19,7 @@ import uk.dioxic.mgenerate.core.util.DocumentUtil;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -167,6 +168,30 @@ public class Template {
         JsonWriter writer = new JsonWriter(new StringWriter(), writerSettings);
         encoder.encode(writer, this, EncoderContext.builder().isEncodingCollectibleDocument(true).build());
         return writer.getWriter().toString();
+    }
+
+    /**
+     * Gets a hydrated JSON representation of this template.
+     *
+     * @param writerSettings the json writer settings to use when encoding
+     * @param encoder the document codec instance to use to encode the document
+     * @param writer the writer to use as output
+     * @throws org.bson.codecs.configuration.CodecConfigurationException if the registry does not contain a codec for the document values.
+     */
+    public void writeJson(final JsonWriterSettings writerSettings, final Encoder<Template> encoder, final Writer writer) {
+        JsonWriter jsonWriter = new JsonWriter(writer, writerSettings);
+        encoder.encode(jsonWriter, this, EncoderContext.builder().isEncodingCollectibleDocument(true).build());
+    }
+
+    /**
+     * Gets a hydrated JSON representation of this template.
+     *
+     * @param writerSettings the json writer settings to use when encoding
+     * @param writer the writer to use as output
+     * @throws org.bson.codecs.configuration.CodecConfigurationException if the registry does not contain a codec for the document values.
+     */
+    public void writeJson(final JsonWriterSettings writerSettings, final Writer writer) {
+        writeJson(writerSettings, templateCodec, writer);
     }
 
     @Override

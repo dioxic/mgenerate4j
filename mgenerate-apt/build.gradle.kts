@@ -1,7 +1,3 @@
-//plugins {
-//    `java-library`
-//}
-
 description = "Annotation processing"
 extra["displayName"] = "Mgenerate APT"
 extra["moduleName"] = "uk.dioxic.mgenerate.apt"

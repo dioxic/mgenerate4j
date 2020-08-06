@@ -74,9 +74,9 @@ subprojects {
         dependencies {
             // add logging dependencies
             implementation("org.slf4j:slf4j-api")
-            runtimeOnly("org.apache.logging.log4j:log4j-api")
-            runtimeOnly("org.apache.logging.log4j:log4j-core")
-            runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl")
+//            implementation("org.apache.logging.log4j:log4j-api")
+//            runtimeOnly("org.apache.logging.log4j:log4j-core")
+//            runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl")
 
             // add test framework dependencies
             testImplementation("org.junit.jupiter:junit-jupiter")
