@@ -41,6 +41,9 @@ val sonatypePassword: String? by project
 
 subprojects {
     val subproject = this
+    val moduleType = subproject.findProperty("moduleType")
+    val isLibrary = moduleType == "library"
+    val isPlatform = moduleType == "platform"
 
     repositories {
         mavenCentral()
@@ -56,10 +59,9 @@ subprojects {
      * how specific subprojects are built (for example, if
      * we build Sphinx subprojects with Gradle).
      */
-
-    if (project.hasProperty("isPlatform")) {
+    if (isPlatform) {
         apply(plugin = "java-platform")
-    } else {
+    } else if (isLibrary) {
         apply(plugin = "java-library")
 
         java {
@@ -122,87 +124,89 @@ subprojects {
      * Maven
      * ====================================================
      *
-     * Publish to Maven central.
+     * Publish platform and libraries to Maven central.
      */
 
-    apply(plugin = "maven-publish")
-    apply(plugin = "signing")
+    if (isLibrary || isPlatform) {
 
-    publishing {
-        repositories {
-            maven {
-                if (sonatypeUser != null && sonatypePassword != null) {
-                    credentials {
-                        username = sonatypeUser
-                        password = sonatypePassword
-                    }
-                    url = uri(
-                            if (version.toString().endsWith("-SNAPSHOT"))
-                                "https://oss.sonatype.org/content/repositories/snapshots"
-                            else
-                                "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                    )
+        apply(plugin = "maven-publish")
+        apply(plugin = "signing")
 
-                } else {
-                    url = uri("$buildDir/repo")
-                }
-            }
-        }
-
-        publications {
-            create<MavenPublication>("mavenJava") {
-                if (project.hasProperty("isPlatform")) {
-                    from(components["javaPlatform"])
-                } else {
-                    from(components["java"])
-
-                    // Ship the source and javadoc jars.
-                    artifact(tasks["sourcesJar"])
-                    artifact(tasks["javadocJar"])
-                }
-
-                // Include extra information in the POMs.
-                afterEvaluate {
-                    pom {
-                        name.set(subproject.extra["displayName"].toString())
-                        description.set(subproject.description)
-                        url.set("https://github.com/dioxic/mgenerate4j")
-                        licenses {
-                            license {
-                                name.set("The Apache License, Version 2.0")
-                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                                distribution.set("repo")
-                            }
+        publishing {
+            repositories {
+                maven {
+                    if (sonatypeUser != null && sonatypePassword != null) {
+                        credentials {
+                            username = sonatypeUser
+                            password = sonatypePassword
                         }
-                        scm {
-                            connection.set("scm:git:git://github.com/dioxic/mgenerate4j.git")
-                            developerConnection.set("scm:git:git@github.com:dioxic/mgenerate4j.git")
-                            url.set("git://github.com/dioxic/mgenerate4j.git")
-                        }
-                        developers {
-                            developer {
-                                id.set("dioxic")
-                                name.set("Mark Baker-Munton")
-                                email.set("dioxic@gmail.com")
-                            }
-                        }
+                        url = uri(
+                                if (version.toString().endsWith("-SNAPSHOT"))
+                                    "https://oss.sonatype.org/content/repositories/snapshots"
+                                else
+                                    "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                        )
+
+                    } else {
+                        url = uri("$buildDir/repo")
                     }
                 }
             }
-        }
 
-        // Don't sign the artifacts if we didn't get a key and password to use.
-        val signingKey: String? by project
-        val signingPassword: String? by project
+            publications {
+                create<MavenPublication>("mavenJava") {
+                    if (isPlatform) {
+                        from(components["javaPlatform"])
+                    } else if (isLibrary) {
+                        from(components["java"])
 
-        if (signingKey != null && signingPassword != null) {
-            signing {
-                useInMemoryPgpKeys(signingKey, signingPassword)
-                sign(publishing.publications["mavenJava"])
+                        // Ship the source and javadoc jars.
+                        artifact(tasks["sourcesJar"])
+                        artifact(tasks["javadocJar"])
+                    }
+
+                    // Include extra information in the POMs.
+                    afterEvaluate {
+                        pom {
+                            name.set(subproject.extra["displayName"].toString())
+                            description.set(subproject.description)
+                            url.set("https://github.com/dioxic/mgenerate4j")
+                            licenses {
+                                license {
+                                    name.set("The Apache License, Version 2.0")
+                                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                                    distribution.set("repo")
+                                }
+                            }
+                            scm {
+                                connection.set("scm:git:git://github.com/dioxic/mgenerate4j.git")
+                                developerConnection.set("scm:git:git@github.com:dioxic/mgenerate4j.git")
+                                url.set("git://github.com/dioxic/mgenerate4j.git")
+                            }
+                            developers {
+                                developer {
+                                    id.set("dioxic")
+                                    name.set("Mark Baker-Munton")
+                                    email.set("dioxic@gmail.com")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Don't sign the artifacts if we didn't get a key and password to use.
+            val signingKey: String? by project
+            val signingPassword: String? by project
+
+            if (signingKey != null && signingPassword != null) {
+                signing {
+                    useInMemoryPgpKeys(signingKey, signingPassword)
+                    sign(publishing.publications["mavenJava"])
+                }
             }
         }
     }
-
 }
 
 /*
@@ -217,12 +221,12 @@ tasks.javadoc {
     title = "mgenerate4j ${project.version}"
     setDestinationDir(file("$buildDir/docs/javadoc/latest"))
     source(project.subprojects.map {
-        if (!it.hasProperty("isPlatform")) {
+        if (it.findProperty("moduleType") == "library") {
             project(it.name).sourceSets.main.get().allJava
         }
     })
     classpath = files(project.subprojects.map {
-        if (!it.hasProperty("isPlatform")) {
+        if (it.findProperty("moduleType") == "library") {
             project(it.name).sourceSets.main.get().compileClasspath
         }
     })
