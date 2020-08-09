@@ -54,6 +54,6 @@ data class InsertManyMetric(
                     latency(),
                     progress(totalCountExpected)).map { it.toString() }
 
-    override val summaryHeader = listOf("inserts/s", "operations/s", "latency (ms)", "progress")
+    override val summaryHeader = listOf("inserts/s", "batches/s", "latency (ms)", "progress")
 
 }

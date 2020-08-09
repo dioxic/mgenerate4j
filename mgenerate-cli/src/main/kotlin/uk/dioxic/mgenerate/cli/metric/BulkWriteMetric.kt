@@ -66,7 +66,7 @@ data class BulkWriteMetric(
         )
     }
 
-    override val summaryHeader = listOf("inserts/s", "deletes/s", "matched/s", "modified/s", "upserts/s", "operations/s", "latency (ms)", "progress")
+    override val summaryHeader = listOf("inserts/s", "deletes/s", "matched/s", "modified/s", "upserts/s", "batches/s", "latency (ms)", "progress")
 
     override fun summary(totalCountExpected: Long) = arrayOf(rate(insertedCount),
             rate(deletedCount),
