@@ -21,6 +21,7 @@ dependencies {
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl")
 
     implementation("com.github.ajalt:clikt:2.8.0")
+    implementation("org.nield:kotlin-statistics:1.2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8-1.4.0-rc")
 
     testImplementation("io.projectreactor:reactor-test")

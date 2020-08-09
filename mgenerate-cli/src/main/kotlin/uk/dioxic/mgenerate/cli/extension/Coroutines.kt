@@ -7,9 +7,10 @@ import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.*
 import uk.dioxic.mgenerate.cli.metric.Metric
+import uk.dioxic.mgenerate.cli.metric.ResultMetric
+import uk.dioxic.mgenerate.cli.metric.summarise
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
 import kotlin.time.measureTimedValue
 
 @ExperimentalCoroutinesApi
@@ -55,27 +56,28 @@ fun <T, M> CoroutineScope.launchTransformer(capacity: Int = Channel.BUFFERED,
 @ExperimentalCoroutinesApi
 fun CoroutineScope.launchMonitor(totalExpected: Long,
                                  capacity: Int = Channel.BUFFERED,
-                                 loggingInterval: Duration): SendChannel<Metric> {
-    val metricChannel = Channel<Metric>(capacity)
+                                 loggingInterval: Duration): SendChannel<ResultMetric> {
+    val metricChannel = Channel<ResultMetric>(capacity)
 
     launch {
-        val spacing = 5
         val headerInterval = 10
         var counter = 0
+        val spacing = 5
+        var totalActual: Long = 0
 
         metricChannel
                 .receiveAsFlow()
-                .runningReduce { accumulator, value -> accumulator + value }
-                .conflate()
-                .onEach {
-                    delay(loggingInterval)
-                }
-                .runningDifference { lastValue, value -> value - lastValue }
+                .onEach { totalActual += it.batchSize }
+                .chunkedTimeout(loggingInterval, 1000) { it.summarise() }
                 .collect {
+                    val summaryFields = it.summaryFields
+                            .filter {(_, value) -> isPositive(value) }
+                            .toMutableList()
+                    summaryFields.add("progress" to (totalActual percentOf totalExpected))
                     if (counter++ % headerInterval == 0) {
-                        println(it.summaryHeader.printAlignWith(spacing, it.summary(totalExpected)))
+                        println(summaryFields.firstAligned(spacing))
                     }
-                    println(it.summary(totalExpected).printAlignWith(spacing, it.summaryHeader))
+                    println(summaryFields.secondAligned(spacing))
                 }
     }
 
@@ -105,26 +107,25 @@ fun <E> CoroutineScope.launchBatchProducer(capacity: Int = Channel.BUFFERED,
         }
 
 @ExperimentalTime
-fun <T> CoroutineScope.launchWorker(batchSize: Int,
-                                    inputChannel: ReceiveChannel<List<T>>,
-                                    metricChannel: SendChannel<Metric>,
-                                    consumer: (List<T>) -> Any): Job =
+fun <T, M> CoroutineScope.launchWorker(inputChannel: ReceiveChannel<List<T>>,
+                                       metricChannel: SendChannel<ResultMetric>,
+                                       consumer: (List<T>) -> M): Job =
         launch {
             for (input in inputChannel) {
                 val timedValue = measureTimedValue {
                     consumer(input)
                 }
-                metricChannel.send(Metric.create(timedValue, batchSize))
+
+                metricChannel.send(ResultMetric.create(timedValue, input.size))
             }
         }
 
 @ExperimentalTime
-fun <T> CoroutineScope.launchWorkers(batchSize: Int,
-                                     parallelism: Int,
-                                     inputChannel: ReceiveChannel<List<T>>,
-                                     metricChannel: SendChannel<Metric>,
-                                     consumer: (List<T>) -> Any): List<Job> = (1..parallelism).map {
-    launchWorker(batchSize, inputChannel, metricChannel) {
+fun <T, M> CoroutineScope.launchWorkers(parallelism: Int,
+                                        inputChannel: ReceiveChannel<List<T>>,
+                                        metricChannel: SendChannel<ResultMetric>,
+                                        consumer: (List<T>) -> M): List<Job> = (1..parallelism).map {
+    launchWorker(inputChannel, metricChannel) {
         consumer(it)
     }
 }

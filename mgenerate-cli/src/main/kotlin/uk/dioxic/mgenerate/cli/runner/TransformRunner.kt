@@ -31,7 +31,6 @@ class TransformRunner<T, M>(
                 val metricChannel = launchMonitor(loggingInterval = monitorLoggingInterval, totalExpected = number)
 
                 val jobs = launchWorkers(
-                        batchSize = batchSize,
                         parallelism = parallelism,
                         inputChannel = batchChannel,
                         metricChannel = metricChannel,
