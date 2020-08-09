@@ -6,6 +6,7 @@ import org.bson.Transformer;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.conversions.Bson;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.TemplateStateCache;
 
@@ -21,7 +22,8 @@ public class MgenDocumentCodec extends DocumentCodec {
                     new ExtendedCodecProvider(),
                     new ValueCodecProvider(),
                     new BsonValueCodecProvider(),
-                    new MgenDocumentCodecProvider()
+                    new MgenDocumentCodecProvider(),
+                    new BsonCodecProvider()
             )
     );
     private static final BsonTypeClassMap DEFAULT_BSON_TYPE_CLASS_MAP = new BsonTypeClassMap();

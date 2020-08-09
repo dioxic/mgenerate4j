@@ -16,11 +16,14 @@ import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClients
 import com.mongodb.client.model.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.bson.BsonDocument
 import org.bson.Document
 import org.bson.codecs.configuration.CodecRegistries.fromCodecs
+import org.bson.codecs.configuration.CodecRegistries.fromRegistries
 import uk.dioxic.mgenerate.cli.options.*
 import uk.dioxic.mgenerate.cli.runner.*
 import uk.dioxic.mgenerate.core.Template
+import uk.dioxic.mgenerate.core.codec.MgenDocumentCodec
 import uk.dioxic.mgenerate.core.codec.TemplateCodec
 import kotlin.contracts.ExperimentalContracts
 import kotlin.time.ExperimentalTime
@@ -47,70 +50,52 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
         val client = MongoClients.create(MongoClientSettings.builder()
                 .applyAuthOptions(authOptions)
                 .applyConnectionOptions(connOptions)
-                .codecRegistry(fromCodecs(TemplateCodec()))
+                .codecRegistry(fromRegistries(fromCodecs(TemplateCodec()), MgenDocumentCodec.getCodecRegistry()))
                 .build()
         )
 
         val collection = client
                 .getDatabase(namespaceOptions)
-                .getCollection(namespaceOptions, Template::class.java)
+                .getCollection(namespaceOptions, BsonDocument::class.java)
 
         if (drop) collection.drop()
 
         val bulkWriteOptions = BulkWriteOptions().ordered(ordered)
         val insertManyOptions = InsertManyOptions().ordered(ordered)
 
-//        InsertRunner(
+//        Runner(
 //                number = number,
 //                parallelism = parallelism,
 //                batchSize = batchSize,
-//                collection = collection,
-//                insertOptions = insertManyOptions,
-//                producer = { template }
-//        ).run()
-//
-//        BulkRunner(
-//                number = number,
-//                parallelism = parallelism,
-//                batchSize = batchSize,
-//                collection = collection,
-//                options = bulkWriteOptions,
-//                producer = { InsertOneModel(template) }
+//                producer = { template },
+//                consumer = { collection.insertMany(it, insertManyOptions) }
 //        ).run()
 //
 //        Runner(
 //                number = number,
 //                parallelism = parallelism,
 //                batchSize = batchSize,
-//                producer = { template },
-//                consumer = { collection.insertMany(it) }
+//                producer = { InsertOneModel(template) },
+//                consumer = { collection.bulkWrite(it, bulkWriteOptions) }
 //        ).run()
-//
-        Runner(
+
+        TransformRunner(
                 number = number,
                 parallelism = parallelism,
                 batchSize = batchSize,
-                producer = { InsertOneModel(template) },
-                consumer = { collection.bulkWrite(it, bulkWriteOptions) }
+                producer = { template },
+                transformer = {
+                    val doc = it.toBsonDocument()
+                    
+                    UpdateOneModel<BsonDocument>(
+                            Filters.eq("_id", doc["_id"]),
+                            Updates.set("name", doc["name"]),
+                            UpdateOptions().upsert(true))
+                },
+                consumer = {
+                    collection.bulkWrite(it)
+                }
         ).run()
-
-//        Runner(
-//                number = number,
-//                parallelism = parallelism,
-//                batchSize = batchSize,
-//                producer = { template },
-//                consumer = {
-//                    val updateList = it.map { template -> template.document }
-//                            .map { doc ->
-//                                UpdateOneModel<Template>(
-//                                        Filters.eq("_id", doc["_id"]),
-//                                        Updates.set("somefield", doc["somefield"]),
-//                                        UpdateOptions().upsert(true))
-//                            }
-//
-//                    collection.bulkWrite(updateList)
-//                }
-//        ).run()
 
 
     }

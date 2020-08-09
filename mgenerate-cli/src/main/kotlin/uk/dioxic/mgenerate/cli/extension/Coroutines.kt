@@ -45,6 +45,8 @@ fun <T, M> CoroutineScope.launchTransformer(capacity: Int = Channel.BUFFERED,
         for (msg in inputChannel) {
             outputChannel.send(transformer(msg))
         }
+
+        outputChannel.close()
     }
     return outputChannel
 }

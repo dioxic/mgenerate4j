@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.cli.metric
 
 import com.mongodb.client.result.InsertManyResult
+import uk.dioxic.mgenerate.cli.extension.between
 import java.time.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -39,6 +40,7 @@ data class InsertManyMetric(
                 timestamp = timestamp.coerceAtLeast(metric.timestamp),
                 operationCount = operationCount - metric.operationCount,
                 insertedCount = insertedCount - metric.insertedCount,
+                elapsedDuration = metric.timestamp.between(timestamp),
                 duration = duration - metric.duration)
     }
 
