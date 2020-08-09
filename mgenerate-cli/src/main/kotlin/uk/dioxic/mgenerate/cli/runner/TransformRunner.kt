@@ -25,15 +25,17 @@ class TransformRunner<T, M>(
         val duration = measureTime {
             runBlocking(Dispatchers.Default) {
 
-                val producerChannel = launchProducer(number = number, producer =  producer)
-                val transformedChannel = launchTransformer(inputChannel =  producerChannel, transformer =  transformer)
+                val producerChannel = launchProducer(number = number, producer = producer)
+                val transformedChannel = launchTransformer(inputChannel = producerChannel, transformer = transformer)
                 val batchChannel = launchBatcher(inputChannel = transformedChannel, batchSize = batchSize)
-                val metricChannel = launchMonitor(loggingInterval = monitorLoggingInterval)
+                val metricChannel = launchMonitor(loggingInterval = monitorLoggingInterval, totalExpected = number)
 
-                val jobs = launchWorkers(parallelism = parallelism,
-                        inputChannel =  batchChannel,
-                        metricChannel =  metricChannel,
-                        consumer =  consumer)
+                val jobs = launchWorkers(
+                        batchSize = batchSize,
+                        parallelism = parallelism,
+                        inputChannel = batchChannel,
+                        metricChannel = metricChannel,
+                        consumer = consumer)
 
                 launch {
                     jobs.joinAll()

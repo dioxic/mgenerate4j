@@ -32,9 +32,14 @@ class Runner<T>(
                         number = number,
                         producer = producer)
 
-                val metricChannel = launchMonitor(loggingInterval = monitorLoggingInterval)
+                val metricChannel = launchMonitor(
+                        loggingInterval = monitorLoggingInterval,
+                        totalExpected = number
+                )
 
-                val jobs = launchWorkers(parallelism = parallelism,
+                val jobs = launchWorkers(
+                        batchSize = batchSize,
+                        parallelism = parallelism,
                         inputChannel = batchChannel,
                         metricChannel = metricChannel,
                         consumer = consumer)

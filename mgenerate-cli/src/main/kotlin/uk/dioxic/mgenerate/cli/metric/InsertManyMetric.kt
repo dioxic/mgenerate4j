@@ -10,14 +10,16 @@ import kotlin.time.ExperimentalTime
 data class InsertManyMetric(
         override val timestamp: LocalDateTime,
         override val duration: Duration,
-        override val operationCount: Long = 1L,
+        override val batchCount: Long = 1L,
         override val elapsedDuration: Duration = duration,
-        val insertedCount: Long) : Metric {
+        override val totalOperationCount: Long,
+        val insertedCount: Long, ) : Metric {
 
-    constructor(result: InsertManyResult, duration: Duration) : this(
+    constructor(result: InsertManyResult, duration: Duration, batchSize: Int) : this(
             timestamp = LocalDateTime.now(),
             duration = duration,
-            insertedCount = result.insertedIds.size.toLong()
+            insertedCount = result.insertedIds.size.toLong(),
+            totalOperationCount = batchSize.toLong()
     )
 
     override operator fun plus(metric: Metric): InsertManyMetric {
@@ -27,8 +29,9 @@ data class InsertManyMetric(
 
         return InsertManyMetric(
                 timestamp = timestamp.coerceAtLeast(metric.timestamp),
-                operationCount = operationCount + metric.operationCount,
+                batchCount = batchCount + metric.batchCount,
                 insertedCount = insertedCount + metric.insertedCount,
+                totalOperationCount = totalOperationCount + metric.totalOperationCount,
                 duration = duration + metric.duration)
     }
 
@@ -38,17 +41,19 @@ data class InsertManyMetric(
         }
         return InsertManyMetric(
                 timestamp = timestamp.coerceAtLeast(metric.timestamp),
-                operationCount = operationCount - metric.operationCount,
+                batchCount = batchCount - metric.batchCount,
                 insertedCount = insertedCount - metric.insertedCount,
+                totalOperationCount = totalOperationCount,
                 elapsedDuration = metric.timestamp.between(timestamp),
                 duration = duration - metric.duration)
     }
 
-    override val summaryHeader = listOf("total", "inserts/s", "operations/s", "latency (ms)")
-    override val summary
-        get() = arrayOf(insertedCount,
-                rate(insertedCount),
-                rate(operationCount),
-                latency()).map { it.toString() }
+    override fun summary(totalCountExpected: Long): List<String> =
+            arrayOf(rate(insertedCount),
+                    rate(batchCount),
+                    latency(),
+                    progress(totalCountExpected)).map { it.toString() }
+
+    override val summaryHeader = listOf("inserts/s", "operations/s", "latency (ms)", "progress")
 
 }

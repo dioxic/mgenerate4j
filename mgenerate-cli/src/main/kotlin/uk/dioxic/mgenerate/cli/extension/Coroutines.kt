@@ -53,13 +53,14 @@ fun <T, M> CoroutineScope.launchTransformer(capacity: Int = Channel.BUFFERED,
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-fun CoroutineScope.launchMonitor(capacity: Int = Channel.BUFFERED,
+fun CoroutineScope.launchMonitor(totalExpected: Long,
+                                 capacity: Int = Channel.BUFFERED,
                                  loggingInterval: Duration): SendChannel<Metric> {
     val metricChannel = Channel<Metric>(capacity)
 
     launch {
         val spacing = 5
-        val headerInterval = 5
+        val headerInterval = 10
         var counter = 0
 
         metricChannel
@@ -72,9 +73,9 @@ fun CoroutineScope.launchMonitor(capacity: Int = Channel.BUFFERED,
                 .runningDifference { lastValue, value -> value - lastValue }
                 .collect {
                     if (counter++ % headerInterval == 0) {
-                        println(it.summaryHeader.printAlignWith(spacing, it.summary))
+                        println(it.summaryHeader.printAlignWith(spacing, it.summary(totalExpected)))
                     }
-                    println(it.summary.printAlignWith(spacing, it.summaryHeader))
+                    println(it.summary(totalExpected).printAlignWith(spacing, it.summaryHeader))
                 }
     }
 
@@ -104,31 +105,8 @@ fun <E> CoroutineScope.launchBatchProducer(capacity: Int = Channel.BUFFERED,
         }
 
 @ExperimentalTime
-@ExperimentalCoroutinesApi
-fun CoroutineScope.launchMetricMonitor(refreshInterval: Duration,
-                                       monitorChannel: ReceiveChannel<Metric>) = launch {
-    var headerCounter = 0
-    val spacing = 5
-
-    val duration = measureTime {
-        var last = monitorChannel.receive()
-        for (metric in monitorChannel) {
-            delay(refreshInterval)
-            val diff = metric - last
-
-            if (headerCounter++ % 10 == 0) {
-                println(diff.summaryHeader.printAlignWith(spacing, diff.summary))
-            }
-
-            println(diff.summary.printAlignWith(spacing, diff.summaryHeader))
-            last = metric
-        }
-    }
-    println("Completed in ${duration.inSeconds} s")
-}
-
-@ExperimentalTime
-fun <T> CoroutineScope.launchWorker(inputChannel: ReceiveChannel<List<T>>,
+fun <T> CoroutineScope.launchWorker(batchSize: Int,
+                                    inputChannel: ReceiveChannel<List<T>>,
                                     metricChannel: SendChannel<Metric>,
                                     consumer: (List<T>) -> Any): Job =
         launch {
@@ -136,16 +114,17 @@ fun <T> CoroutineScope.launchWorker(inputChannel: ReceiveChannel<List<T>>,
                 val timedValue = measureTimedValue {
                     consumer(input)
                 }
-                metricChannel.send(Metric.create(timedValue))
+                metricChannel.send(Metric.create(timedValue, batchSize))
             }
         }
 
 @ExperimentalTime
-fun <T> CoroutineScope.launchWorkers(parallelism: Int,
+fun <T> CoroutineScope.launchWorkers(batchSize: Int,
+                                     parallelism: Int,
                                      inputChannel: ReceiveChannel<List<T>>,
                                      metricChannel: SendChannel<Metric>,
                                      consumer: (List<T>) -> Any): List<Job> = (1..parallelism).map {
-    launchWorker(inputChannel, metricChannel) {
+    launchWorker(batchSize, inputChannel, metricChannel) {
         consumer(it)
     }
 }

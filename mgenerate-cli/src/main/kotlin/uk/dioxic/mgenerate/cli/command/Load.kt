@@ -56,20 +56,20 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
 
         val collection = client
                 .getDatabase(namespaceOptions)
-                .getCollection(namespaceOptions, BsonDocument::class.java)
+                .getCollection(namespaceOptions, Template::class.java)
 
         if (drop) collection.drop()
 
         val bulkWriteOptions = BulkWriteOptions().ordered(ordered)
         val insertManyOptions = InsertManyOptions().ordered(ordered)
 
-//        Runner(
-//                number = number,
-//                parallelism = parallelism,
-//                batchSize = batchSize,
-//                producer = { template },
-//                consumer = { collection.insertMany(it, insertManyOptions) }
-//        ).run()
+        Runner(
+                number = number,
+                parallelism = parallelism,
+                batchSize = batchSize,
+                producer = { template },
+                consumer = { collection.insertMany(it, insertManyOptions) }
+        ).run()
 //
 //        Runner(
 //                number = number,
@@ -79,23 +79,23 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
 //                consumer = { collection.bulkWrite(it, bulkWriteOptions) }
 //        ).run()
 
-        TransformRunner(
-                number = number,
-                parallelism = parallelism,
-                batchSize = batchSize,
-                producer = { template },
-                transformer = {
-                    val doc = it.toBsonDocument()
-                    
-                    UpdateOneModel<BsonDocument>(
-                            Filters.eq("_id", doc["_id"]),
-                            Updates.set("name", doc["name"]),
-                            UpdateOptions().upsert(true))
-                },
-                consumer = {
-                    collection.bulkWrite(it)
-                }
-        ).run()
+//        TransformRunner(
+//                number = number,
+//                parallelism = parallelism,
+//                batchSize = batchSize,
+//                producer = { template },
+//                transformer = {
+//                    val doc = it.toBsonDocument()
+//
+//                    UpdateOneModel<BsonDocument>(
+//                            Filters.eq("_id", doc["_id"]),
+//                            Updates.set("name", doc["name"]),
+//                            UpdateOptions().upsert(true))
+//                },
+//                consumer = {
+//                    collection.bulkWrite(it)
+//                }
+//        ).run()
 
 
     }

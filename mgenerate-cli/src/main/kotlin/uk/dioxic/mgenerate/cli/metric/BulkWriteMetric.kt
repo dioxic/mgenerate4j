@@ -3,24 +3,23 @@ package uk.dioxic.mgenerate.cli.metric
 import com.mongodb.bulk.BulkWriteResult
 import uk.dioxic.mgenerate.cli.extension.between
 import java.time.LocalDateTime
-import java.time.Period
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
-import kotlin.time.toKotlinDuration
 
 @ExperimentalTime
 data class BulkWriteMetric(
         override val duration: Duration,
-        override val operationCount: Long = 1L,
+        override val batchCount: Long = 1L,
         override val timestamp: LocalDateTime,
         override val elapsedDuration: Duration = duration,
+        override val totalOperationCount: Long,
         val insertedCount: Long,
         val upsertCount: Long,
         val deletedCount: Long,
         val matchedCount: Long,
         val modifiedCount: Long) : Metric {
 
-    constructor(result: BulkWriteResult, duration: Duration) : this(
+    constructor(result: BulkWriteResult, duration: Duration, batchSize: Int) : this(
             timestamp = LocalDateTime.now(),
             duration = duration,
             upsertCount = result.upserts.size.toLong(),
@@ -28,6 +27,7 @@ data class BulkWriteMetric(
             deletedCount = result.deletedCount.toLong(),
             matchedCount = result.matchedCount.toLong(),
             modifiedCount = result.modifiedCount.toLong(),
+            totalOperationCount = batchSize.toLong()
     )
 
     override operator fun plus(metric: Metric): BulkWriteMetric {
@@ -38,12 +38,13 @@ data class BulkWriteMetric(
         return BulkWriteMetric(
                 timestamp = timestamp.coerceAtLeast(metric.timestamp),
                 duration = duration + metric.duration,
-                operationCount = operationCount + metric.operationCount,
+                batchCount = batchCount + metric.batchCount,
                 upsertCount = upsertCount + metric.upsertCount,
                 insertedCount = insertedCount + metric.insertedCount,
                 deletedCount = deletedCount + metric.deletedCount,
                 matchedCount = matchedCount + metric.matchedCount,
-                modifiedCount = modifiedCount + metric.modifiedCount
+                modifiedCount = modifiedCount + metric.modifiedCount,
+                totalOperationCount = totalOperationCount + metric.totalOperationCount
         )
     }
 
@@ -55,23 +56,25 @@ data class BulkWriteMetric(
                 timestamp = timestamp.coerceAtLeast(metric.timestamp),
                 duration = duration - metric.duration,
                 elapsedDuration = metric.timestamp.between(timestamp),
-                operationCount = operationCount - metric.operationCount,
+                batchCount = batchCount - metric.batchCount,
                 upsertCount = upsertCount - metric.upsertCount,
                 insertedCount = insertedCount - metric.insertedCount,
                 deletedCount = deletedCount - metric.deletedCount,
                 matchedCount = matchedCount - metric.matchedCount,
-                modifiedCount = modifiedCount - metric.modifiedCount
+                modifiedCount = modifiedCount - metric.modifiedCount,
+                totalOperationCount = totalOperationCount - metric.totalOperationCount
         )
     }
 
-    override val summaryHeader = listOf("inserts/s", "deletes/s", "matched/s", "modified/s", "upserts/s", "operations/s", "latency (ms)")
-    override val summary
-        get() = arrayOf(rate(insertedCount),
-                rate(deletedCount),
-                rate(matchedCount),
-                rate(modifiedCount),
-                rate(upsertCount),
-                rate(operationCount),
-                latency()).map { it.toString() }
+    override val summaryHeader = listOf("inserts/s", "deletes/s", "matched/s", "modified/s", "upserts/s", "operations/s", "latency (ms)", "progress")
+
+    override fun summary(totalCountExpected: Long) = arrayOf(rate(insertedCount),
+            rate(deletedCount),
+            rate(matchedCount),
+            rate(modifiedCount),
+            rate(upsertCount),
+            rate(batchCount),
+            latency(),
+            progress(totalCountExpected)).map { it.toString() }
 
 }
