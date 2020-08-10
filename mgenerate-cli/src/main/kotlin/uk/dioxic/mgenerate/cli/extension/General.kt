@@ -1,7 +1,6 @@
 package uk.dioxic.mgenerate.cli.extension
 
 import org.apache.commons.math3.stat.StatUtils
-import java.lang.StringBuilder
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime

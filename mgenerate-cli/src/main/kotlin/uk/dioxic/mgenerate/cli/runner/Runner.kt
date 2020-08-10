@@ -1,9 +1,11 @@
 package uk.dioxic.mgenerate.cli.runner
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
 import uk.dioxic.mgenerate.cli.extension.*
 import uk.dioxic.mgenerate.cli.metric.ResultMetric
-import kotlin.contracts.ExperimentalContracts
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -19,33 +21,20 @@ class Runner<T>(
         private val producer: () -> T,
         private val consumer: (List<T>) -> Any) : Runnable {
 
-    @ExperimentalTime
+    @FlowPreview
     @ExperimentalCoroutinesApi
-    @ExperimentalContracts
     override fun run() {
         val duration = measureTime {
             runBlocking(Dispatchers.Default) {
 
-                val batchChannel = launchBatchProducer(
-                        batchSize = batchSize,
-                        number = number,
-                        producer = producer)
-
-                val metricChannel = launchMonitor(
-                        loggingInterval = monitorLoggingInterval,
-                        totalExpected = number
-                )
-
-                val jobs = launchWorkers(
-                        parallelism = parallelism,
-                        inputChannel = batchChannel,
-                        metricChannel = metricChannel,
-                        consumer = consumer)
-
-                launch {
-                    jobs.joinAll()
-                    metricChannel.close()
-                }
+                flowOf(number, producer)
+                        .buffer(Channel.BUFFERED)
+                        .chunked(batchSize)
+                        .mapParallel(parallelism) {
+                            ResultMetric.create(it.size) { consumer(it) }
+                        }
+                        .monitor(number, monitorLoggingInterval)
+                        .collect { println(it) }
             }
         }
         println("Completed in $duration (${(number / duration.inSeconds).roundToInt()} docs/s)")

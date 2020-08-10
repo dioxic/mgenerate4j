@@ -9,5 +9,6 @@
         <Root level="warn">
             <AppenderRef ref="Console" />
         </Root>
+        <Logger name="org.mongodb.driver.connection" level="warn"/>
     </Loggers>
 </Configuration>

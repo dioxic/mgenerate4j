@@ -14,14 +14,14 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.long
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClients
-import com.mongodb.client.model.*
+import com.mongodb.client.model.BulkWriteOptions
+import com.mongodb.client.model.InsertManyOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.bson.BsonDocument
-import org.bson.Document
+import kotlinx.coroutines.FlowPreview
 import org.bson.codecs.configuration.CodecRegistries.fromCodecs
 import org.bson.codecs.configuration.CodecRegistries.fromRegistries
 import uk.dioxic.mgenerate.cli.options.*
-import uk.dioxic.mgenerate.cli.runner.*
+import uk.dioxic.mgenerate.cli.runner.Runner
 import uk.dioxic.mgenerate.core.Template
 import uk.dioxic.mgenerate.core.codec.MgenDocumentCodec
 import uk.dioxic.mgenerate.core.codec.TemplateCodec
@@ -43,6 +43,7 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
     private val ordered by option(help = "enable ordered writes").flag()
     private val template by argument().convert { if (it.startsWith("{")) Template.parse(it) else Template.from(it) }
 
+    @FlowPreview
     @ExperimentalContracts
     @ExperimentalTime
     @ExperimentalCoroutinesApi
@@ -60,7 +61,7 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
 
         if (drop) collection.drop()
 
-        val bulkWriteOptions = BulkWriteOptions().ordered(ordered)
+//        val bulkWriteOptions = BulkWriteOptions().ordered(ordered)
         val insertManyOptions = InsertManyOptions().ordered(ordered)
 
         Runner(
@@ -70,6 +71,7 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
                 producer = { template },
                 consumer = { collection.insertMany(it, insertManyOptions) }
         ).run()
+
 //
 //        Runner(
 //                number = number,

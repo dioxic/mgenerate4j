@@ -1,8 +1,15 @@
 package uk.dioxic.mgenerate.cli.runner
 
 import kotlinx.coroutines.*
-import uk.dioxic.mgenerate.cli.extension.*
-import kotlin.contracts.ExperimentalContracts
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import uk.dioxic.mgenerate.cli.extension.chunked
+import uk.dioxic.mgenerate.cli.extension.flowOf
+import uk.dioxic.mgenerate.cli.extension.mapParallel
+import uk.dioxic.mgenerate.cli.extension.monitor
+import uk.dioxic.mgenerate.cli.metric.ResultMetric
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -19,27 +26,21 @@ class TransformRunner<T, M>(
         private val transformer: (T) -> M,
         private val consumer: (List<M>) -> Any) : Runnable {
 
+    @FlowPreview
     @ExperimentalCoroutinesApi
-    @ExperimentalContracts
     override fun run() {
         val duration = measureTime {
             runBlocking(Dispatchers.Default) {
 
-                val producerChannel = launchProducer(number = number, producer = producer)
-                val transformedChannel = launchTransformer(inputChannel = producerChannel, transformer = transformer)
-                val batchChannel = launchBatcher(inputChannel = transformedChannel, batchSize = batchSize)
-                val metricChannel = launchMonitor(loggingInterval = monitorLoggingInterval, totalExpected = number)
-
-                val jobs = launchWorkers(
-                        parallelism = parallelism,
-                        inputChannel = batchChannel,
-                        metricChannel = metricChannel,
-                        consumer = consumer)
-
-                launch {
-                    jobs.joinAll()
-                    metricChannel.close()
-                }
+                flowOf(number, producer)
+                        .buffer(Channel.BUFFERED)
+                        .map { transformer(it) }
+                        .chunked(batchSize)
+                        .mapParallel(parallelism) {
+                            ResultMetric.create(it.size) { consumer(it) }
+                        }
+                        .monitor(number, monitorLoggingInterval)
+                        .collect { println(it) }
             }
         }
         println("Completed in $duration (${(number / duration.inSeconds).roundToInt()} docs/s)")

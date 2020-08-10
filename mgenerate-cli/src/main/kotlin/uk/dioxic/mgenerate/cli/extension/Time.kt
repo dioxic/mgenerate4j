@@ -1,10 +1,9 @@
 package uk.dioxic.mgenerate.cli.extension
 
 import java.time.LocalDateTime
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
-import kotlin.time.*
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
+import kotlin.time.toKotlinDuration
 
 
 @ExperimentalTime

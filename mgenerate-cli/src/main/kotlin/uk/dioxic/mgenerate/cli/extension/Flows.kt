@@ -1,13 +1,19 @@
 package uk.dioxic.mgenerate.cli.extension
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import uk.dioxic.mgenerate.cli.internal.RingBuffer
+import uk.dioxic.mgenerate.cli.metric.ResultMetric
+import uk.dioxic.mgenerate.cli.metric.summarise
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.TimeSource
+import kotlin.time.seconds
 
 @Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
@@ -173,8 +179,14 @@ fun <T> Flow<T>.windowedTimeout(timeout: Duration, size: Int, step: Int, partial
  * @param partialWindows controls whether or not to keep partial windows in the end if any.
  */
 @ExperimentalTime
-fun <T, R> Flow<T>.windowedTimeout(timeout: Duration, size: Int, step: Int, partialWindows: Boolean, transform: suspend (List<T>) -> R): Flow<R> {
-    require(timeout.isPositive() && size > 0 && step > 0) { "Duration, size and step should be greater than 0, but was duration: $timeout, size: $size, step: $step" }
+fun <T, R> Flow<T>.windowedTimeout(timeout: Duration,
+                                   size: Int,
+                                   step: Int,
+                                   partialWindows: Boolean,
+                                   transform: suspend (List<T>) -> R): Flow<R> {
+    require(timeout.isPositive() && size > 0 && step > 0) {
+        "Duration, size and step should be greater than 0, but was duration: $timeout, size: $size, step: $step"
+    }
 
     return flow {
         val buffer = RingBuffer<T>(size)
@@ -202,4 +214,41 @@ fun <T, R> Flow<T>.windowedTimeout(timeout: Duration, size: Int, step: Int, part
             buffer.removeFirst(min(toDrop, buffer.size))
         }
     }
+}
+
+@FlowPreview
+@ExperimentalCoroutinesApi
+fun <T, R> Flow<T>.mapParallel(
+        parallelism: Int,
+        dispatcher: CoroutineDispatcher = Dispatchers.Default,
+        transform: suspend (T) -> R
+): Flow<R> {
+    return flatMapMerge(parallelism) { value ->
+        flow { emit(transform(value)) }
+    }.flowOn(dispatcher)
+}
+
+fun <T> flowOf(number: Long, block: () -> T): Flow<T> = flow {
+    for (i in 1..number) {
+        emit(block())
+    }
+}
+
+@ExperimentalTime
+fun Flow<ResultMetric>.monitor(totalExecutions: Long,
+                               loggingInterval: Duration = 1.seconds,
+                               headerPrintInterval: Int = 10,
+                               metricBufferSize: Int = 50000): Flow<String> = flow {
+    var lineCounter = 0
+    var executionCounter: Long = 0
+
+    onEach { executionCounter += it.batchSize }
+            .chunkedTimeout(loggingInterval, metricBufferSize) { it.summarise() }
+            .collect {
+                val extraFields = listOf("progress" to (executionCounter percentOf totalExecutions))
+                if (lineCounter++ % headerPrintInterval == 0) {
+                    emit(it.headerString(extraFields))
+                }
+                emit(it.valueString(extraFields))
+            }
 }

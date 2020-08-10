@@ -12,10 +12,7 @@ import uk.dioxic.mgenerate.cli.extension.secondAligned
 import java.time.Duration.between
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
-import kotlin.time.TimedValue
-import kotlin.time.toKotlinDuration
+import kotlin.time.*
 
 @ExperimentalTime
 data class ResultMetric(
@@ -53,6 +50,9 @@ data class ResultMetric(
                         throw UnsupportedOperationException("Cannot create a ResultMetric from ${value!!::class.simpleName} class type")
                     }
                 }
+
+        fun create(batchSize: Int, block: () -> Any) =
+                create(measureTimedValue { block() }, batchSize)
     }
 }
 
@@ -79,6 +79,17 @@ data class Summary(val p50Latency: Duration,
             "latency p95" to p95Latency,
             "latency p99" to p99Latency
     )
+
+    private fun combine(extraFields: List<Pair<String, Any>>) =
+            listOf(summaryFields.filter { (_, value) -> isPositive(value) },
+                    extraFields
+            ).flatten()
+
+    fun headerString(extraFields: List<Pair<String, Any>> = emptyList(), spacing: Int = 5) =
+            combine(extraFields).firstAligned(spacing)
+
+    fun valueString(extraFields: List<Pair<String, Any>> = emptyList(), spacing: Int = 5) =
+            combine(extraFields).secondAligned(spacing)
 }
 
 @ExperimentalTime
