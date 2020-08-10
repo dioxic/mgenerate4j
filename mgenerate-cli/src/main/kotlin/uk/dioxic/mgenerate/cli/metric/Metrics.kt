@@ -75,9 +75,9 @@ data class Summary(val p50Latency: Duration,
             "modified/s" to modifiedRate,
             "upserts/s" to upsertRate,
             "batches/s" to operationRate,
-            "p50 latency" to p50Latency,
-            "p95 latency" to p95Latency,
-            "p99 latency" to p99Latency
+            "latency p50" to p50Latency,
+            "latency p95" to p95Latency,
+            "latency p99" to p99Latency
     )
 }
 

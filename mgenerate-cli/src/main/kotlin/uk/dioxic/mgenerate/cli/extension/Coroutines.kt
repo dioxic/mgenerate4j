@@ -6,7 +6,6 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.*
-import uk.dioxic.mgenerate.cli.metric.Metric
 import uk.dioxic.mgenerate.cli.metric.ResultMetric
 import uk.dioxic.mgenerate.cli.metric.summarise
 import kotlin.time.Duration
@@ -68,7 +67,7 @@ fun CoroutineScope.launchMonitor(totalExpected: Long,
         metricChannel
                 .receiveAsFlow()
                 .onEach { totalActual += it.batchSize }
-                .chunkedTimeout(loggingInterval, 1000) { it.summarise() }
+                .chunkedTimeout(loggingInterval, 50000) { it.summarise() }
                 .collect {
                     val summaryFields = it.summaryFields
                             .filter {(_, value) -> isPositive(value) }
@@ -107,9 +106,9 @@ fun <E> CoroutineScope.launchBatchProducer(capacity: Int = Channel.BUFFERED,
         }
 
 @ExperimentalTime
-fun <T, M> CoroutineScope.launchWorker(inputChannel: ReceiveChannel<List<T>>,
+fun <T> CoroutineScope.launchWorker(inputChannel: ReceiveChannel<List<T>>,
                                        metricChannel: SendChannel<ResultMetric>,
-                                       consumer: (List<T>) -> M): Job =
+                                       consumer: (List<T>) -> Any): Job =
         launch {
             for (input in inputChannel) {
                 val timedValue = measureTimedValue {
@@ -121,10 +120,10 @@ fun <T, M> CoroutineScope.launchWorker(inputChannel: ReceiveChannel<List<T>>,
         }
 
 @ExperimentalTime
-fun <T, M> CoroutineScope.launchWorkers(parallelism: Int,
+fun <T> CoroutineScope.launchWorkers(parallelism: Int,
                                         inputChannel: ReceiveChannel<List<T>>,
                                         metricChannel: SendChannel<ResultMetric>,
-                                        consumer: (List<T>) -> M): List<Job> = (1..parallelism).map {
+                                        consumer: (List<T>) -> Any): List<Job> = (1..parallelism).map {
     launchWorker(inputChannel, metricChannel) {
         consumer(it)
     }
