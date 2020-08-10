@@ -18,7 +18,7 @@ dependencies {
 
         // testing
         api("org.junit.jupiter:junit-jupiter:5.5.2")
-        api("org.assertj:assertj-core:3.14.0")
+        api("org.assertj:assertj-core:3.16.1")
 
         // logging
         api("org.slf4j:slf4j-api:1.7.25")

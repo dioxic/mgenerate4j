@@ -11,6 +11,6 @@ dependencies {
 
     implementation("uk.dioxic.faker4j:faker4j:0.0.4")
     implementation("ch.rasc:bsoncodec:1.0.1")
-    implementation("commons-codec:commons-codec:1.13")
-    implementation("org.reflections:reflections:0.9.11")
+    implementation("commons-codec:commons-codec:1.14")
+    implementation("org.reflections:reflections:0.9.12")
 }
