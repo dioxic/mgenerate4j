@@ -18,7 +18,8 @@ What does it look like? This is an example of a simple template:
   "emails": {
     "$array": {
       "of": "$email",
-      "number": 2} 
+      "number": 2
+    } 
   }
 }
 ``` 
