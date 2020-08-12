@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/dioxic/mgenerate4j/blob/master/docs/img/logo_text.png"></p>
+<p align="center"><img src="docs/img/logo_text.png"></p>
 
 [![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
 
@@ -6,7 +6,7 @@
 
 Rich, representative test data can be generated from a template and loaded directly into MongoDB (or output to a file).
 
-mgenerate4j can generate a wide variety of common data (e.g. names, addresses, emails, ip address) but is easily extentable if
+mgenerate4j can generate a wide variety of common data (e.g. names, addresses, emails, ip address) but is easy to extend if
 you need to do generate something that isn't covered by the out-of-the-box functions. 
 
 What does it look like? This is an example of a simple template:
@@ -69,7 +69,6 @@ dependencies {
 
 Apache 2.0
 
-[regexp]:      https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 [bson-spec]:   http://bsonspec.org/spec.html
 [travis_img]:  https://api.travis-ci.org/dioxic/mgenerate4j.svg?branch=master
 [travis_url]:  https://travis-ci.org/dioxic/mgenerate4j

@@ -13,9 +13,6 @@ theme:
   favicon: img/favicon.ico
   palette:
     scheme: mongodb
-    #scheme: default
-    #primary: 'blue grey'
-    #accent: 'indigo'
   icon:
     repo: fontawesome/brands/github
 
@@ -48,4 +45,5 @@ nav:
       - 'Placeholders': placeholders.md
   - 'Operator Reference': operator-reference.md
   - 'Usage': usage.md
+  - 'Change Log': changelog.md
 
