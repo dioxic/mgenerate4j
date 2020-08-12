@@ -15,7 +15,19 @@ jobs:
       - name: Pre Process Docs
         run: scripts/pre_process_docs.sh
 
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+          architecture: 'x64'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip     # install pip
+          python3 -m pip install mkdocs            # install mkdocs
+          python3 -m pip install mkdocs-material   # install material theme
+
       - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        run: mkdocs gh-deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
