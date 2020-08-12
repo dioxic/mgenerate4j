@@ -1,7 +1,6 @@
 package uk.dioxic.mgenerate.cli.runner
 
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collect
 import uk.dioxic.mgenerate.cli.extension.*
@@ -14,7 +13,7 @@ import kotlin.time.seconds
 
 @ExperimentalTime
 class Runner<T>(
-        private val number: Long,
+        private val count: Long,
         private val parallelism: Int,
         private val batchSize: Int,
         private val monitorLoggingInterval: Duration = 1.seconds,
@@ -27,17 +26,17 @@ class Runner<T>(
         val duration = measureTime {
             runBlocking(Dispatchers.Default) {
 
-                flowOf(number, producer)
-                        .buffer(Channel.BUFFERED)
+                flowOf(count, producer)
+                        .buffer(batchSize * 2)
                         .chunked(batchSize)
                         .mapParallel(parallelism) {
                             ResultMetric.create(it.size) { consumer(it) }
                         }
-                        .monitor(number, monitorLoggingInterval)
+                        .monitor(count, monitorLoggingInterval)
                         .collect { println(it) }
             }
         }
-        println("Completed in $duration (${(number / duration.inSeconds).roundToInt()} docs/s)")
+        println("Completed in $duration (${(count / duration.inSeconds).roundToInt()} docs/s)")
     }
 
 }

@@ -65,7 +65,7 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
         val insertManyOptions = InsertManyOptions().ordered(ordered)
 
         Runner(
-                number = number,
+                count = number,
                 parallelism = parallelism,
                 batchSize = batchSize,
                 producer = { template },

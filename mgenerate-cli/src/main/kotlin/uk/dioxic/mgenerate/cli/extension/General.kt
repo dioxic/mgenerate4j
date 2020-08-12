@@ -7,16 +7,31 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
 @ExperimentalTime
-fun isPositive(value: Any) = when (value) {
+fun isNotZeroOrEmpty(value: Any) = when (value) {
     is Long -> value > 0
     is Double -> value > 0
     is Float -> value > 0
     is Int -> value > 0
+    is Short -> value > 0
     is Duration -> value.isPositive()
     is String -> value.isNotEmpty()
     is List<*> -> value.isNotEmpty()
-    else -> false
+    else -> true
 }
+
+@ExperimentalTime
+fun Pair<String, Any>.isNotZeroOrEmpty() =
+        when (val value = this.second) {
+            is Long -> value > 0
+            is Double -> value > 0
+            is Float -> value > 0
+            is Int -> value > 0
+            is Short -> value > 0
+            is Duration -> value.isPositive()
+            is String -> value.isNotEmpty()
+            is List<*> -> value.isNotEmpty()
+            else -> true
+        }
 
 infix fun Int.percentOf(divisor: Int) = "${((this * 100) / divisor)}%"
 

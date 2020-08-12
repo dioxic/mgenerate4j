@@ -5,10 +5,7 @@ import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.InsertManyResult
 import com.mongodb.client.result.InsertOneResult
 import com.mongodb.client.result.UpdateResult
-import uk.dioxic.mgenerate.cli.extension.firstAligned
-import uk.dioxic.mgenerate.cli.extension.isPositive
-import uk.dioxic.mgenerate.cli.extension.percentile
-import uk.dioxic.mgenerate.cli.extension.secondAligned
+import uk.dioxic.mgenerate.cli.extension.*
 import java.time.Duration.between
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
@@ -39,7 +36,7 @@ data class ResultMetric(
     }
 
     companion object {
-        fun <T> create(timedValue: TimedValue<T>, batchSize: Int) =
+        private fun <T> create(timedValue: TimedValue<T>, batchSize: Int) =
                 when (val value = timedValue.value) {
                     is BulkWriteResult -> value.toMetric(timedValue.duration, batchSize)
                     is InsertOneResult -> value.toMetric(timedValue.duration, batchSize)
@@ -56,40 +53,59 @@ data class ResultMetric(
     }
 }
 
-@ExperimentalTime
-data class Summary(val p50Latency: Duration,
-                   val p95Latency: Duration,
-                   val p99Latency: Duration,
-                   val elapsedDuration: Duration,
-                   val operationRate: Int,
-                   val insertedRate: Int,
-                   val upsertRate: Int,
-                   val deletedRate: Int,
-                   val matchedRate: Int,
-                   val modifiedRate: Int) {
+//@ExperimentalTime
+//data class Summary(val p50Latency: Duration,
+//                   val p95Latency: Duration,
+//                   val p99Latency: Duration,
+//                   val elapsedDuration: Duration,
+//                   val operationRate: Int,
+//                   val insertedRate: Int,
+//                   val upsertRate: Int,
+//                   val deletedRate: Int,
+//                   val matchedRate: Int,
+//                   val modifiedRate: Int) {
+//
+//    val summaryFields: List<Pair<String, Any>> = listOf(
+//            "inserts/s" to insertedRate,
+//            "deletes/s" to deletedRate,
+//            "matched/s" to matchedRate,
+//            "modified/s" to modifiedRate,
+//            "upserts/s" to upsertRate,
+//            "batches/s" to operationRate,
+//            "latency p50" to p50Latency,
+//            "latency p95" to p95Latency,
+//            "latency p99" to p99Latency
+//    )
+//
+//    private fun combine(extraFields: List<Pair<String, Any>>) =
+//            listOf(summaryFields.filter { (_, value) -> isNotZeroOrEmpty(value) },
+//                    extraFields
+//            ).flatten()
+//
+//    fun headerString(extraFields: List<Pair<String, Any>> = emptyList(), spacing: Int = 5) =
+//            combine(extraFields).firstAligned(spacing)
+//
+//    fun valueString(extraFields: List<Pair<String, Any>> = emptyList(), spacing: Int = 5) =
+//            combine(extraFields).secondAligned(spacing)
+//
+//}
 
-    val summaryFields: List<Pair<String, Any>> = listOf(
-            "inserts/s" to insertedRate,
-            "deletes/s" to deletedRate,
-            "matched/s" to matchedRate,
-            "modified/s" to modifiedRate,
-            "upserts/s" to upsertRate,
-            "batches/s" to operationRate,
-            "latency p50" to p50Latency,
-            "latency p95" to p95Latency,
-            "latency p99" to p99Latency
+data class Summary(val fields: List<Pair<String, Any>>) {
+
+    fun add(prefix: List<Pair<String, Any>> = emptyList(), suffix: List<Pair<String, Any>> = emptyList()) = Summary(
+            listOf(prefix, fields, suffix).flatten()
     )
 
-    private fun combine(extraFields: List<Pair<String, Any>>) =
-            listOf(summaryFields.filter { (_, value) -> isPositive(value) },
-                    extraFields
-            ).flatten()
+    @ExperimentalTime
+    fun headerString(hideZeroAndEmpty: Boolean = true, spacing: Int = 5) = fields
+            .filter { hideZeroAndEmpty && it.isNotZeroOrEmpty() }
+            .joinToString(separator = "") { alignWith(it.first, it.second.toString(), spacing) }
 
-    fun headerString(extraFields: List<Pair<String, Any>> = emptyList(), spacing: Int = 5) =
-            combine(extraFields).firstAligned(spacing)
+    @ExperimentalTime
+    fun valueString(hideZeroAndEmpty: Boolean = true, spacing: Int = 5) = fields
+            .filter { hideZeroAndEmpty && it.isNotZeroOrEmpty() }
+            .joinToString(separator = "") { alignWith(it.second.toString(), it.first, spacing) }
 
-    fun valueString(extraFields: List<Pair<String, Any>> = emptyList(), spacing: Int = 5) =
-            combine(extraFields).secondAligned(spacing)
 }
 
 @ExperimentalTime
@@ -144,17 +160,29 @@ fun List<ResultMetric>.summarise(): Summary {
         return if (!rate.isNaN()) rate.roundToInt() else 0
     }
 
-    return Summary(
-            p50Latency = latencyPercentile(50.0),
-            p95Latency = latencyPercentile(95.0),
-            p99Latency = latencyPercentile(99.0),
-            elapsedDuration = elapsedDuration,
-            operationRate = rate(counts.operationCount),
-            insertedRate = rate(counts.insertedCount),
-            upsertRate = rate(counts.upsertCount),
-            deletedRate = rate(counts.deletedCount),
-            matchedRate = rate(counts.matchedCount),
-            modifiedRate = rate(counts.modifiedCount)
-    )
+    return Summary(listOf(
+            "inserts/s" to rate(counts.insertedCount),
+            "deletes/s" to rate(counts.deletedCount),
+            "matched/s" to rate(counts.matchedCount),
+            "modified/s" to rate(counts.modifiedCount),
+            "upserts/s" to rate(counts.upsertCount),
+            "batches/s" to rate(counts.operationCount),
+            "latency p50" to latencyPercentile(50.0),
+            "latency p95" to latencyPercentile(95.0),
+            "latency p99" to latencyPercentile(99.0)
+    ))
+
+//    return Summary(
+//            p50Latency = latencyPercentile(50.0),
+//            p95Latency = latencyPercentile(95.0),
+//            p99Latency = latencyPercentile(99.0),
+//            elapsedDuration = elapsedDuration,
+//            operationRate = rate(counts.operationCount),
+//            insertedRate = rate(counts.insertedCount),
+//            upsertRate = rate(counts.upsertCount),
+//            deletedRate = rate(counts.deletedCount),
+//            matchedRate = rate(counts.matchedCount),
+//            modifiedRate = rate(counts.modifiedCount)
+//    )
 
 }
