@@ -12,6 +12,9 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@v1
 
+      - name: Pre Process Docs
+      - uses: scripts/pre_process_docs.sh
+
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         env:

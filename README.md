@@ -69,6 +69,7 @@ dependencies {
 
 Apache 2.0
 
+[hack]:         http://hack
 [bson-spec]:   http://bsonspec.org/spec.html
 [travis_img]:  https://api.travis-ci.org/dioxic/mgenerate4j.svg?branch=master
 [travis_url]:  https://travis-ci.org/dioxic/mgenerate4j
