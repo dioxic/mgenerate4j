@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/dioxic/mgenerate4j/blob/master/docs/img/logo.png"></p>
+<p align="center"><img src="https://github.com/dioxic/mgenerate4j/blob/master/docs/img/logo_text.png"></p>
 
 [![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
 
