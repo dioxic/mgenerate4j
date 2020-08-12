@@ -8,6 +8,11 @@ import kotlinx.coroutines.flow.*
 import uk.dioxic.mgenerate.cli.internal.RingBuffer
 import uk.dioxic.mgenerate.cli.metric.ResultMetric
 import uk.dioxic.mgenerate.cli.metric.summarise
+import java.text.DateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.FormatStyle
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.Duration
@@ -238,17 +243,26 @@ fun <T> flowOf(number: Long, block: () -> T): Flow<T> = flow {
 fun Flow<ResultMetric>.monitor(totalExecutions: Long,
                                loggingInterval: Duration = 1.seconds,
                                headerPrintInterval: Int = 10,
-                               metricBufferSize: Int = 50000): Flow<String> = flow {
-    var lineCounter = 0
+                               metricBufferSize: Int = 50000,
+                               hideZeroAndEmpty: Boolean = true): Flow<String> = flow {
+    val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+    var lineCounter: Long = 0
     var executionCounter: Long = 0
+
+
 
     onEach { executionCounter += it.batchSize }
             .chunkedTimeout(loggingInterval, metricBufferSize) { it.summarise() }
+            .map {
+                it.add(
+                        prefix = listOf("time" to dtf.format(LocalDateTime.now())),
+                        suffix = listOf("progress" to (executionCounter percentOf totalExecutions))
+                )
+            }
             .collect {
-                val extraFields = listOf("progress" to (executionCounter percentOf totalExecutions))
-                if (lineCounter++ % headerPrintInterval == 0) {
-                    emit(it.headerString(extraFields))
+                if (lineCounter++ % headerPrintInterval == 0L) {
+                    emit(it.headerString(hideZeroAndEmpty))
                 }
-                emit(it.valueString(extraFields))
+                emit(it.valueString(hideZeroAndEmpty))
             }
 }
