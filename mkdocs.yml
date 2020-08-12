@@ -1,0 +1,51 @@
+site_name: MGenerate
+repo_name: dioxic/mgenerate
+repo_url: https://github.com/dioxic/mgenerate
+site_description: "Mgenerate: a simple JSON templating engine designed for MongoDB"
+site_author: Dioxic
+remote_branch: gh-pages
+
+copyright: 'Copyright &copy; 2020 Dioxic'
+
+theme:
+  name: 'material'
+  logo: img/logo.png
+  favicon: img/favicon.ico
+  palette:
+    scheme: mongodb
+    #scheme: default
+    #primary: 'blue grey'
+    #accent: 'indigo'
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - 'css/extra.css'
+
+markdown_extensions:
+  - smarty
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - tables
+
+nav:
+  - 'Home': index.md
+  - 'Quickstart': quickstart.md
+  - 'Template Syntax':
+      - 'Operators': operators.md
+      - 'Placeholders': placeholders.md
+  - 'Operator Reference': operator-reference.md
+  - 'Usage': usage.md
+

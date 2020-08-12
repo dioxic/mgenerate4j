@@ -1,45 +1,53 @@
-<p align="center"><img src="https://github.com/dioxic/mgenerate4j/blob/master/logo.png"></p>
+<p align="center"><img src="https://github.com/dioxic/mgenerate4j/blob/master/docs/img/logo.png"></p>
 
 [![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
 
-**mgenerate4j** is a tool for generating rich JSON documents from a template.
+**mgenerate4j** is a java library that makes generating test data for MongoDB easy.
 
-It can be used as a standalone application or as a library and is also extendable if you need to do something that isn't covered by the out-of-the-box functions. 
- 
-The core syntax is largely the same as [mgeneratejs](https://github.com/rueckstiess/mgeneratejs) by Thomas Rueckstiess.
+Rich, representative test data can be generated from a template and loaded directly into MongoDB (or output to a file).
 
-**To find out more, please check out the [mgenerate4j wiki][wiki].**
+mgenerate4j can generate a wide variety of common data (e.g. names, addresses, emails, ip address) but is easily extentable if
+you need to do generate something that isn't covered by the out-of-the-box functions. 
 
-## Example
+What does it look like? This is an example of a simple template:
 
-Here we have a template that defines 3 fields; a random name, a random age and an array with 2 random email address.
-
-#### Template
 ```json
-{ "name": "$name", "age": "$age", "emails": { "$array": { "of": "$email", "number": 2} } }
-```
+{
+  "name": "$name",
+  "age": "$age",
+  "emails": {
+    "$array": {
+      "of": "$email",
+      "number": 2} 
+  }
+}
+``` 
 
-#### Output
+And here's what the output might look like:
+
 ```json
-{"name": "Jeffery Dooley", "age": 71, "emails": ["daisy.monahan@hotmail.com", "jacey.bauch@hotmail.com"]}
-{"name": "Durward Morar", "age": 3, "emails": ["osborne.kassulke@hotmail.com", "amparo.stokes@gmail.com"]}
-{"name": "Reyes Cartwright", "age": 42, "emails": ["candida.macejkovic@hotmail.com", "kasey.vandervort@yahoo.com"]}
-{"name": "Naomi Nicolas", "age": 117, "emails": ["ottilie.murazik@gmail.com", "dillon.marvin@hotmail.com"]}
-{"name": "Athena Buckridge", "age": 36, "emails": ["aryanna.tromp@gmail.com", "celestino.buckridge@gmail.com"]}
+{
+  "name": "Jeffery Dooley",
+  "age": 71,
+  "emails": ["daisy.monahan@hotmail.com", "jacey.bauch@hotmail.com"]
+}
 ```
-## Quickstart
 
-Assuming git and [Maven](https://maven.apache.org/) installed:
+To generate and load documents into MongoDB from a template, the CLI can be used:
 
-```bash
-$ git clone https://github.com/dioxic/mgenerate4j.git
-$ cd mgenerate4j
-$ mvn clean package
-$ java -jar mgenerate-core/target/mgenerate.jar example-template.json
 ```
+$ java -jar mgenerate.jar load --uri "mongodb://localhost:27017" template.json
+``` 
+
+## Documentation
+
+The full documentation for mgenerate4j can be found [here][gh-page] 
+
+## Installation
+
+mgenerate4j is distributed through [Maven Central][maven_url]
 
 To import as a maven dependency:
-
 ```xml
 <dependency>
     <groupId>uk.dioxic.mgenerate</groupId>
@@ -55,53 +63,17 @@ dependencies {
 }
 ```
 
-**Precompiled executable jars are also available in [releases](https://github.com/dioxic/mgenerate4j/releases).**
-
-## Usage
-
-### Standalone
-
-```
-Usage: mgenerate [-h] [--debug] [-n=<number>] [-o=<output>] TEMPLATE
-      TEMPLATE            template file path
-      --debug             debug logging
-  -h, --help              display a help message
-  -n, --number=<number>   number of documents to generate (default: 10)
-  -o, --out=<output>      output file path
-```
-
-```
-$ java -jar mgenerate.jar template.json
-```
-
-### Library
-
-```java
-MongoClientSettings mcs = MongoClientSettings.builder()
-        .codecRegistry(MgenDocumentCodec.getCodecRegistry())
-        .build();
-
-MongoCollection<Template> collection = MongoClients.create(mcs)
-        .getDatabase("test")
-        .getCollection("mgen", Template.class);
-        
-Template template = Template.from("c:\\tmp\\mongo.json");
-
-collection.insertOne(template);
-collection.insertOne(template);
-collection.insertOne(template);
-```
-
-This will result in 3 _different_ documents being inserted since the template is hydrated during encoding.
+**Precompiled executable jars are also available in [releases][releases].**
 
 ## License
 
 Apache 2.0
 
-[regexp]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp
-[bson-spec]: http://bsonspec.org/spec.html
-[travis_img]: https://api.travis-ci.org/dioxic/mgenerate4j.svg?branch=master
-[travis_url]: https://travis-ci.org/dioxic/mgenerate4j
-[maven_img]: https://img.shields.io/maven-central/v/uk.dioxic.mgenerate/mgenerate-parent
-[maven_url]: https://search.maven.org/search?q=g:uk.dioxic.mgenerate
-[wiki]: https://github.com/dioxic/mgenerate4j/wiki
+[regexp]:      https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+[bson-spec]:   http://bsonspec.org/spec.html
+[travis_img]:  https://api.travis-ci.org/dioxic/mgenerate4j.svg?branch=master
+[travis_url]:  https://travis-ci.org/dioxic/mgenerate4j
+[maven_img]:   https://img.shields.io/maven-central/v/uk.dioxic.mgenerate/mgenerate-parent
+[maven_url]:   https://search.maven.org/search?q=g:uk.dioxic.mgenerate
+[releases]:    https://github.com/dioxic/mgenerate4j/releases
+[gh-page]:     https://dioxic.github.io/mgenerate4j/
