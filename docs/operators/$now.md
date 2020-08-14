@@ -1,12 +1,16 @@
-Returns the extended JSON date and time at the point the operator is resolved.
+Returns the BSON datetime at the point the operator is hydrated.
 
-### Example
+## Example
 
-#### Template
-```json
-{ "created": "$now" }
-```
-#### Output
-```json
-{ "created": { "$date": "2017-02-20T04:44:24.880Z" } }
-```
+=== "Template"
+    ```json
+    { "created": "$now" }
+    ```
+=== "Extended JSON Output"
+    ```json
+    { "created": { "$date": "2017-02-20T04:44:24.880Z" } }
+    ```
+=== "Mongo Shell JSON Output"
+    ```json
+    { "created": ISODate("2017-02-20T04:44:24.880Z") }
+    ```

@@ -1,12 +1,16 @@
 Returns a random word.
 
-### Example
+## Example
 
-#### Template
-```json
-{ "word": "$word" }
-```
-#### Output
-```json
-{ "word": "atque" }
-```
+=== "Template"
+    ```json
+    {
+        "word": "$word"
+    }
+    ```
+=== "Output"
+    ```json
+    {
+        "word": "atque"
+    }
+    ```

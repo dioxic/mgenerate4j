@@ -4,8 +4,8 @@ This is a full list of all the out-of-the-box operators. If you want to create y
 
 ## General
 
-- [`$avg`][$avg]: Calculates the average of the input array elements.
 - [`$array`][$array]: Creates an array of values.
+- [`$avg`][$avg]: Calculates the average of the input array elements.
 - [`$bin`][$bin]: Creates random binary data of a specified size.
 - [`$boolean`][$boolean]: Creates a random boolean value.
 - [`$concat`][$concat]: Merges multiple arrays into a single array.
@@ -32,8 +32,8 @@ This is a full list of all the out-of-the-box operators. If you want to create y
 
 ## Numeric
 
-- [`$floating`][$floating]: Returns a random floating point.
 - [`$decimal`][$decimal]: Returns a random Decimal 128.
+- [`$floating`][$floating]: Returns a random floating point.
 - [`$int`][$int]: Returns a random 32-bit integer.
 - [`$long`][$long]: Returns a random 64-bit integer.
 
@@ -49,7 +49,7 @@ This is a full list of all the out-of-the-box operators. If you want to create y
 - [`$minute`][$minute]: Minute of input date.
 - [`$month`][$month]: Month of input date.
 - [`$second`][$second]: Second of input date.
-- [`$ts`][$ts]: Creates a random timestamp.
+- [`$ts`][$ts]: Creates a random BSON timestamp.
 - [`$year`][$year]: Year of input date.
 
 ## Text
@@ -103,14 +103,17 @@ This is a full list of all the out-of-the-box operators. If you want to create y
 
 [custom-operators]:  custom-operators.md
 
+[$age]:              operators/$age.md
 [$array]:            operators/$array.md
 [$avg]:              operators/$avg.md
 [$bin]:              operators/$bin.md
+[$birthday]:         operators/$birthday.md
 [$boolean]:          operators/$boolean.md
 [$character]:        operators/$character.md
 [$choose]:           operators/$choose.md
 [$concat]:           operators/$concat.md
 [$coordinates]:      operators/$coordinates.md
+[$country]:          operators/$country.md
 [$dateSequence]:     operators/$dateSequence.md
 [$dayOfMonth]:       operators/$dayOfMonth.md
 [$dayOfWeek]:        operators/$dayOfWeek.md
@@ -119,11 +122,12 @@ This is a full list of all the out-of-the-box operators. If you want to create y
 [$distinct]:         operators/$distinct.md
 [$dt]:               operators/$dt.md
 [$epoch]:            operators/$epoch.md
+[$email]:            operators/$email.md
 [$floating]:         operators/$floating.md
 [$hash]:             operators/$hash.md
 [$hour]:             operators/$hour.md
 [$inc]:              operators/$inc.md
-[$integer]:          operators/$integer.md
+[$int]:              operators/$int.md
 [$intSequence]:      operators/$intSequence.md
 [$join]:             operators/$join.md
 [$lineString]:       operators/$lineString.md
@@ -147,6 +151,7 @@ This is a full list of all the out-of-the-box operators. If you want to create y
 [$sentence]:         operators/$sentence.md
 [$string]:           operators/$string.md
 [$ts]:               operators/$ts.md
+[$url]:              operators/$url.md
 [$uuid]:             operators/$uuid.md
 [$word]:             operators/$word.md
 [$year]:             operators/$year.md

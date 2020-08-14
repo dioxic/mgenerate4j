@@ -1,18 +1,40 @@
 Returns a GeoJSON formatted [LineString](https://geojson.org/geojson-spec.html#linestring).
 
-### Options
+## Options
 
 - `longBounds` (optional) Array of longitude bounds. Default `[-180, 180]`.
 - `latBounds` (optional) Array of latitude bounds. Default `[-90, 90]`.
 - `locs` (optional) Number of locations in the line string. Default `3`.
 
-### Example
+## Example
 
-#### Template
-```json
-{ "line": { "$lineString": { "locs": 3 } } }
-```
-#### Output
-```json
-{ "line": { "type": "LineString", "coordinates": [[102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]] } }
-```
+=== "Template"
+    ```json
+    {
+        "line": {
+            "$lineString": { "locs": 3 }
+        }
+    }
+    ```
+=== "Output"
+    ```json
+    {
+        "line": {
+            "type": "LineString",
+            "coordinates": [
+                [
+                  -5.735021154016692,
+                  -59.374717617075106
+                ],
+                [
+                  149.858471917435,
+                  -67.48631323418616
+                ],
+                [
+                  36.22877102282027,
+                  -48.52554693407486
+                ]
+            ]
+        }
+    }
+    ```

@@ -1,16 +1,22 @@
 Returns the distinct set of the input array.
 
-### Options
+## Options
 
 - `values` (required) Input array.
 
-### Example
+## Example
 
-#### Template
-```json
-{ "distinct": { "$distinct": ["badger", "badger", "halibut"] } }
-```
-#### Output
-```json
-{ "distinct": ["badger", "halibut"] }
-```
+=== "Template"
+    ```json
+    {
+        "distinct": {
+            "$distinct": ["badger", "badger", "halibut"]
+        }
+    }
+    ```
+=== "Output"
+    ```json
+    {
+        "distinct": ["badger", "halibut"]
+    }
+    ```

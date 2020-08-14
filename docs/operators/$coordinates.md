@@ -3,18 +3,24 @@ Returns a 2-element array of longitude/latitude coordinates, optionally within
 
 **Aliases:** `$coord`, `$coordinates`
 
-### Options
+## Options
 
 - `longBounds` (optional) Array of longitude bounds. Default `[-180, 180]`.
 - `latBounds` (optional) Array of latitude bounds. Default `[-90, 90]`.
 
-### Example
+## Example
 
-#### Template
-```json
-{ "position": { "$coordinates": { "longBounds": [-20, -19] } } }
-```
-#### Output
-```json
-{ "position": [-19.96851, -47.46141] }
-```
+=== "Template"
+    ```json
+    {
+        "position": {
+            "$coordinates": { "longBounds": [-20, -19] }
+        }
+    }
+    ```
+=== "Output"
+    ```json
+    {
+        "position": [-19.96851, -47.46141]
+    }
+    ```

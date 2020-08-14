@@ -11,11 +11,11 @@ import uk.dioxic.mgenerate.core.util.FakerUtil;
 public class Country extends AbstractOperator<String> {
 
     @OperatorProperty
-    Resolvable<Boolean> full = Wrapper.wrap(Boolean.FALSE);
+    Resolvable<Boolean> code = Wrapper.wrap(Boolean.FALSE);
 
 	@Override
 	public String resolveInternal() {
-        return full.resolve() ? FakerUtil.getValue("address.country_code"): FakerUtil.getValue("address.country");
+        return code.resolve() ? FakerUtil.getValue("address.country_code"): FakerUtil.getValue("address.country");
 	}
 
 }

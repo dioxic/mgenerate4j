@@ -2,23 +2,39 @@ Returns a sequence of 64-bit integers.
 
 **Aliases:** `$longSeq`, `$longSequence`
 
-### Options
+## Options
 
 - `start` (optional) Initial value. Default `0`.
 - `step` (optional) The step increment. Default `1`.
 
-### Example
+## Example
 
-#### Template
-```json
-{ "seq": { "$longSeq" : { "step": 2 } } }
-```
-#### Output
-```json
-{ "seq": 0 }
-{ "seq": 2 }
-{ "seq": 4 }
-{ "seq": 6 }
-{ "seq": 8 }
-...
-```
+=== "Template"
+    ```json
+    {
+        "seq": {
+            "$longSeq" : {
+                "start": 2147483647
+                "step": 2
+            }
+        }
+    }
+    ```
+=== "Extended JSON Output"
+    ```json
+    { "seq": { "$numberLong": "2147483647" } }
+    { "seq": { "$numberLong": "2147483649" } }
+    { "seq": { "$numberLong": "2147483651" } }
+    { "seq": { "$numberLong": "2147483653" } }
+    { "seq": { "$numberLong": "2147483655" } }
+    ...
+    ```
+=== "Shell Output"
+    ```json
+    { "seq": NumberLong("2147483647") }
+    { "seq": NumberLong("2147483649") }
+    { "seq": NumberLong("2147483651") }
+    { "seq": NumberLong("2147483653") }
+    { "seq": NumberLong("2147483655") }
+    ...
+    ```
