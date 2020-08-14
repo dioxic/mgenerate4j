@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/img/logo_text.png"></p>
 
-[![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url]
+[![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url] ![licence][apache2]
 
 **mgenerate4j** is a java library that makes generating test data for MongoDB easy.
 
@@ -78,3 +78,4 @@ Apache 2.0
 [maven_url]:   https://search.maven.org/search?q=g:uk.dioxic.mgenerate
 [releases]:    https://github.com/dioxic/mgenerate4j/releases
 [gh-page]:     https://dioxic.github.io/mgenerate4j/
+[apache2]:     https://img.shields.io/hexpm/l/apa
