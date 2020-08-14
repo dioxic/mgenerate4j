@@ -59,6 +59,7 @@ public class Template {
     /**
      * Creates a {@link Template} from a BSON document.
      * @param template a {@link Document} representation of a template
+     * @param stateCachingRequired true if template state caching is required
      * @return {@link Template}
      */
     public static Template from(Document template, boolean stateCachingRequired) {
