@@ -1,10 +1,15 @@
-//plugins {
-//    `java-library`
-//}
+plugins {
+    `java-library`
+    id("uk.dioxic.build") version "1.0"
+}
 
 description = "Common code for mgenerate4j"
-extra["displayName"] = "MGenerate Common"
-extra["moduleName"] = "uk.dioxic.mgenerate.common"
+
+buildConfig {
+    displayName = "Mgenerate Common"
+    moduleName = "uk.dioxic.mgenerate.common"
+    publish = true
+}
 
 dependencies {
     implementation(platform(project(":mgenerate-bom")))
