@@ -69,36 +69,36 @@ This is a full list of all the out-of-the-box operators. If you want to create y
 
 ## Internet
 
-- [`$domain`][$domain]: Returns a random www domain name.
+- `$domain`: Returns a random www domain name.
 - [`$email`][$email]: Returns a random email address.
-- [`$ip`][$ip]: Generates a random IPv4 address.
-- [`$ipv6`][$ipv6]: Generates a random IPv6 address.
-- [`$macAdress`][$macAdress]: Generates a random MAC address.
+- `$ip`: Generates a random IPv4 address.
+- `$ipv6`: Generates a random IPv6 address.
+- `$macAdress`: Generates a random MAC address.
 - [`$url`][$url]: Generates a random URL.
-- [`$username`][$username]: Generates a random username.
+- `$username`: Generates a random username.
 
 ## Location
 
-- [`$city`][$city]: Generates a random city.
+- `$city`: Generates a random city.
 - [`$country`][$country]: Generates a random country.
-- [`$phone`][$phone]: Generates a random phone number.
-- [`$postal`][$postal]: Generates a random post code.
-- [`$state`][$state]: Generates a random state.
-- [`$street`][$street]: Generates a random street.
-- [`$zip`][$zip]: Generates a random zip code.
+- `$phone`: Generates a random phone number.
+- `$postal`: Generates a random post code.
+- `$state`: Generates a random state.
+- `$street`: Generates a random street.
+- `$zip`: Generates a random zip code.
 
 ## Person
 
 - [`$age`][$age]: Generates a random age.
 - [`$birthday`][$birthday]: Generates a random birthday.
-- [`$first`][$first]: Generates a random first name.
-- [`$gender`][$gender]: Generates a random gender.
-- [`$last`][$last]: Generates a random last name.
-- [`$maritalStatus`][$maritalStatus]: Generates a random marital status.
-- [`$name`][$name]: Generates a name.
-- [`$prefix`][$prefix]: Generates a random salutation.
-- [`$ssn`][$ssn]: Generates a random social security number.
-- [`$suffix`][$suffix]: Generates a random title (e.g. esq.).
+- `$first`: Generates a random first name.
+- `$gender`: Generates a random gender.
+- `$last`: Generates a random last name.
+- `$maritalStatus`: Generates a random marital status.
+- `$name`: Generates a name.
+- `$prefix`: Generates a random salutation.
+- `$ssn`: Generates a random social security number.
+- `$suffix`: Generates a random title (e.g. esq.).
 
 
 [custom-operators]:  custom-operators.md
