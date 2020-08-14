@@ -2,7 +2,7 @@ package uk.dioxic.mgenerate.core.operator.type;
 
 import java.util.List;
 
-import static com.google.common.primitives.Doubles.asList;
+import static java.util.Arrays.asList;
 
 public class Coordinates {
         private final double x;
