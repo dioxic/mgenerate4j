@@ -40,5 +40,6 @@ dependencies {
         api(project(":mgenerate-core"))
         api(project(":mgenerate-apt"))
         api(project(":mgenerate-common"))
+        api(project(":mgenerate-cli"))
     }
 }
