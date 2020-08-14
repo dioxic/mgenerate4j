@@ -19,19 +19,19 @@ Optionally chooses with probability proportional to a provided `weights` array.
         }
     }
     ```
-=== "Output Probably 50%"
+=== "Output Probability 50%"
     ```json
     {
         "status": "read"
     }
     ```
-=== "Output Probably 25%"
+=== "Output Probability 25%"
     ```json
     {
         "status": "unread"
     }
     ```
-=== "Output Probably 25%"
+=== "Output Probability 25%"
     ```json
     {
         "status": "deleted"

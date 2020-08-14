@@ -42,11 +42,11 @@ $ java -jar mgenerate.jar load --uri "mongodb://localhost:27017" template.json
 
 ## Documentation
 
-The full documentation for mgenerate4j can be found [here][gh-page] 
+The full documentation for mgenerate4j can be found [here][gh-page] .
 
 ## Installation
 
-mgenerate4j is distributed through [Maven Central][maven_url]
+mgenerate4j is distributed through [Maven Central][maven_url].
 
 To import as a maven dependency:
 ```xml
