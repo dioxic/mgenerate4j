@@ -3,6 +3,7 @@
 ## Unreleased
 ### Added
 - Documentation converted to mkdocs and published on [gh-pages](https://dioxic.github.io/mgenerate4j/)
+- Switched to use Gradle build
 - CLI module added
 
 ### Fixed
