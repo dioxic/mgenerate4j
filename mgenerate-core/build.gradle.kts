@@ -17,6 +17,7 @@ dependencies {
     implementation(platform(project(":mgenerate-bom")))
     annotationProcessor(project(":mgenerate-apt"))
     api(project(":mgenerate-common"))
+    implementation("info.picocli:picocli:4.1.2")
     implementation(Deps.bson)
     implementation(Deps.faker4j)
     implementation(Deps.bsoncodec)
