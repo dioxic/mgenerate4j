@@ -4,7 +4,7 @@ If the out-of-the-box operators don't meet your needs, you can create your own.
 
 ## Setup
 
-mgenerate4j uses compile-time annotation processing so you will need to enable this.
+mgenerate4j uses compile-time annotation processing so you will need to enable this:
 
 === "Maven"
     ```xml
