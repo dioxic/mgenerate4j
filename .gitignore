@@ -8,21 +8,13 @@
 # BlueJ files
 *.ctxt
 
+*.iml
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-/buildPlugin/.gradle
-/.gradle/
-/build/
-site/
-**/build/
-/.settings/
-/.project
-/.classpath
-/.idea
-/*.iml
-**/.settings/
-**/.project
-**/.classpath
-**/.idea
-**/*.iml
+.idea
+site
+.gradle
+*/build
+
