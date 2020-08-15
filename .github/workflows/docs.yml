@@ -7,7 +7,6 @@ on:
       - 'docs/*'
       - 'README.md'
       - 'CHANGELOG.md'
-      - 'scripts/pre_process_docs.sh'
 
 jobs:
   build:
@@ -17,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Pre Process Docs
-        run: scripts/pre_process_docs.sh
+        run: docs/scripts/pre_process_docs.sh
 
       - name: Install Python
         uses: actions/setup-python@v2
