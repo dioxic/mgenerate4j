@@ -3,6 +3,11 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'docs/*'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'scripts/pre_process_docs.sh'
 
 jobs:
   build:
