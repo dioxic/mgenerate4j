@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/img/logo_text.png"></p>
 
-[![travis][travis_img]][travis_url] [![maven][maven_img]][maven_url] ![licence][apache2]
+[![build][build_badge]][build_url] [![docs][docs_badge]][gh-page] [![maven][maven_badge]][maven_url] ![licence][licence_badge]
 
 **mgenerate4j** is a java library that makes generating test data for MongoDB easy.
 
@@ -70,12 +70,15 @@ dependencies {
 
 Apache 2.0
 
-[hack]:         http://hack
-[bson-spec]:   http://bsonspec.org/spec.html
-[travis_img]:  https://api.travis-ci.org/dioxic/mgenerate4j.svg?branch=master
-[travis_url]:  https://travis-ci.org/dioxic/mgenerate4j
-[maven_img]:   https://img.shields.io/maven-central/v/uk.dioxic.mgenerate/mgenerate-parent
-[maven_url]:   https://search.maven.org/search?q=g:uk.dioxic.mgenerate
-[releases]:    https://github.com/dioxic/mgenerate4j/releases
-[gh-page]:     https://dioxic.github.io/mgenerate4j/
-[apache2]:     https://img.shields.io/hexpm/l/apa
+[hack]:          http://hack
+[bson-spec]:     http://bsonspec.org/spec.html
+[docs_badge]:    https://github.com/dioxic/mgenerate4j/workflows/docs/badge.svg
+[build_badge]:   https://github.com/dioxic/mgenerate4j/workflows/build/badge.svg
+[maven_badge]:   https://img.shields.io/maven-central/v/uk.dioxic.mgenerate/mgenerate-parent
+[travis_badge]:  https://api.travis-ci.org/dioxic/mgenerate4j.svg?branch=master
+[licence_badge]: https://img.shields.io/hexpm/l/apa
+[build_url]:     https://github.com/dioxic/mgenerate4j/actions?query=workflow%3A%22build%22
+[travis_url]:    https://travis-ci.org/dioxic/mgenerate4j
+[maven_url]:     https://search.maven.org/search?q=g:uk.dioxic.mgenerate
+[releases]:      https://github.com/dioxic/mgenerate4j/releases
+[gh-page]:       https://dioxic.github.io/mgenerate4j/
