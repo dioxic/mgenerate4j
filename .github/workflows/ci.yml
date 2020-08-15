@@ -1,9 +1,11 @@
 name: Gradle CI
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   build:
-    name: Build & Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -11,5 +13,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
       - name: Build with Gradle
         run: ./gradlew build
