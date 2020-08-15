@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Publish Docs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
