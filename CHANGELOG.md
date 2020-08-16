@@ -12,7 +12,7 @@
 ### Fixed
 - Some stuff
 
-## [0.05] - 2019-10-04
+## [0.0.5] - 2019-10-04
 
 [Unreleased]: https://github.com/dioxic/mgenerate4j/compare/v0.0.5...HEAD
 [0.0.5]:      https://github.com/dioxic/mgenerate4j/releases/tag/v0.0.5
