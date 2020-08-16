@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
+
 plugins {
     `kotlin-dsl`
 }
@@ -14,11 +16,11 @@ gradlePlugin {
     }
 }
 
-val kotlinVersion = "1.4.0-rc"
-val dokkaVersion = kotlinVersion
+val kotlinVersion = KotlinCompilerVersion.VERSION
+val dokkaVersion = "0.10.1"
 
 dependencies {
-    implementation(kotlin("gradle-plugin", kotlinVersion))
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     implementation("com.github.jengelman.gradle.plugins:shadow:6.0.0")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
 }
