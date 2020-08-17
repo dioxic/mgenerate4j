@@ -80,5 +80,5 @@ Apache 2.0
 [build_url]:     https://github.com/dioxic/mgenerate4j/actions?query=workflow%3A%22build%22
 [travis_url]:    https://travis-ci.org/dioxic/mgenerate4j
 [maven_url]:     https://search.maven.org/search?q=g:uk.dioxic.mgenerate
-[releases]:      https://github.com/dioxic/mgenerate4j/releases
+[releases]:      https://github.com/dioxic/mgenerate4j/releases/latest
 [gh-page]:       https://dioxic.github.io/mgenerate4j/
