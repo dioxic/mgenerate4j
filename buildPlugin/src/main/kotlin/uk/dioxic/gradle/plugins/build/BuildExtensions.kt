@@ -15,7 +15,7 @@ import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.*
 import org.gradle.plugins.signing.SigningExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+//import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import uk.dioxic.gradle.Dependencies
 import uk.dioxic.gradle.Plugins
 
@@ -72,11 +72,11 @@ internal fun Project.configureLogging(apiOnly: Boolean = false, implementation: 
 internal fun Project.hasPlugin(id: String) = pluginManager.hasPlugin(id)
 
 internal fun Project.configureKotlin() {
-    println("configuring Kotlin")
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
-    }
+//    println("configuring Kotlin")
+//
+//    tasks.withType<KotlinCompile> {
+//        kotlinOptions.jvmTarget = "1.8"
+//    }
 }
 
 internal fun Project.configureJava() {
@@ -156,8 +156,8 @@ internal fun Project.configureTesting() {
 }
 
 internal fun Project.configureDokka() {
-    println("configuring Dokka")
-    apply(plugin = Plugins.dokka.pluginId)
+//    println("configuring Dokka")
+//    apply(plugin = Plugins.dokka.pluginId)
 }
 
 internal fun Project.configureSonatypePublishing(displayName: String, isPlatform: Boolean) {

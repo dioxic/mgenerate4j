@@ -1,12 +1,11 @@
 package uk.dioxic.mgenerate.core;
 
-import org.bson.BsonBinaryWriter;
-import org.bson.BsonWriter;
-import org.bson.Document;
-import org.bson.RawBsonDocument;
+import org.bson.*;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.Encoder;
 import org.bson.codecs.EncoderContext;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.io.BasicOutputBuffer;
 import org.bson.json.JsonReader;
 import org.bson.json.JsonWriter;
@@ -15,16 +14,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.TemplateCodec;
+import uk.dioxic.mgenerate.core.codec.TemplateCodecProvider;
 import uk.dioxic.mgenerate.core.util.DocumentUtil;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.bson.codecs.configuration.CodecRegistries.fromCodecs;
 
 public class Template {
 
@@ -128,6 +131,14 @@ public class Template {
         return new RawBsonDocument(buffer.getInternalBuffer());
     }
 
+    public <C> BsonDocument toBsonDocument(final Class<C> documentClass, final CodecRegistry codecRegistry) {
+        return new BsonDocumentWrapper<Template>(this, codecRegistry.get(Template.class));
+    }
+
+    public BsonDocument toBsonDocument() {
+        return toBsonDocument(null, fromCodecs(templateCodec));
+    }
+
     private void encode(BsonWriter writer) {
         templateCodec.encode(writer, this, EncoderContext.builder().build());
     }
@@ -168,6 +179,30 @@ public class Template {
         JsonWriter writer = new JsonWriter(new StringWriter(), writerSettings);
         encoder.encode(writer, this, EncoderContext.builder().isEncodingCollectibleDocument(true).build());
         return writer.getWriter().toString();
+    }
+
+    /**
+     * Gets a hydrated JSON representation of this template.
+     *
+     * @param writerSettings the json writer settings to use when encoding
+     * @param encoder the document codec instance to use to encode the document
+     * @param writer the writer to use as output
+     * @throws org.bson.codecs.configuration.CodecConfigurationException if the registry does not contain a codec for the document values.
+     */
+    public void writeJson(final JsonWriterSettings writerSettings, final Encoder<Template> encoder, final Writer writer) {
+        JsonWriter jsonWriter = new JsonWriter(writer, writerSettings);
+        encoder.encode(jsonWriter, this, EncoderContext.builder().isEncodingCollectibleDocument(true).build());
+    }
+
+    /**
+     * Gets a hydrated JSON representation of this template.
+     *
+     * @param writerSettings the json writer settings to use when encoding
+     * @param writer the writer to use as output
+     * @throws org.bson.codecs.configuration.CodecConfigurationException if the registry does not contain a codec for the document values.
+     */
+    public void writeJson(final JsonWriterSettings writerSettings, final Writer writer) {
+        writeJson(writerSettings, templateCodec, writer);
     }
 
     @Override
