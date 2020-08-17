@@ -1,8 +1,8 @@
-import uk.dioxic.build.Deps
+import uk.dioxic.gradle.plugins.build.Deps
 
 plugins {
     `java-library`
-    id("uk.dioxic.build") version "1.0"
+    id("uk.dioxic.build")
 }
 
 description = "Annotation processing"

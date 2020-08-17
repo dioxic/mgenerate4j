@@ -1,4 +1,4 @@
-package uk.dioxic.build
+package uk.dioxic.gradle
 
 object Dependencies {
     const val junit5 = "org.junit.jupiter:junit-jupiter:${Versions.junit5}"

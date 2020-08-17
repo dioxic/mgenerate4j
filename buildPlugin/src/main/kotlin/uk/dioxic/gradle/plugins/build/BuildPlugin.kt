@@ -1,8 +1,7 @@
-package uk.dioxic.build
+package uk.dioxic.gradle.plugins.build
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-
 
 class BuildPlugin : Plugin<Project> {
 
@@ -18,18 +17,19 @@ class BuildPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project): Unit = project.run {
-        val config: BuildConfig = project.extensions.create(
+        val config: BuildConfig = extensions.create(
                 "buildConfig", BuildConfig::class.java
         )
 
-
-        project.afterEvaluate {
-            val isLibrary = project.hasPlugin("java-library")
-            val isPlatform = project.hasPlugin("java-platform")
+        afterEvaluate {
+            val isLibrary = hasPlugin("java-library")
+            val isPlatform = hasPlugin("java-platform")
 //            project.plugins.forEach {
 //                println(it)
 //            }
-            if (!isPlatform) {
+            if (hasPlugin("java") && !isPlatform) {
+                configureJava()
+
                 if (config.testable) {
                     configureTesting()
                 }
@@ -44,13 +44,9 @@ class BuildPlugin : Plugin<Project> {
                     fatJar(config.mainClass!!)
                 }
 
-                if (project.hasPlugin("kotlin")) {
+                if (hasPlugin("kotlin")) {
                     configureKotlin()
                     configureDokka()
-                }
-
-                if (project.hasPlugin("java")) {
-                    configureJava()
                 }
             }
 
@@ -59,14 +55,12 @@ class BuildPlugin : Plugin<Project> {
                         moduleName = requireNotNull(config.moduleName) { "moduleName missing!" })
             }
 
-            if (config.publish) {
+            if (config.publish && (isLibrary || isPlatform)) {
                 configureSonatypePublishing(
                         displayName = requireNotNull(config.displayName) { "displayName missing!" },
                         isPlatform = isPlatform)
             }
         }
-
-
     }
 }
 

@@ -1,4 +1,4 @@
-package uk.dioxic.build
+package uk.dioxic.gradle
 
 object Plugins {
 
@@ -6,5 +6,6 @@ object Plugins {
 
     val shadow = PluginDefinition("com.github.johnrengelman.shadow", "com.github.jengelman.gradle.plugins", "shadow")
     val dokka = PluginDefinition("org.jetbrains.dokka","org.jetbrains.dokka", "dokka-gradle-plugin")
+    val axion = PluginDefinition("pl.allegro.tech.build.axion-release","pl.allegro.tech.build", "axion-release-plugin")
 
 }

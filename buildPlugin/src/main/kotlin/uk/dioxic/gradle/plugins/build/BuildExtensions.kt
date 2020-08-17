@@ -1,12 +1,10 @@
-package uk.dioxic.build
+package uk.dioxic.gradle.plugins.build
 
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.*
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
@@ -15,8 +13,11 @@ import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.*
 import org.gradle.plugins.signing.SigningExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import uk.dioxic.gradle.Dependencies
+import uk.dioxic.gradle.Plugins
 
 typealias Deps = Dependencies
 
@@ -28,6 +29,27 @@ enum class LoggingApi {
     LOG4J2,
     SLF4J
 }
+
+val Project.java: JavaPluginExtension
+    get() = extensions.getByName("java") as JavaPluginExtension
+
+val Project.sourceSets: SourceSetContainer
+    get() = extensions.getByName("sourceSets") as SourceSetContainer
+
+val Project.publishing: PublishingExtension
+    get() = extensions.getByName("publishing") as PublishingExtension
+
+val Project.signing: SigningExtension
+    get() = extensions.getByName("signing") as SigningExtension
+
+internal fun Project.java(configure: Action<JavaPluginExtension>) =
+        configure.execute(java)
+
+internal fun Project.publishing(configure: Action<PublishingExtension>) =
+        configure.execute(publishing)
+
+internal fun Project.signing(configure: Action<SigningExtension>) =
+        configure.execute(signing)
 
 internal fun Project.configureLogging(apiOnly: Boolean = false, implementation: LoggingImpl = LoggingImpl.LOG4J2) {
     println("configuring Logging")
@@ -57,31 +79,8 @@ internal fun Project.configureKotlin() {
     }
 }
 
-val Project.java: JavaPluginExtension
-    get() = extensions.getByName("java") as JavaPluginExtension
-
-val Project.sourceSets: SourceSetContainer
-    get() = extensions.getByName("sourceSets") as SourceSetContainer
-
-val Project.publishing: PublishingExtension
-    get() = extensions.getByName("publishing") as PublishingExtension
-
-val Project.signing: SigningExtension
-    get() = extensions.getByName("signing") as SigningExtension
-
-internal fun Project.java(configure: Action<JavaPluginExtension>) =
-        configure.execute(extensions.getByName("java") as JavaPluginExtension)
-
-internal fun Project.publishing(configure: Action<PublishingExtension>) =
-        configure.execute(extensions.getByName("publishing") as PublishingExtension)
-
-internal fun Project.signing(configure: Action<SigningExtension>) =
-        configure.execute(extensions.getByName("signing") as SigningExtension)
-
 internal fun Project.configureJava() {
     println("configuring Java")
-
-//    val java = extensions.getByName("java") as JavaPluginExtension
 
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -96,8 +95,6 @@ internal fun Project.configureJava() {
 internal fun Project.configureJavaPackaging(moduleName: String) {
     println("configuring Java Packaging")
 
-//    val sourceSets = extensions.getByName("sourceSets") as SourceSetContainer
-
     // Reusable license copySpec
     val licenseSpec = copySpec {
         from("${project.rootDir}/LICENSE")
@@ -106,18 +103,21 @@ internal fun Project.configureJavaPackaging(moduleName: String) {
     // Set up tasks that build source and javadoc jars.
     tasks.register<Jar>("sourcesJar") {
 //        metaInf.with(licenseSpec)
+        duplicatesStrategy = DuplicatesStrategy.FAIL
         from(sourceSets["main"].allJava)
         archiveClassifier.set("sources")
     }
 
     tasks.register<Jar>("javadocJar") {
 //        metaInf.with(licenseSpec)
+        duplicatesStrategy = DuplicatesStrategy.FAIL
         from(tasks.withType(Javadoc::class))
         archiveClassifier.set("javadoc")
     }
 
     tasks.withType<Jar> {
         metaInf.with(licenseSpec)
+        duplicatesStrategy = DuplicatesStrategy.FAIL
         inputs.property("moduleName", moduleName)
         manifest {
             attributes["Automatic-Module-Name"] = moduleName
@@ -166,15 +166,9 @@ internal fun Project.configureSonatypePublishing(displayName: String, isPlatform
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
 
-//    val publishing = extensions.getByName("publishing") as PublishingExtension
-//    val signing = extensions.getByName("signing") as SigningExtension
-
     // Load the Sonatype user/password for use in publishing tasks.
-//    val sonatypeUser: String? by project
-//    val sonatypePassword: String? by project
-
-    val sonatypeUser: String? = null
-    val sonatypePassword: String? = null
+    val sonatypeUser: String? by project
+    val sonatypePassword: String? by project
 
     publishing {
         repositories {

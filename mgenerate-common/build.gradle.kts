@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-    id("uk.dioxic.build") version "1.0"
+    id("uk.dioxic.build")
 }
 
 description = "Common code for mgenerate4j"

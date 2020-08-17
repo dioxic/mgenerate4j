@@ -1,4 +1,4 @@
-package uk.dioxic.build
+package uk.dioxic.gradle
 
 object Versions {
     const val kotlin = "1.4.0-rc"
