@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.0.6] - 2020-08-17Z
 ### Added
 - mkdoc documentation on [gh-pages](https://dioxic.github.io/mgenerate4j/)
 - CLI module
@@ -14,5 +16,6 @@
 
 ## [0.0.5] - 2019-10-04
 
-[Unreleased]: https://github.com/dioxic/mgenerate4j/compare/v0.0.5...HEAD
+[Unreleased]: https://github.com/dioxic/dioxic/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/dioxic/dioxic/releases/tag/v0.0.6
 [0.0.5]:      https://github.com/dioxic/mgenerate4j/releases/tag/v0.0.5
