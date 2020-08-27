@@ -7,12 +7,11 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import uk.dioxic.mgenerate.cli.internal.RingBuffer
 import uk.dioxic.mgenerate.cli.metric.ResultMetric
+import uk.dioxic.mgenerate.cli.metric.Summary
+import uk.dioxic.mgenerate.cli.metric.SummaryFormat
 import uk.dioxic.mgenerate.cli.metric.summarise
-import java.text.DateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
-import java.time.format.FormatStyle
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.Duration
@@ -244,15 +243,14 @@ fun Flow<ResultMetric>.monitor(totalExecutions: Long,
                                loggingInterval: Duration = 1.seconds,
                                headerPrintInterval: Int = 10,
                                metricBufferSize: Int = 50000,
+                               summaryFormat: SummaryFormat = SummaryFormat.SPACED,
                                hideZeroAndEmpty: Boolean = true): Flow<String> = flow {
     val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
     var lineCounter: Long = 0
     var executionCounter: Long = 0
 
-
-
-    onEach { executionCounter += it.batchSize }
-            .chunkedTimeout(loggingInterval, metricBufferSize) { it.summarise() }
+    onEach { executionCounter += it.operationCount }
+            .chunkedTimeout(loggingInterval, metricBufferSize) { it.summarise(hideZeroAndEmpty) }
             .map {
                 it.add(
                         prefix = listOf("time" to dtf.format(LocalDateTime.now())),
@@ -261,8 +259,9 @@ fun Flow<ResultMetric>.monitor(totalExecutions: Long,
             }
             .collect {
                 if (lineCounter++ % headerPrintInterval == 0L) {
-                    emit(it.headerString(hideZeroAndEmpty))
+                    emit(it.headerString(summaryFormat))
+                    emit(it.linebreakString(summaryFormat))
                 }
-                emit(it.valueString(hideZeroAndEmpty))
+                emit(it.valueString(summaryFormat))
             }
 }
