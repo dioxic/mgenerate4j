@@ -12,9 +12,9 @@ import uk.dioxic.mgenerate.core.resolver.DocumentKeyResolver;
 
 public class TemplateCodec implements Codec<Template> {
 
-    private static ThreadLocal<Boolean> stateCachingRequired = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private static final ThreadLocal<Boolean> stateCachingRequired = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
-    private DocumentCodec documentCodec;
+    private final DocumentCodec documentCodec;
 
     /**
      * Construct a new instance with a default {@code CodecRegistry}.

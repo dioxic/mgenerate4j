@@ -6,13 +6,11 @@ import org.bson.Transformer;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.conversions.Bson;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.TemplateStateCache;
 
 import java.util.Map;
 
-import static java.util.Arrays.asList;
 import static org.bson.codecs.configuration.CodecRegistries.*;
 
 public class MgenDocumentCodec extends DocumentCodec {
@@ -92,7 +90,7 @@ public class MgenDocumentCodec extends DocumentCodec {
     }
 
     private Object resolve(Object o) {
-        return (o instanceof Resolvable) ? TemplateStateCache.get((Resolvable) o) : o;
+        return (o instanceof Resolvable) ? TemplateStateCache.get((Resolvable<?>) o) : o;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -119,11 +117,16 @@ public class MgenDocumentCodec extends DocumentCodec {
             if (skipField(encoderContext, entry.getKey())) {
                 continue;
             }
-            Object value = resolve(entry.getValue());
-            if (value != null) {
-                writer.writeName(entry.getKey());
-                writeValue(writer, encoderContext, value);
+            Object value = entry.getValue();
+            if (value instanceof Resolvable<?>) {
+                value = TemplateStateCache.get((Resolvable<?>) entry.getValue());
+                if (value == null) {
+                    continue;
+                }
             }
+
+            writer.writeName(entry.getKey());
+            writeValue(writer, encoderContext, value);
         }
         writer.writeEndDocument();
     }

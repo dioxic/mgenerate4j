@@ -16,7 +16,7 @@ public interface Resolvable<T> {
 
     static Object recursiveResolveObject(Object o) {
         if (o instanceof Resolvable) {
-            Resolvable r = (Resolvable) o;
+            Resolvable<?> r = (Resolvable<?>) o;
             o = r.resolve();
         }
 

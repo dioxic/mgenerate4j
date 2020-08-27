@@ -4,17 +4,14 @@ import org.bson.*;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.Encoder;
 import org.bson.codecs.EncoderContext;
-import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.conversions.Bson;
 import org.bson.io.BasicOutputBuffer;
 import org.bson.json.JsonReader;
 import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
 import uk.dioxic.mgenerate.core.codec.TemplateCodec;
-import uk.dioxic.mgenerate.core.codec.TemplateCodecProvider;
 import uk.dioxic.mgenerate.core.util.DocumentUtil;
 
 import java.io.IOException;
@@ -29,14 +26,14 @@ import java.util.Map;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromCodecs;
 
-public class Template {
+public class Template implements Bson {
 
     private static final JsonWriterSettings DEFAULT_JWS = JsonWriterSettings.builder().build();
     private final TemplateCodec templateCodec;
     private final Document document;
     private final Map<String, Object> dotMap;
-    private final Map<Resolvable, String> resolverCoordinateMap;
-    private boolean stateCachingRequired;
+    private final Map<Resolvable<?>, String> resolverCoordinateMap;
+    private final boolean stateCachingRequired;
 
     /**
      * Parses the input template file into a {@link Template}
@@ -87,7 +84,7 @@ public class Template {
         this.stateCachingRequired = stateCachingRequired;
         dotMap.forEach((k, v) -> {
             if (v instanceof Resolvable) {
-                resolverCoordinateMap.put((Resolvable) v, k);
+                resolverCoordinateMap.put((Resolvable<?>) v, k);
             }
         });
     }
@@ -100,7 +97,7 @@ public class Template {
         return dotMap.containsKey(coordinates);
     }
 
-    String getCoordinates(Resolvable resolvable) {
+    String getCoordinates(Resolvable<?> resolvable) {
         return resolverCoordinateMap.get(resolvable);
     }
 
@@ -132,7 +129,7 @@ public class Template {
     }
 
     public <C> BsonDocument toBsonDocument(final Class<C> documentClass, final CodecRegistry codecRegistry) {
-        return new BsonDocumentWrapper<Template>(this, codecRegistry.get(Template.class));
+        return new BsonDocumentWrapper<>(this, codecRegistry.get(Template.class));
     }
 
     public BsonDocument toBsonDocument() {

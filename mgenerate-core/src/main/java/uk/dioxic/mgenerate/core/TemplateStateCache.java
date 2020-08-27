@@ -42,7 +42,7 @@ public class TemplateStateCache {
 
     class DocumentState implements State {
         private Template template;
-        private Map<String, Object> valueCache = new HashMap<>();
+        private final Map<String, Object> valueCache = new HashMap<>();
 
         void setTemplate(Template template) {
             logger.trace("setting template for document state {}", this.hashCode());

@@ -20,7 +20,7 @@ public class OperatorFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(OperatorFactory.class);
 
-    private static final Map<String, Class<ResolvableBuilder>> builderMap = new HashMap<>();
+    private static final Map<String, Class<ResolvableBuilder<?>>> builderMap = new HashMap<>();
 
     static {
         addBuilders("uk.dioxic.mgenerate.core.operator");
@@ -31,11 +31,11 @@ public class OperatorFactory {
         Reflections reflections = new Reflections(packageName);
         reflections.getTypesAnnotatedWith(OperatorBuilder.class).stream()
                 .filter(ResolvableBuilder.class::isAssignableFrom)
-                .map(o -> (Class<ResolvableBuilder>) o)
+                .map(o -> (Class<ResolvableBuilder<?>>) o)
                 .forEach(OperatorFactory::addBuilder);
     }
 
-    public static void addBuilder(Class<ResolvableBuilder> builderClass) {
+    public static void addBuilder(Class<ResolvableBuilder<?>> builderClass) {
         OperatorBuilder annotation = builderClass.getAnnotation(OperatorBuilder.class);
 
         notNull("operation builder class annoation", annotation);
@@ -45,7 +45,7 @@ public class OperatorFactory {
         }
     }
 
-    public static void addBuilder(String key, Class<ResolvableBuilder> builderClass) {
+    public static void addBuilder(String key, Class<ResolvableBuilder<?>> builderClass) {
         logger.trace("adding [{}] to operator registry", key.toLowerCase());
         builderMap.put(key.toLowerCase(), builderClass);
     }
@@ -63,10 +63,10 @@ public class OperatorFactory {
         return key.substring(1).toLowerCase();
     }
 
-    public static Resolvable create(String operatorKey) {
+    public static Resolvable<?> create(String operatorKey) {
         try {
             if (canHandle(operatorKey)) {
-                Class<ResolvableBuilder> builderClass = builderMap.get(getOperatorKey(operatorKey));
+                Class<ResolvableBuilder<?>> builderClass = builderMap.get(getOperatorKey(operatorKey));
                 return builderClass.getConstructor(TransformerRegistry.class).newInstance(ReflectiveTransformerRegistry.getInstance()).build();
             }
             return null;
@@ -76,11 +76,11 @@ public class OperatorFactory {
         }
     }
 
-    public static Resolvable create(String operatorKey, Object object) {
+    public static Resolvable<?> create(String operatorKey, Object object) {
         notNull("document", object);
         notNull("operatorKey", operatorKey);
 
-        ResolvableBuilder builder = createBuilder(operatorKey);
+        ResolvableBuilder<?> builder = createBuilder(operatorKey);
 
         if (object instanceof Document) {
             return builder.document((Document) object).build();
@@ -88,10 +88,10 @@ public class OperatorFactory {
         return builder.singleValue(object).build();
     }
 
-    private static ResolvableBuilder createBuilder(String operatorKey) {
+    private static ResolvableBuilder<?> createBuilder(String operatorKey) {
         try {
             if (canHandle(operatorKey)) {
-                Class<ResolvableBuilder> builderClass = builderMap.get(getOperatorKey(operatorKey));
+                Class<ResolvableBuilder<?>> builderClass = builderMap.get(getOperatorKey(operatorKey));
                 return builderClass.getConstructor(TransformerRegistry.class).newInstance(ReflectiveTransformerRegistry.getInstance());
             }
             throw new TransformerException("no builder found for " + operatorKey);

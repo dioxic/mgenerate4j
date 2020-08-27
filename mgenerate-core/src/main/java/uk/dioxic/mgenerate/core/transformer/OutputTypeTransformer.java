@@ -3,7 +3,6 @@ package uk.dioxic.mgenerate.core.transformer;
 import uk.dioxic.mgenerate.common.Transformer;
 import uk.dioxic.mgenerate.common.annotation.ValueTransformer;
 import uk.dioxic.mgenerate.common.exception.TransformerException;
-import uk.dioxic.mgenerate.core.operator.type.AgeType;
 import uk.dioxic.mgenerate.core.operator.type.OutputType;
 
 @ValueTransformer(OutputType.class)
