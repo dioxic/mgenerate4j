@@ -1,4 +1,4 @@
-package uk.dioxic.mgenerate.cli.flow.operators
+package uk.dioxic.mgenerate.cli.flow
 
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi

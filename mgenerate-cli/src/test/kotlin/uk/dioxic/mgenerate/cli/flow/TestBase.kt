@@ -4,7 +4,7 @@
 
 @file:Suppress("unused")
 
-package uk.dioxic.mgenerate.cli.flow.operators
+package uk.dioxic.mgenerate.cli.flow
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
