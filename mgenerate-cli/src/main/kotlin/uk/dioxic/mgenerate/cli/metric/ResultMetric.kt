@@ -21,6 +21,17 @@ data class ResultMetric(
         val modifiedCount: Long = 0,
         val executionTime: LocalDateTime = LocalDateTime.now()) {
 
+    fun with(duration: Duration, operationCount: Int) = ResultMetric(
+            duration = duration,
+            operationCount = operationCount,
+            batchCount = batchCount,
+            insertedCount = insertedCount,
+            upsertCount = upsertCount,
+            deletedCount = deletedCount,
+            matchedCount = matchedCount,
+            modifiedCount = modifiedCount,
+            executionTime = executionTime)
+
     operator fun plus(other: ResultMetric): ResultMetric {
         return ResultMetric(
                 duration = duration + other.duration,

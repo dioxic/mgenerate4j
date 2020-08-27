@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import uk.dioxic.mgenerate.cli.extension.*
+import uk.dioxic.mgenerate.cli.metric.SummaryFormat
 import java.util.concurrent.Callable
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -35,6 +36,7 @@ class Runner<T>(
             }
             .monitor(
                     totalExecutions = count,
+                    summaryFormat = SummaryFormat.SPACED,
                     loggingInterval = monitorLoggingInterval,
                     hideZeroAndEmpty = hideZeroAndEmpty
             )

@@ -62,8 +62,7 @@ fun <T> Iterator<T>.writeToOutputStream(outputStream: OutputStream, outputType: 
 @ExperimentalTime
 fun measureTimedResultMetric(batchSize: Int, block: () -> Any): ResultMetric {
     val timedValue = measureTimedValue { block() }
-    val timedResults = ResultMetric(duration = timedValue.duration, operationCount = batchSize)
-    return ResultMetric.create(timedValue.value) + timedResults
+    return ResultMetric.create(timedValue.value).with(timedValue.duration, batchSize)
 }
 
 @ExperimentalTime
