@@ -39,8 +39,8 @@ public class DocumentUtil {
         }
 
         if (input instanceof Iterable) {
-            Iterable<?> list = (Iterable) input;
-            List<?> resList = (List) result;
+            Iterable<?> list = (Iterable<?>) input;
+            List<?> resList = (List<?>) result;
             if (resList == null) {
                 resList = new ArrayList<>();
             }
@@ -52,7 +52,7 @@ public class DocumentUtil {
             return coordinateLookup(childCoordinates, doc.get(root), result, hasList);
         } else if (root == null) {
             if (hasList) {
-                List<Object> resList = (List) result;
+                List<Object> resList = (List<Object>) result;
                 if (input != null) {
                     resList.add(input);
                 }
@@ -90,15 +90,13 @@ public class DocumentUtil {
         }
 
         if (hydrate && o instanceof Resolvable) {
-            Resolvable r = (Resolvable) o;
+            Resolvable<?> r = (Resolvable<?>) o;
             o = r.resolve();
         }
 
         if (o instanceof Map) {
             Document doc = new Document();
-            ((Map<String, Object>) o).forEach((k, v) -> {
-                doc.put(k, flatMap(flatMap, key + "." + k, hydrate, v));
-            });
+            ((Map<String, Object>) o).forEach((k, v) -> doc.put(k, flatMap(flatMap, key + "." + k, hydrate, v)));
             flatMap.put(key, doc);
             return doc;
         } else if (o instanceof Iterable) {
@@ -127,16 +125,10 @@ public class DocumentUtil {
             ((Map<String, Object>) o).forEach((k, v) -> flatMap(flatMap, k, false, v));
         } else if (o instanceof Iterable) {
             int counter = 0;
-            for (Object item : (Iterable) o) {
+            for (Object item : (Iterable<?>) o) {
                 flatMap(flatMap, Integer.toString(counter++), false, item);
             }
         }
-    }
-
-    @Deprecated
-    private static String getNewKey(String key, Map.Entry<String, Object> entry) {
-        String newKey = key == null ? entry.getKey() : key + "." + entry.getKey();
-        return newKey.replace('-', '_');
     }
 
 }
