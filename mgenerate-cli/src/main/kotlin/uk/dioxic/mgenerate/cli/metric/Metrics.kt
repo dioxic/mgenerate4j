@@ -45,9 +45,9 @@ fun BulkWriteResult.toMetric() = ResultMetric(
 
 @ExperimentalTime
 fun List<ResultMetric>.summarise(hideZeroAndEmpty: Boolean = true): Summary {
-    val counts = this.reduce { acc, metric -> acc + metric }
-    val startTime = this.minOf { it.executionTime }
-    val endTime = this.maxOf { it.executionTime }
+    val counts = reduce { acc, metric -> acc + metric }
+    val startTime = minOf { it.executionTime }
+    val endTime = maxOf { it.executionTime }
     val elapsedDuration = between(startTime, endTime).toKotlinDuration()
 
     fun latencyPercentile(percentile: Double) = this
