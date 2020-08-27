@@ -25,6 +25,7 @@ object Dependencies {
     const val kotlinCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
     const val kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinxCoroutines}"
     const val kotlinStatistics = "org.nield:kotlin-statistics:${Versions.kotlinStatistics}"
+    const val kotlinSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-core:${Versions.kotlinSerialization}"
     const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
 
     // mongo
