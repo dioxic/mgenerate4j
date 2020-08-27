@@ -25,8 +25,8 @@ class ConnectionOptions : OptionGroup(name = "Connection Options") {
 }
 
 class NamespaceOptions : OptionGroup(name = "Namespace Options") {
-    val database by option("-d", "--database", help = "database to load into").default("test")
-    val collection by option("-c", "--collection", help = "collection to load into").required()
+    val database by option("-d", "--database", help = "database to use").default("test")
+    val collection by option("-c", "--collection", help = "collection to use").required()
 }
 
 fun MongoClientSettings.Builder.applyAuthOptions(authOptions: AuthOptions?): MongoClientSettings.Builder {

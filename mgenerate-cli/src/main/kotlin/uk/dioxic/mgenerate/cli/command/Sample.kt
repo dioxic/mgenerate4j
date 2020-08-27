@@ -28,9 +28,9 @@ class Sample : CliktCommand(help = "Sample data in MongoDB") {
     private val authOptions by AuthOptions().cooccurring()
     private val connOptions by ConnectionOptions()
     private val namespaceOptions by NamespaceOptions()
-    private val size by option(help = "Sample size").int().default(10)
-    private val outputStream by option("-o", "--output", help = "Output file").outputStream().defaultStdout()
-    private val outputType by option(help = "Output type").switch(
+    private val size by option(help = "sample size").int().default(10)
+    private val outputStream by option("-o", "--output", help = "output file").outputStream().defaultStdout()
+    private val outputType by option(help = "output type").switch(
             "--pretty" to OutputType.PRETTY,
             "--array" to OutputType.ARRAY
     ).default(OutputType.NEWLINE)

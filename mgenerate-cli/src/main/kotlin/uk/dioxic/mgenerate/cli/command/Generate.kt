@@ -21,9 +21,9 @@ class Generate : CliktCommand(help = "Generate data and output to a file or stdo
         context { helpFormatter = CliktHelpFormatter(showDefaultValues = true) }
     }
 
-    private val number by option("-n", "--number", help = "Number of documents to generate").int().default(1)
-    private val outputStream by option("-o", "--output", help = "Output file").outputStream().defaultStdout()
-    private val outputType by option(help = "Output type").switch(
+    private val number by option("-n", "--number", help = "number of documents to generate").int().default(1)
+    private val outputStream by option("-o", "--output", help = "output file").outputStream().defaultStdout()
+    private val outputType by option(help = "output type").switch(
             "--pretty" to OutputType.PRETTY,
             "--array" to OutputType.ARRAY
     ).default(OutputType.NEWLINE)
