@@ -1,23 +1,18 @@
 package uk.dioxic.mgenerate.cli.extension
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.selects.select
 import uk.dioxic.mgenerate.cli.internal.RingBuffer
-import uk.dioxic.mgenerate.cli.metric.ResultMetric
-import uk.dioxic.mgenerate.cli.metric.Summary
-import uk.dioxic.mgenerate.cli.metric.SummaryFormat
-import uk.dioxic.mgenerate.cli.metric.summarise
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.TimeSource
-import kotlin.time.seconds
+import kotlin.time.TimedValue
 
 @Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
@@ -67,8 +62,36 @@ fun <T, R> Flow<T>.chunked(size: Int, transform: suspend (List<T>) -> R): Flow<R
  *
  * @param size the number of elements to take in each list, must be positive and can be greater than the number of elements in this flow.
  */
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 @ExperimentalTime
 fun <T> Flow<T>.chunkedTimeout(timeout: Duration, size: Int): Flow<List<T>> = chunkedTimeout(timeout, size) { it.toList() }
+
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
+@ExperimentalTime
+fun <T> Flow<T>.measureTimeValue(): Flow<TimedValue<T>> {
+    var timeMark = TimeSource.Monotonic.markNow()
+    return flow {
+        collect {
+            emit(TimedValue(it, timeMark.elapsedNow()))
+            timeMark = TimeSource.Monotonic.markNow()
+        }
+    }
+}
+
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
+@ExperimentalTime
+fun <T, R> Flow<T>.measureTimeValue(transform: suspend (TimedValue<T>) -> R): Flow<R> {
+    var timeMark = TimeSource.Monotonic.markNow()
+    return flow {
+        collect {
+            emit(transform(TimedValue(it, timeMark.elapsedNow())))
+            timeMark = TimeSource.Monotonic.markNow()
+        }
+    }
+}
 
 /**
  * Chunks a flow of elements into flow of lists, each not exceeding the given [size] or the timeout [timeout] interval
@@ -83,9 +106,46 @@ fun <T> Flow<T>.chunkedTimeout(timeout: Duration, size: Int): Flow<List<T>> = ch
  * @param size the number of elements to take in each list, must be positive and can be greater than the number of elements in this flow.
  */
 @ExperimentalTime
-fun <T, R> Flow<T>.chunkedTimeout(timeout: Duration, size: Int, transform: suspend (List<T>) -> R): Flow<R> {
-    require(size > 0 && timeout.isPositive()) { "Timeout and size should be greater than 0, but was size: $size, timeout: $timeout" }
-    return windowedTimeout(timeout, size, size, true, transform)
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
+fun <T,R> Flow<T>.chunkedTimeout(timeout: Duration,
+                                 size: Int,
+                                 transform: suspend (List<T>) -> R): Flow<R> {
+    require(timeout.isPositive() && size > 0) {
+        "Duration and size should be positive, but was duration: $timeout, size: $size"
+    }
+
+    return flow {
+        coroutineScope {
+            val events = ArrayList<T>(size)
+            val tickerChannel = ticker(timeout.toLongMilliseconds())
+            val flowChannel = produce { collect { send(it) } }
+
+            try {
+                while (isActive) {
+                    var hasTimedOut = false
+                    select<Unit> {
+                        flowChannel.onReceive {
+                            events.add(it)
+                        }
+                        tickerChannel.onReceive {
+                            hasTimedOut = true
+                        }
+                    }
+
+                    if (events.size == size || hasTimedOut) {
+                        emit(transform(events))
+                        events.clear()
+                    }
+                }
+            } catch (e: ClosedReceiveChannelException) {
+                // drain remaining events
+                if (events.isNotEmpty()) emit(transform(events))
+            } finally {
+                tickerChannel.cancel()
+            }
+        }
+    }
 }
 
 /**
@@ -203,10 +263,9 @@ fun <T, R> Flow<T>.windowedTimeout(timeout: Duration,
             if (toSkip == skipped) buffer.add(value)
             else skipped++
 
-//            println("buffer size: ${buffer.size}")
-//            if (buffer.isFull()) {
             if (buffer.isFull() || ts.elapsedNow() > timeout) {
                 emit(transform(buffer))
+//                TimedValue(transform(buffer), ts.elapsedNow())
                 buffer.removeFirst(min(toDrop, buffer.size))
                 skipped = 0
                 ts = TimeSource.Monotonic.markNow()
@@ -232,36 +291,10 @@ fun <T, R> Flow<T>.mapParallel(
     }.flowOn(dispatcher)
 }
 
-fun <T> flowOf(number: Long, block: () -> T): Flow<T> = flow {
+@ExperimentalTime
+fun <T> flowOf(number: Long, delayDuration: Duration = Duration.ZERO, block: () -> T): Flow<T> = flow {
     for (i in 1..number) {
+        delay(delayDuration)
         emit(block())
     }
-}
-
-@ExperimentalTime
-fun Flow<ResultMetric>.monitor(totalExecutions: Long,
-                               loggingInterval: Duration = 1.seconds,
-                               headerPrintInterval: Int = 10,
-                               metricBufferSize: Int = 50000,
-                               summaryFormat: SummaryFormat = SummaryFormat.SPACED,
-                               hideZeroAndEmpty: Boolean = true): Flow<String> = flow {
-    val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-    var lineCounter: Long = 0
-    var executionCounter: Long = 0
-
-    onEach { executionCounter += it.operationCount }
-            .chunkedTimeout(loggingInterval, metricBufferSize) { it.summarise(hideZeroAndEmpty) }
-            .map {
-                it.add(
-                        prefix = listOf("time" to dtf.format(LocalDateTime.now())),
-                        suffix = listOf("progress" to (executionCounter percentOf totalExecutions))
-                )
-            }
-            .collect {
-                if (lineCounter++ % headerPrintInterval == 0L) {
-                    emit(it.headerString(summaryFormat))
-                    emit(it.linebreakString(summaryFormat))
-                }
-                emit(it.valueString(summaryFormat))
-            }
 }

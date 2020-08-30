@@ -18,6 +18,7 @@ import com.mongodb.client.MongoClients
 import com.mongodb.client.model.InsertManyOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import uk.dioxic.mgenerate.cli.extension.applyTemplateCodecRegistry
 import uk.dioxic.mgenerate.cli.extension.templateOf
 import uk.dioxic.mgenerate.cli.options.*
@@ -35,12 +36,14 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
     private val connOptions by ConnectionOptions()
     private val namespaceOptions by NamespaceOptions()
     private val number by option("-n", "--number", help = "number of documents to load").long().default(1)
+    private val tps by option(help = "target transactions per second").int().default(-1)
     private val batchSize by option("-b", "--batchsize", help = "number of operations to batch together").int().default(100)
     private val parallelism by option(help = "parallelism of write operations").int().default(4)
     private val drop by option(help = "drop collection before load").flag()
     private val ordered by option(help = "enable ordered writes").flag()
     private val template by argument().convert { templateOf(it) }
 
+    @ObsoleteCoroutinesApi
     @FlowPreview
     @ExperimentalTime
     @ExperimentalCoroutinesApi
@@ -64,6 +67,7 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
                 count = number,
                 parallelism = parallelism,
                 batchSize = batchSize,
+                targetTps = tps,
                 producer = { template },
                 consumer = { collection.insertMany(it, insertManyOptions) }
         ).call()

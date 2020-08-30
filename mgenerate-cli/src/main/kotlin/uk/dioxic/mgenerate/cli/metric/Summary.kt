@@ -3,14 +3,14 @@ package uk.dioxic.mgenerate.cli.metric
 import uk.dioxic.mgenerate.cli.extension.alignWith
 import kotlin.time.ExperimentalTime
 
-data class SummaryFormat(val separator: String, val spacing: Int) {
-    companion object {
-        val PIPED = SummaryFormat(" | ", 0)
-        val SPACED = SummaryFormat("", 5)
-    }
-}
-
 class Summary(private val fields: List<Pair<String, Any>>) {
+    data class SummaryFormat(val separator: String, val spacing: Int) {
+        companion object {
+            val PIPED = SummaryFormat(" | ", 0)
+            val SPACED = SummaryFormat("", 5)
+        }
+    }
+
     fun add(prefix: List<Pair<String, Any>>, suffix: List<Pair<String, Any>>) = Summary(
             listOf(prefix, fields, suffix).flatten()
     )

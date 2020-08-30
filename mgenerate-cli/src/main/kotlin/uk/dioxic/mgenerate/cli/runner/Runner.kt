@@ -1,34 +1,36 @@
 package uk.dioxic.mgenerate.cli.runner
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.onEach
 import uk.dioxic.mgenerate.cli.extension.*
-import uk.dioxic.mgenerate.cli.metric.SummaryFormat
+import uk.dioxic.mgenerate.cli.metric.Summary
 import java.util.concurrent.Callable
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
-import kotlin.time.seconds
+import kotlin.math.min
+import kotlin.time.*
 
 @FlowPreview
 @ExperimentalTime
 @ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class Runner<T>(
         count: Long,
         parallelism: Int,
-        batchSize: Int,
+        val batchSize: Int,
+        targetTps: Int = -1,
         monitorLoggingInterval: Duration = 1.seconds,
-        hideZeroAndEmpty: Boolean = true,
+        hideZeroAndEmpty: Boolean = false,
         producer: () -> T,
         consumer: (List<T>) -> Any) : Callable<Duration> {
 
-    val flow = flowOf(count, producer)
+    private val productionDelay = 1000.milliseconds / targetTps
+
+    val flow = flowOf(count, Duration.ZERO, producer)
+//            .onEach { delay(productionDelay.toLongMilliseconds()) }
             .buffer(batchSize * 2)
             .chunked(batchSize)
+            .onEach { delay((productionDelay * it.size).toLongMilliseconds()) }
             .mapParallel(parallelism) {
                 measureTimedResultMetric(it.size) {
                     consumer(it)
@@ -36,7 +38,7 @@ class Runner<T>(
             }
             .monitor(
                     totalExecutions = count,
-                    summaryFormat = SummaryFormat.SPACED,
+                    summaryFormat = Summary.SummaryFormat.SPACED,
                     loggingInterval = monitorLoggingInterval,
                     hideZeroAndEmpty = hideZeroAndEmpty
             )

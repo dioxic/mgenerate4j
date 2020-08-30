@@ -5,6 +5,7 @@ import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.InsertManyResult
 import com.mongodb.client.result.InsertOneResult
 import com.mongodb.client.result.UpdateResult
+import uk.dioxic.mgenerate.cli.extension.toMetric
 import java.time.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -13,7 +14,6 @@ import kotlin.time.ExperimentalTime
 data class ResultMetric(
         val duration: Duration = Duration.ZERO,
         val operationCount: Int = 0,
-        val batchCount: Int = 0,
         val insertedCount: Int = 0,
         val upsertCount: Int = 0,
         val deletedCount: Long = 0,
@@ -24,7 +24,6 @@ data class ResultMetric(
     fun with(duration: Duration, operationCount: Int) = ResultMetric(
             duration = duration,
             operationCount = operationCount,
-            batchCount = batchCount,
             insertedCount = insertedCount,
             upsertCount = upsertCount,
             deletedCount = deletedCount,
@@ -35,7 +34,6 @@ data class ResultMetric(
     operator fun plus(other: ResultMetric): ResultMetric {
         return ResultMetric(
                 duration = duration + other.duration,
-                batchCount = batchCount + other.batchCount,
                 operationCount = operationCount + other.operationCount,
                 insertedCount = insertedCount + other.insertedCount,
                 upsertCount = upsertCount + other.upsertCount,
@@ -45,6 +43,7 @@ data class ResultMetric(
     }
 
     companion object {
+        val ZERO = ResultMetric()
         fun <T> create(value: T) =
                 when (value) {
                     is ResultMetric -> value

@@ -22,13 +22,14 @@ class TransformRunner<T, M>(
         private val transformer: (T) -> M,
         private val consumer: (List<M>) -> Any) : Runnable {
 
+    @ObsoleteCoroutinesApi
     @FlowPreview
     @ExperimentalCoroutinesApi
     override fun run() {
         val duration = measureTime {
             runBlocking(Dispatchers.Default) {
 
-                flowOf(number, producer)
+                flowOf(number, block = producer)
                         .buffer(Channel.BUFFERED)
                         .map { transformer(it) }
                         .chunked(batchSize)
