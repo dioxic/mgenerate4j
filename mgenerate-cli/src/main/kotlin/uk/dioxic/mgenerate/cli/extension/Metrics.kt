@@ -45,40 +45,91 @@ fun BulkWriteResult.toMetric() = ResultMetric(
         upsertCount = upserts.size)
 
 @ExperimentalTime
-fun TimedValue<List<ResultMetric>>.summarise(hideZeroAndEmpty: Boolean = true): Summary =
-        value.summarise(duration, hideZeroAndEmpty)
+typealias TimedResultMetricBatch = TimedValue<List<ResultMetric>>
+
+typealias SummaryFields = List<Pair<String, Any>>
 
 @ExperimentalTime
-fun List<ResultMetric>.summarise(windowDuration: Duration, hideZeroAndEmpty: Boolean = true): Summary {
-    val list = if (this.isNotEmpty()) this else listOf(ResultMetric.ZERO)
+internal fun summarizeDebug(metrics: TimedResultMetricBatch): SummaryFields {
+    val workingDuration = metrics.value.fold(Duration.ZERO) { acc, metric -> acc + metric.duration }
 
-    fun latencyPercentile(percentile: Double) = list
+    return listOf(
+            "working duration" to workingDuration,
+            "window duration" to metrics.duration,
+    )
+}
+
+@ExperimentalTime
+internal fun summarizeLoadFactor(metrics: TimedResultMetricBatch): SummaryFields {
+    val workingDuration = metrics.value.fold(Duration.ZERO) { acc, metric -> acc + metric.duration }
+
+    return listOf(
+            "load factor" to (workingDuration percentOf metrics.duration)
+    )
+}
+
+
+@ExperimentalTime
+internal fun summarizeCounts(metrics: TimedResultMetricBatch): SummaryFields {
+    val accumulator = metrics.value
+            .fold(ResultMetric.ZERO) { acc, metric -> acc + metric }
+
+    return listOf(
+            "inserts" to accumulator.insertedCount,
+            "deletes" to accumulator.deletedCount,
+            "matched" to accumulator.matchedCount,
+            "modified" to accumulator.modifiedCount,
+            "upserts" to accumulator.upsertCount,
+            "operations" to accumulator.operationCount,
+            "bulk ops" to metrics.value.size,
+    )
+}
+
+@ExperimentalTime
+internal fun summarizeRates(metrics: TimedResultMetricBatch): SummaryFields {
+
+    val accumulator = metrics.value
+            .fold(ResultMetric.ZERO) { acc, metric -> acc + metric }
+
+    fun rate(value: Number): Int {
+        val rate = value.toLong() / metrics.duration.inSeconds
+        return if (rate.isNaN() || rate.isInfinite()) 0 else rate.roundToInt()
+    }
+
+    return listOf(
+            "inserts/s" to rate(accumulator.insertedCount),
+            "deletes/s" to rate(accumulator.deletedCount),
+            "matched/s" to rate(accumulator.matchedCount),
+            "modified/s" to rate(accumulator.modifiedCount),
+            "upserts/s" to rate(accumulator.upsertCount),
+            "operations/s" to rate(accumulator.operationCount),
+            "bulk ops/s" to rate(metrics.value.size),
+    )
+}
+
+@ExperimentalTime
+internal fun summarizeLatencies(metrics: TimedResultMetricBatch): SummaryFields {
+
+    val listOrOne = if (metrics.value.isEmpty()) listOf(ResultMetric.ZERO) else metrics.value
+
+    fun latencyPercentile(percentile: Double) = listOrOne
             .map { it.duration }
             .percentile(percentile)
 
-    val counts = list.reduce { acc, metric -> acc + metric }
-
-    fun rate(value: Number): Int {
-        val rate = value.toLong() / windowDuration.inSeconds
-        return if (rate.isNaN() || rate.isInfinite()) -1 else rate.roundToInt()
-    }
-
-    val summaries = listOf(
-            "inserts/s" to rate(counts.insertedCount),
-            "deletes/s" to rate(counts.deletedCount),
-            "matched/s" to rate(counts.matchedCount),
-            "modified/s" to rate(counts.modifiedCount),
-            "upserts/s" to rate(counts.upsertCount),
-            "operations/s" to rate(counts.operationCount),
-            "bulk ops/s" to rate(size),
+    return listOf(
             "latency p50" to latencyPercentile(50.0),
             "latency p95" to latencyPercentile(95.0),
             "latency p99" to latencyPercentile(99.0),
-            "working duration" to counts.duration
-    ).filter { !hideZeroAndEmpty || it.isNotZeroOrEmpty() }
+    )
+}
 
-    return Summary(summaries)
-
+@ExperimentalTime
+internal inline fun Flow<TimedResultMetricBatch>.summarize(vararg summarizers: (TimedResultMetricBatch) -> SummaryFields): Flow<Summary> = flow {
+    collect {
+        emit(Summary(summarizers
+                .map { summarizer -> summarizer(it) }
+                .flatten()))
+    }
 }
 
 @ExperimentalTime
@@ -97,13 +148,16 @@ fun Flow<ResultMetric>.monitor(totalExecutions: Long,
     onEach { executionCounter += it.operationCount }
             .chunkedTimeout(loggingInterval, metricBufferSize)
             .measureTimeValue()
-            .map { it.summarise(hideZeroAndEmpty) }
-            .map {
-                it.add(
-                        prefix = listOf("time" to dtf.format(LocalDateTime.now())),
-                        suffix = listOf("progress" to (executionCounter percentOf totalExecutions))
-                )
-            }
+            .summarize(
+                    { listOf("time" to dtf.format(LocalDateTime.now())) },
+                    ::summarizeRates,
+//                    ::summarizeCounts,
+                    ::summarizeLatencies,
+                    ::summarizeLoadFactor,
+//                    ::summarizeDebug,
+                    { listOf("progress" to (executionCounter percentOf totalExecutions)) },
+            )
+            .map { if (hideZeroAndEmpty) it.filterNonEmpty() else it }
             .collect {
                 if (lineCounter++ % headerPrintInterval == 0L) {
                     emit(it.headerString(summaryFormat))

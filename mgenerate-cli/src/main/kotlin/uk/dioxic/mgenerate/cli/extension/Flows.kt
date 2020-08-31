@@ -9,10 +9,8 @@ import kotlinx.coroutines.selects.select
 import uk.dioxic.mgenerate.cli.internal.RingBuffer
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
+import kotlin.time.*
 import kotlin.time.TimeSource
-import kotlin.time.TimedValue
 
 @Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
@@ -80,19 +78,6 @@ fun <T> Flow<T>.measureTimeValue(): Flow<TimedValue<T>> {
     }
 }
 
-@ExperimentalCoroutinesApi
-@ObsoleteCoroutinesApi
-@ExperimentalTime
-fun <T, R> Flow<T>.measureTimeValue(transform: suspend (TimedValue<T>) -> R): Flow<R> {
-    var timeMark = TimeSource.Monotonic.markNow()
-    return flow {
-        collect {
-            emit(transform(TimedValue(it, timeMark.elapsedNow())))
-            timeMark = TimeSource.Monotonic.markNow()
-        }
-    }
-}
-
 /**
  * Chunks a flow of elements into flow of lists, each not exceeding the given [size] or the timeout [timeout] interval
  * since the last element was received and applies the given [transform] function to an each.
@@ -108,9 +93,9 @@ fun <T, R> Flow<T>.measureTimeValue(transform: suspend (TimedValue<T>) -> R): Fl
 @ExperimentalTime
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
-fun <T,R> Flow<T>.chunkedTimeout(timeout: Duration,
-                                 size: Int,
-                                 transform: suspend (List<T>) -> R): Flow<R> {
+fun <T, R> Flow<T>.chunkedTimeout(timeout: Duration,
+                                  size: Int,
+                                  transform: suspend (List<T>) -> R): Flow<R> {
     require(timeout.isPositive() && size > 0) {
         "Duration and size should be positive, but was duration: $timeout, size: $size"
     }
@@ -265,7 +250,6 @@ fun <T, R> Flow<T>.windowedTimeout(timeout: Duration,
 
             if (buffer.isFull() || ts.elapsedNow() > timeout) {
                 emit(transform(buffer))
-//                TimedValue(transform(buffer), ts.elapsedNow())
                 buffer.removeFirst(min(toDrop, buffer.size))
                 skipped = 0
                 ts = TimeSource.Monotonic.markNow()
@@ -286,15 +270,34 @@ fun <T, R> Flow<T>.mapParallel(
         dispatcher: CoroutineDispatcher = Dispatchers.Default,
         transform: suspend (T) -> R
 ): Flow<R> {
-    return flatMapMerge(parallelism) { value ->
-        flow { emit(transform(value)) }
+    return flatMapMerge(parallelism) {
+        flow { emit(transform(it)) }
     }.flowOn(dispatcher)
 }
 
 @ExperimentalTime
-fun <T> flowOf(number: Long, delayDuration: Duration = Duration.ZERO, block: () -> T): Flow<T> = flow {
+fun <T> flowOf(number: Long, block: () -> T): Flow<T> = flow {
     for (i in 1..number) {
-        delay(delayDuration)
         emit(block())
     }
+}
+
+@FlowPreview
+@ExperimentalTime
+@ExperimentalCoroutinesApi
+fun <T, R> Flow<T>.fanOut(
+        parallelism: Int,
+        batchSize: Int,
+        targetTps: Int = -1,
+        transform: (List<T>) -> R
+): Flow<R> {
+
+    val productionDelay = 1000.milliseconds / targetTps
+
+    return buffer(batchSize * 2)
+            .chunked(batchSize)
+            .onEach { delay((productionDelay * it.size).toLongMilliseconds()) }
+            .mapParallel(parallelism) {
+                transform(it)
+            }
 }

@@ -14,6 +14,7 @@ import uk.dioxic.mgenerate.core.codec.MgenDocumentCodec
 import uk.dioxic.mgenerate.core.codec.TemplateCodec
 import java.io.OutputStream
 import java.util.concurrent.TimeUnit
+import kotlin.math.round
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
@@ -95,6 +96,9 @@ fun Pair<String, Any>.isNotZeroOrEmpty() =
 infix fun Int.percentOf(divisor: Int) = "${((this * 100) / divisor)}%"
 
 infix fun Long.percentOf(divisor: Long) = "${((this * 100) / divisor)}%"
+
+@ExperimentalTime
+infix fun Duration.percentOf(divisor: Duration) = "${round(100 * (this / divisor))}%"
 
 fun alignWith(outputString: String, alignmentString: String, spacing: Int, padChar: Char = ' ') =
         outputString.padEnd(spacing + (alignmentString.length.coerceAtLeast(outputString.length)), padChar)
