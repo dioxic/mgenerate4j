@@ -1,10 +1,10 @@
 package uk.dioxic.mgenerate.core.codec;
 
-import ch.rasc.bsoncodec.time.InstantInt64Codec;
-import ch.rasc.bsoncodec.time.LocalDateTimeDateCodec;
 import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.jsr310.InstantCodec;
+import org.bson.codecs.jsr310.LocalDateTimeCodec;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +27,8 @@ public class ExtendedCodecProvider implements CodecProvider {
     }
 
     private void addCodecs() {
-        addCodec(new LocalDateTimeDateCodec());
-        addCodec(new InstantInt64Codec());
+        addCodec(new LocalDateTimeCodec());
+        addCodec(new InstantCodec());
         addCodec(new PointCodec());
     }
 

@@ -19,7 +19,6 @@ dependencies {
     api(project(":mgenerate-common"))
     implementation(Deps.bson)
     implementation(Deps.faker4j)
-    implementation(Deps.bsoncodec)
     implementation(Deps.commonsCodec)
     implementation(Deps.reflections)
 }
