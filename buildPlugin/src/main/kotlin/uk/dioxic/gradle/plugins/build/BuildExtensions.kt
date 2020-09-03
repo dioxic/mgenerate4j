@@ -155,6 +155,20 @@ internal fun Project.configureTesting() {
     }
 }
 
+internal fun Project.configureSpek() {
+    println("configuring Spek")
+    dependencies {
+        add("testImplementation", Dependencies.spekDsl)
+        add("testRuntimeOnly", Dependencies.spekRunnerJunit5)
+        add("testRuntimeOnly", Dependencies.kotlinReflect)
+    }
+    tasks.withType<Test> {
+        useJUnitPlatform {
+            includeEngines("spek2")
+        }
+    }
+}
+
 internal fun Project.configureDokka() {
 //    println("configuring Dokka")
 //    apply(plugin = Plugins.dokka.pluginId)
