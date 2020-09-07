@@ -1,6 +1,9 @@
 package uk.dioxic.mgenerate.cli.extension
 
 import com.mongodb.MongoClientSettings
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.CompositeEncoder
+import kotlinx.serialization.encoding.Encoder
 import org.apache.commons.math3.stat.StatUtils
 import org.bson.codecs.Codec
 import org.bson.codecs.EncoderContext
@@ -12,7 +15,7 @@ import uk.dioxic.mgenerate.cli.metric.ResultMetric
 import uk.dioxic.mgenerate.core.Template
 import uk.dioxic.mgenerate.core.codec.MgenDocumentCodec
 import uk.dioxic.mgenerate.core.codec.TemplateCodec
-import java.io.OutputStream
+import java.io.Writer
 import java.util.concurrent.TimeUnit
 import kotlin.math.round
 import kotlin.time.Duration
@@ -27,38 +30,41 @@ fun MongoClientSettings.Builder.applyTemplateCodecRegistry(): MongoClientSetting
 fun templateOf(value: String): Template = if (value.startsWith("{")) Template.parse(value) else Template.from(value)
 
 enum class OutputType {
-    PRETTY, ARRAY, NEWLINE
-}
+    PRETTY, ARRAY, NEWLINE;
 
-fun <T> Iterable<T>.writeToOutputStream(outputStream: OutputStream, outputType: OutputType, codec: Codec<T>) =
-        this.iterator().writeToOutputStream(outputStream, outputType, codec)
-
-fun <T> Sequence<T>.writeToOutputStream(outputStream: OutputStream, outputType: OutputType, codec: Codec<T>) =
-        this.iterator().writeToOutputStream(outputStream, outputType, codec)
-
-fun <T> Iterator<T>.writeToOutputStream(outputStream: OutputStream, outputType: OutputType, codec: Codec<T>) {
-    val jws = JsonWriterSettings.builder()
-            .indent(outputType == OutputType.PRETTY)
-            .outputMode(JsonMode.RELAXED)
+    fun jsonWriterSettings(outputMode: JsonMode = JsonMode.RELAXED): JsonWriterSettings = JsonWriterSettings.builder()
+            .indent(this == PRETTY)
+            .outputMode(outputMode)
             .build()
 
-    outputStream.bufferedWriter().use {
-        if (outputType == OutputType.ARRAY) it.append('[')
-
-        var first = true
-
-        for (doc in this) {
-            when {
-                first -> first = false
-                outputType == OutputType.ARRAY -> it.append(",")
-                else -> it.newLine()
-            }
-            codec.encode(JsonWriter(it, jws), doc, EncoderContext.builder().build())
-        }
-
-        if (outputType == OutputType.ARRAY) it.append(']')
-    }
+    fun isArray() = this == ARRAY
 }
+
+fun <T> Writer.writeJson(values: Iterable<T>, codec: Codec<T>, jws: JsonWriterSettings, arrayOutput: Boolean = false) =
+        writeJson(values.iterator(), codec, jws, arrayOutput)
+
+fun <T> Writer.writeJson(values: Sequence<T>, codec: Codec<T>, jws: JsonWriterSettings, arrayOutput: Boolean = false) =
+        writeJson(values.iterator(), codec, jws, arrayOutput)
+
+fun <T> Writer.writeJson(values: Iterator<T>, codec: Codec<T>, jws: JsonWriterSettings, arrayOutput: Boolean = false) {
+    if (arrayOutput) append('[')
+
+    var first = true
+
+    for (doc in values) {
+        when {
+            first -> first = false
+            arrayOutput -> append(",")
+            else -> write(System.lineSeparator())
+        }
+        writeJson(doc, jws, codec)
+    }
+
+    if (arrayOutput) append(']')
+}
+
+fun <T> Writer.writeJson(value: T, jws: JsonWriterSettings, codec: Codec<T>) =
+        codec.encode(JsonWriter(this, jws), value, EncoderContext.builder().build())
 
 @ExperimentalTime
 fun measureTimedResultMetric(batchSize: Int, block: () -> Any): ResultMetric {

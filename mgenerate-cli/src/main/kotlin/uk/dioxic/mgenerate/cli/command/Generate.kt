@@ -13,7 +13,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.outputStream
 import uk.dioxic.mgenerate.cli.extension.OutputType
 import uk.dioxic.mgenerate.cli.extension.templateOf
-import uk.dioxic.mgenerate.cli.extension.writeToOutputStream
+import uk.dioxic.mgenerate.cli.extension.writeJson
 import uk.dioxic.mgenerate.core.codec.TemplateCodec
 
 class Generate : CliktCommand(help = "Generate data and output to a file or stdout") {
@@ -31,9 +31,12 @@ class Generate : CliktCommand(help = "Generate data and output to a file or stdo
 
     override fun run() {
 
-        generateSequence { template }
-                .take(number)
-                .writeToOutputStream(outputStream, outputType, TemplateCodec())
+        outputStream.bufferedWriter().use {
+            val seq = generateSequence { template }
+                    .take(number)
+
+            it.writeJson(seq, TemplateCodec(), outputType.jsonWriterSettings(), outputType.isArray())
+        }
 
     }
 }

@@ -17,7 +17,7 @@ import com.mongodb.client.model.Aggregates
 import org.bson.codecs.DocumentCodec
 import uk.dioxic.mgenerate.cli.extension.OutputType
 import uk.dioxic.mgenerate.cli.extension.applyTemplateCodecRegistry
-import uk.dioxic.mgenerate.cli.extension.writeToOutputStream
+import uk.dioxic.mgenerate.cli.extension.writeJson
 import uk.dioxic.mgenerate.cli.options.*
 
 class Sample : CliktCommand(help = "Sample data in MongoDB") {
@@ -47,8 +47,11 @@ class Sample : CliktCommand(help = "Sample data in MongoDB") {
                 .getDatabase(namespaceOptions)
                 .getCollection(namespaceOptions)
 
-        collection.aggregate(listOf(Aggregates.sample(size)))
-                .writeToOutputStream(outputStream, outputType, DocumentCodec())
+        outputStream.bufferedWriter().use {
+            val results = collection.aggregate(listOf(Aggregates.sample(size)))
+
+            it.writeJson(results, DocumentCodec(), outputType.jsonWriterSettings(), outputType.isArray())
+        }
 
     }
 
