@@ -44,6 +44,10 @@ public class ModelUtil {
                 || isSameType(typeMirror, Byte.class);
     }
 
+    public static boolean isWildcard(TypeMirror typeMirror) {
+        return typeMirror.getKind() == TypeKind.WILDCARD;
+    }
+
     public static boolean isArray(TypeMirror type) {
         return type.getKind() == TypeKind.ARRAY;
     }

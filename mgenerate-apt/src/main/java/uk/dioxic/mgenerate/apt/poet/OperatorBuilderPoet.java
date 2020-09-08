@@ -272,7 +272,7 @@ public class OperatorBuilderPoet implements Poet {
             classBuilder.addMethod(MethodSpec.methodBuilder(property.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .returns(ClassName.get(packageName, className))
-                    .addParameter(property.getRootTypeName(), property.getName())
+                    .addParameter(property.getRootTypeName(TypeKind.WILDCARD), property.getName())
                     .addStatement("this.$L = $T.wrap($L)", property.getName(), Wrapper.class, property.getName())
                     .addStatement("return this")
                     .build());

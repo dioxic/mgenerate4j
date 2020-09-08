@@ -10,6 +10,7 @@ import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static uk.dioxic.mgenerate.apt.util.ModelUtil.*;
@@ -17,29 +18,28 @@ import static uk.dioxic.mgenerate.apt.util.ModelUtil.*;
 public abstract class AbstractFieldModel {
 
     private final String name;
-    private TypeMirror type;
-    private List<? extends TypeMirror> typeParameters;
+    private final TypeMirror type;
+    private final List<? extends TypeMirror> typeParameters;
     private String methodName;
     private boolean fromSuperClass;
 
     public AbstractFieldModel(String name, TypeMirror type) {
 
         if (type.getKind() == TypeKind.EXECUTABLE) {
-            List<? extends TypeMirror> parms = ((ExecutableType)type).getParameterTypes();
+            List<? extends TypeMirror> parms = ((ExecutableType) type).getParameterTypes();
             if (parms.size() != 1) {
                 throw new IllegalStateException("Operator property methods must have a single argment only");
             }
             methodName = name;
             fromSuperClass = true;
             name = removeSetPrefix(name);
-            type = ((ExecutableType)type).getParameterTypes().get(0);
+            type = ((ExecutableType) type).getParameterTypes().get(0);
         }
 
         if (type.getKind() == TypeKind.DECLARED) {
             this.type = type;
             typeParameters = ((DeclaredType) type).getTypeArguments();
-        }
-        else {
+        } else {
             throw new IllegalStateException("Cannot process " + name);
         }
 
@@ -85,15 +85,14 @@ public abstract class AbstractFieldModel {
     public TypeName getResolvableTypeName() {
         if (isResolvableType()) {
             return ParameterizedTypeName.get(ClassName.get(Resolvable.class), getRootTypeName());
-        }
-        else {
+        } else {
             return ParameterizedTypeName.get(ClassName.get(Resolvable.class), TypeName.get(type));
         }
     }
 
-    public TypeName getRootTypeName() {
+    public TypeName getRootTypeName(TypeKind... ignoreKinds) {
         if (isResolvableType()) {
-            if (!typeParameters.isEmpty()) {
+            if (!typeParameters.isEmpty() && !Arrays.asList(ignoreKinds).contains(typeParameters.get(0).getKind())) {
                 return ClassName.get(typeParameters.get(0));
             }
             return ClassName.get(Object.class);
