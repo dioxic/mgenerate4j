@@ -119,7 +119,7 @@ public class MgenDocumentCodec extends DocumentCodec {
             }
             Object value = entry.getValue();
             if (value instanceof Resolvable<?>) {
-                value = TemplateStateCache.get((Resolvable<?>) entry.getValue());
+                value = TemplateStateCache.get((Resolvable<?>) value);
                 if (value == null) {
                     continue;
                 }
