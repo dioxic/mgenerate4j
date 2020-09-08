@@ -11,15 +11,15 @@ import java.nio.file.Paths;
 
 public class ShardKeyTest {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    private static JsonWriterSettings jws = JsonWriterSettings.builder()
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final JsonWriterSettings jws = JsonWriterSettings.builder()
             .indent(true)
             .build();
 
     @Test
     void shardKeyTest() throws URISyntaxException, IOException {
 
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("shardkey-test.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("templates/shardkey-test.json").toURI()));
 
         String outJson = template.toJson(jws);
 

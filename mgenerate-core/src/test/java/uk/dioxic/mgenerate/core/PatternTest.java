@@ -24,7 +24,7 @@ class PatternTest {
 
     @Test
     void resolve_StaticTemplateValues() {
-        Resolvable lookup = new PatternResolver("${nested.a} fish #{name.name}", FakerUtil.instance());
+        Resolvable<?> lookup = new PatternResolver("${nested.a} fish #{name.name}", FakerUtil.instance());
         Document nested = new Document("a", 123);
         Document document = new Document();
         document.put("lkp", lookup);
@@ -41,7 +41,7 @@ class PatternTest {
 
     @Test
     void resolve_DotNotation() throws URISyntaxException, IOException {
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("templates/dot-notation-test.json").toURI()));
 
         System.out.println(template.toJson());
 

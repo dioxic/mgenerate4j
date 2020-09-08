@@ -1,0 +1,67 @@
+{
+  "_id": "$objectid",
+  "Numbers": {
+    "$array": {
+      "of": {
+        "$number": {
+          "min": 1,
+          "max": 300
+        }
+      },
+      "number": {
+        "$number": {
+          "min": 0,
+          "max": 3
+        }
+      }
+    }
+  },
+  "Phone": "$phone",
+  "Date": "$date",
+  "Age": {
+    "$age": {
+      "type": "child"
+    }
+  },
+  "Birthday": {
+    "$birthday": {
+      "type": "child"
+    }
+  },
+  "Madness": {
+    "$choose": {
+      "from": {
+        "$array": {
+          "of": "$city",
+          "number": 6
+        }
+      }
+    }
+  },
+  "ContactHistory": {
+    "Contact": {
+      "$array": {
+        "of": {
+          "$choose": {
+            "from": [
+              "$city",
+              {
+                "type": "phone",
+                "detail": "$number"
+              },
+              {
+                "type": "email",
+                "detail": "$email"
+              },
+              {
+                "type": "post",
+                "detail": "$postal"
+              }
+            ]
+          }
+        },
+        "number": 2
+      }
+    }
+  }
+}

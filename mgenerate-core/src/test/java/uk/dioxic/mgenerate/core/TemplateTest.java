@@ -1,6 +1,5 @@
 package uk.dioxic.mgenerate.core;
 
-import org.bson.RawBsonDocument;
 import org.bson.json.JsonWriterSettings;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ class TemplateTest {
     @Test
     void templateTest() throws URISyntaxException, IOException {
 
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("template.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("templates/template.json").toURI()));
 
         String outJson = template.toJson(jws);
         logger.info(outJson);

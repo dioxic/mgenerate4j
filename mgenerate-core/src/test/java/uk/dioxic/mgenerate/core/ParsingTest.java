@@ -31,7 +31,7 @@ class ParsingTest {
 
     @Test
     void dotNotationTest() throws URISyntaxException, IOException {
-        Template template = Template.from(getResourcePath("dot-notation-test.json"));
+        Template template = Template.from(getResourcePath("templates/dot-notation-test.json"));
         logger.debug(template.getDocument().toString());
 
         String outJson = template.toJson(jws);
@@ -40,7 +40,7 @@ class ParsingTest {
 
     @Test
     void dotNotation3Test() throws URISyntaxException, IOException {
-        Template template = Template.from(getResourcePath("dot-notation-test3.json"));
+        Template template = Template.from(getResourcePath("templates/dot-notation-test3.json"));
         logger.debug(template.getDocument().toString());
 
         String outJson = template.toJson(jws);
@@ -49,7 +49,7 @@ class ParsingTest {
 
     @Test
     void documentTest() throws URISyntaxException, IOException {
-        Template template = Template.from(getResourcePath("template.json"));
+        Template template = Template.from(getResourcePath("templates/template.json"));
         logger.debug(template.getDocument().toString());
 
         String outJson = template.toJson(jws);
@@ -58,7 +58,7 @@ class ParsingTest {
 
     @Test
     void optionalityTest() throws URISyntaxException, IOException {
-        Template template = Template.from(getResourcePath("optionality-test.json"));
+        Template template = Template.from(getResourcePath("templates/optionality-test.json"));
         logger.debug(template.getDocument().toString());
 
         String outJson = template.toJson(jws);
@@ -70,7 +70,7 @@ class ParsingTest {
     @Test
     //@ExtendWith(TimingExtension.class)
     void performanceTest() throws URISyntaxException, IOException {
-        Template template = Template.from(getResourcePath("pickset-test.json"));
+        Template template = Template.from(getResourcePath("templates/pickset-test.json"));
         List<String> results = Stream.generate(template::toJson)
                 .limit(100)
                 .parallel()

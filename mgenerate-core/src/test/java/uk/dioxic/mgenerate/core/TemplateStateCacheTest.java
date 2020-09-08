@@ -14,14 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TemplateStateCacheTest {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    private static JsonWriterSettings jws = JsonWriterSettings.builder()
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final JsonWriterSettings jws = JsonWriterSettings.builder()
             .indent(true)
             .build();
 
     @Test
     void get_Lookups() throws URISyntaxException, IOException {
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("lookup-test.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("templates/lookup-test.json").toURI()));
 
         String outJson = template.toJson(jws);
         logger.debug(outJson);
@@ -36,7 +36,7 @@ class TemplateStateCacheTest {
     @Test
     @SuppressWarnings("unchecked")
     void get_AggregatedLookups() throws URISyntaxException, IOException {
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("dot-notation-test.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("templates/dot-notation-test.json").toURI()));
 
         String outJson = template.toJson(jws);
         logger.debug(outJson);

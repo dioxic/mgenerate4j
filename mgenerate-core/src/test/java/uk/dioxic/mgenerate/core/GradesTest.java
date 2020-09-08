@@ -19,7 +19,7 @@ public class GradesTest {
     @Test
     void gradesTest() throws URISyntaxException, IOException {
 
-        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("grades.json").toURI()));
+        Template template = Template.from(Paths.get(getClass().getClassLoader().getResource("templates/grades.json").toURI()));
 
         String outJson = template.toJson(jws);
 
