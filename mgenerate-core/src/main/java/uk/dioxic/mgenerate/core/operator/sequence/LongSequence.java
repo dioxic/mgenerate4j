@@ -9,7 +9,7 @@ import uk.dioxic.mgenerate.core.operator.AbstractOperator;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-@Operator({"longSeq", "intSequence"})
+@Operator({"longSeq", "longSequence"})
 public class LongSequence extends AbstractOperator<Long> implements Initializable {
 
     @OperatorProperty(primary = true)
