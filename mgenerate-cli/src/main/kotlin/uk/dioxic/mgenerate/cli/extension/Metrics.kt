@@ -124,7 +124,7 @@ internal fun summarizeLatencies(metrics: TimedResultMetricBatch): SummaryFields 
 }
 
 @ExperimentalTime
-internal inline fun Flow<TimedResultMetricBatch>.summarize(vararg summarizers: (TimedResultMetricBatch) -> SummaryFields): Flow<Summary> = flow {
+internal fun Flow<TimedResultMetricBatch>.summarize(vararg summarizers: (TimedResultMetricBatch) -> SummaryFields): Flow<Summary> = flow {
     collect {
         emit(Summary(summarizers
                 .map { summarizer -> summarizer(it) }
