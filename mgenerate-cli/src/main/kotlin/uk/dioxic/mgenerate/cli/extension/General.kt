@@ -30,10 +30,12 @@ fun MongoClientSettings.Builder.applyTemplateCodecRegistry(): MongoClientSetting
 
 fun templateOf(value: String): Template = if (value.startsWith("{")) Template.parse(value) else Template.from(value)
 
-enum class OutputType {
-    PRETTY, ARRAY, NEWLINE;
+enum class OutputType(private val outputMode: JsonMode) {
+    PRETTY(JsonMode.RELAXED),
+    ARRAY(JsonMode.EXTENDED),
+    NEWLINE(JsonMode.EXTENDED);
 
-    fun jsonWriterSettings(outputMode: JsonMode = JsonMode.RELAXED): JsonWriterSettings = JsonWriterSettings.builder()
+    fun jsonWriterSettings(outputMode: JsonMode = this.outputMode): JsonWriterSettings = JsonWriterSettings.builder()
             .indent(this == PRETTY)
             .outputMode(outputMode)
             .build()
