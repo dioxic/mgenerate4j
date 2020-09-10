@@ -11,9 +11,11 @@ import com.github.ajalt.clikt.parameters.options.switch
 import com.github.ajalt.clikt.parameters.types.defaultStdout
 import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.outputStream
+import com.github.ajalt.clikt.parameters.types.path
 import uk.dioxic.mgenerate.cli.extension.OutputType
 import uk.dioxic.mgenerate.cli.extension.templateOf
 import uk.dioxic.mgenerate.cli.extension.writeJson
+import uk.dioxic.mgenerate.core.VariableCache
 import uk.dioxic.mgenerate.core.codec.TemplateCodec
 
 class Generate : CliktCommand(help = "Generate data and output to a file or stdout") {
@@ -27,9 +29,16 @@ class Generate : CliktCommand(help = "Generate data and output to a file or stdo
             "--pretty" to OutputType.PRETTY,
             "--array" to OutputType.ARRAY
     ).default(OutputType.NEWLINE)
+    private val variables by option("-v", "--variables", help = "input variables file").path(mustExist = true, canBeDir = false)
     private val template by argument().convert { templateOf(it) }
 
     override fun run() {
+
+        if (variables != null) {
+            println("Loading variables file...")
+            VariableCache.loadCache(variables)
+            println("Variables loaded")
+        }
 
         outputStream.bufferedWriter().use {
             val seq = generateSequence { template }

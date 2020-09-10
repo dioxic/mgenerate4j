@@ -39,8 +39,10 @@ public class FakerUtil {
      * @return random number between bounds
      */
     public static int numberBetween(int min, int max) {
+        if (min == max) {
+            return min;
+        }
 	    return random().ints(min, max).findFirst().orElse(0);
-        //return random().nextInt(max - min +1) + min;
     }
 
     /**

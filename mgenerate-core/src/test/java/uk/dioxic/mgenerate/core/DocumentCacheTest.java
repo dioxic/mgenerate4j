@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TemplateStateCacheTest {
+class DocumentCacheTest {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final JsonWriterSettings jws = JsonWriterSettings.builder()
@@ -26,10 +26,10 @@ class TemplateStateCacheTest {
         String outJson = template.toJson(jws);
         logger.debug(outJson);
 
-        TemplateStateCache.setTemplateContext(template);
+        DocumentCache.setTemplateContext(template);
 
-        Object cachedValue = TemplateStateCache.get("c3");
-        Object expected = String.format("%s <%s>", TemplateStateCache.get("b"), TemplateStateCache.get("c.cc.ccc"));
+        Object cachedValue = DocumentCache.get("c3");
+        Object expected = String.format("%s <%s>", DocumentCache.get("b"), DocumentCache.get("c.cc.ccc"));
         assertThat(cachedValue).as("is resolvable").isEqualTo(expected);
     }
 
@@ -41,28 +41,28 @@ class TemplateStateCacheTest {
         String outJson = template.toJson(jws);
         logger.debug(outJson);
 
-        TemplateStateCache.setTemplateContext(template);
+        DocumentCache.setTemplateContext(template);
 
-        Object actual = TemplateStateCache.get("allColours");
+        Object actual = DocumentCache.get("allColours");
         assertThat(actual).isInstanceOf(List.class);
         assertThat((List) actual).hasSize(4);
         assertThat((List) actual).containsAnyOf("blue", "red", "white", "yellow", "orange");
 
-        actual = TemplateStateCache.get("foodAndColours");
+        actual = DocumentCache.get("foodAndColours");
         assertThat(actual).isInstanceOf(List.class);
         assertThat((List) actual).hasSizeGreaterThanOrEqualTo(2);
         assertThat((List) actual).containsAnyOf("blue", "red", "white", "yellow", "orange", "worms", "petals", "slugs", "snails", "duckweed");
 
-        actual = TemplateStateCache.get("distinctFood");
+        actual = DocumentCache.get("distinctFood");
         assertThat(actual).isInstanceOf(List.class);
         assertThat((List) actual).isNotEmpty();
         assertThat((List) actual).containsAnyOf("worms", "petals", "slugs", "snails", "duckweed");
 
-        actual = TemplateStateCache.get("minAge");
+        actual = DocumentCache.get("minAge");
         assertThat(actual).isInstanceOf(Integer.class);
         assertThat((Integer) actual).isBetween(1, 10);
 
-        actual = TemplateStateCache.get("avgAge");
+        actual = DocumentCache.get("avgAge");
         assertThat(actual).isInstanceOf(Double.class);
         assertThat((Double) actual).isBetween(1d, 10d);
     }

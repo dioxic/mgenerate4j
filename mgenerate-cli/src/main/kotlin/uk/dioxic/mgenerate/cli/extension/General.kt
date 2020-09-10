@@ -13,6 +13,7 @@ import org.bson.json.JsonWriter
 import org.bson.json.JsonWriterSettings
 import uk.dioxic.mgenerate.cli.metric.ResultMetric
 import uk.dioxic.mgenerate.core.Template
+import uk.dioxic.mgenerate.core.VariableCache
 import uk.dioxic.mgenerate.core.codec.MgenDocumentCodec
 import uk.dioxic.mgenerate.core.codec.TemplateCodec
 import java.io.Writer
@@ -70,6 +71,13 @@ fun <T> Writer.writeJson(value: T, jws: JsonWriterSettings, codec: Codec<T>) =
 fun measureTimedResultMetric(batchSize: Int, block: () -> Any): ResultMetric {
     val timedValue = measureTimedValue { block() }
     return ResultMetric.create(timedValue.value).with(timedValue.duration, batchSize)
+}
+
+fun <T> lockVariableState(block: () -> T): T {
+    VariableCache.lock()
+    val res = block()
+    VariableCache.unlock()
+    return res
 }
 
 @ExperimentalTime

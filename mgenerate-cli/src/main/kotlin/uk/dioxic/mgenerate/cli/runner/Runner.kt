@@ -5,7 +5,10 @@ import kotlinx.coroutines.flow.collect
 import uk.dioxic.mgenerate.cli.extension.*
 import uk.dioxic.mgenerate.cli.metric.Summary
 import java.util.concurrent.Callable
-import kotlin.time.*
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
+import kotlin.time.seconds
 
 @FlowPreview
 @ExperimentalTime
@@ -25,8 +28,10 @@ class Runner<T>(
 
     val flow = flowOf(count, producer)
             .fanOut(parallelism, batchSize, targetTps) {
-                measureTimedResultMetric(it.size) {
-                    consumer(it)
+                lockVariableState {
+                    measureTimedResultMetric(it.size) {
+                        consumer(it)
+                    }
                 }
             }
             .monitor(

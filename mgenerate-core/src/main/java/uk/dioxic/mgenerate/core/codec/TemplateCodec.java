@@ -6,8 +6,9 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.DocumentCodec;
 import org.bson.codecs.EncoderContext;
+import uk.dioxic.mgenerate.core.DocumentCache;
 import uk.dioxic.mgenerate.core.Template;
-import uk.dioxic.mgenerate.core.TemplateStateCache;
+import uk.dioxic.mgenerate.core.VariableCache;
 import uk.dioxic.mgenerate.core.resolver.DocumentKeyResolver;
 
 public class TemplateCodec implements Codec<Template> {
@@ -41,8 +42,9 @@ public class TemplateCodec implements Codec<Template> {
 
     @Override
     public void encode(BsonWriter writer, Template template, EncoderContext encoderContext) {
-        TemplateStateCache.setTemplateContext(template);
+        DocumentCache.setTemplateContext(template);
         documentCodec.encode(writer, template.getDocument(), encoderContext);
+        VariableCache.next();
     }
 
     @Override

@@ -31,12 +31,12 @@ class PatternTest {
         document.put("nested", nested);
 
         Template template = Template.from(document, true);
-        TemplateStateCache.setTemplateContext(template);
+        DocumentCache.setTemplateContext(template);
 
-        assertThat(TemplateStateCache.get(lookup)).as("string").isInstanceOf(String.class);
-        assertThat(TemplateStateCache.get(lookup).toString()).as("equal").startsWith("123 fish");
+        assertThat(DocumentCache.get(lookup)).as("string").isInstanceOf(String.class);
+        assertThat(DocumentCache.get(lookup).toString()).as("equal").startsWith("123 fish");
 
-        logger.debug(TemplateStateCache.get(lookup).toString());
+        logger.debug(DocumentCache.get(lookup).toString());
     }
 
     @Test

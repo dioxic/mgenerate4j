@@ -7,7 +7,7 @@ import org.bson.UuidRepresentation;
 import org.bson.codecs.*;
 import org.bson.codecs.configuration.CodecRegistry;
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.core.TemplateStateCache;
+import uk.dioxic.mgenerate.core.DocumentCache;
 
 import java.util.Map;
 
@@ -90,7 +90,7 @@ public class MgenDocumentCodec extends DocumentCodec {
     }
 
     private Object resolve(Object o) {
-        return (o instanceof Resolvable) ? TemplateStateCache.get((Resolvable<?>) o) : o;
+        return (o instanceof Resolvable) ? DocumentCache.get((Resolvable<?>) o) : o;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -119,7 +119,7 @@ public class MgenDocumentCodec extends DocumentCodec {
             }
             Object value = entry.getValue();
             if (value instanceof Resolvable<?>) {
-                value = TemplateStateCache.get((Resolvable<?>) value);
+                value = DocumentCache.get((Resolvable<?>) value);
                 if (value == null) {
                     continue;
                 }

@@ -3,51 +3,49 @@ package uk.dioxic.mgenerate.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.dioxic.mgenerate.common.Resolvable;
-import uk.dioxic.mgenerate.common.State;
 import uk.dioxic.mgenerate.common.exception.DocumentNotMappedException;
 import uk.dioxic.mgenerate.core.util.DocumentUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class TemplateStateCache {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+public class DocumentCache {
 
-    private static TemplateStateCache instance = new TemplateStateCache();
-
-    private ThreadLocal<DocumentState> localState = ThreadLocal.withInitial(() -> {
-        DocumentState state = new DocumentState();
-        logger.trace("creating thread local document state {}", state.hashCode());
-        return state;
-    });
-
-    public static TemplateStateCache getInstance() {
-        return instance;
-    }
-
-    private TemplateStateCache() {
+    private DocumentCache() {
     }
 
     public static void setTemplateContext(Template template) {
-        getInstance().localState.get().setTemplate(template);
+        getDocumentState().setTemplate(template);
     }
 
-    public static Object get(Resolvable resolvable) {
-        return getInstance().localState.get().get(resolvable);
+    public static Object get(Resolvable<?> resolvable) {
+        return getDocumentState().get(resolvable);
     }
 
     public static Object get(String coordinates) {
-        return getInstance().localState.get().get(coordinates);
+        return getDocumentState().get(coordinates);
     }
 
-    class DocumentState implements State {
+    private static DocumentState getDocumentState() {
+        ThreadLocalManager.ThreadLocalContext context = ThreadLocalManager.get();
+        DocumentState state = context.getDocumentState();
+        if (state == null) {
+            state = new DocumentState();
+            context.setDocumentState(state);
+        }
+
+        return state;
+    }
+
+    static class DocumentState {
+        private final Logger logger = LoggerFactory.getLogger(this.getClass());
         private Template template;
         private final Map<String, Object> valueCache = new HashMap<>();
 
         void setTemplate(Template template) {
             logger.trace("setting template for document state {}", this.hashCode());
             this.template = template;
-            valueCache.clear();
+            clear();
         }
 
         public void clear() {
@@ -72,11 +70,10 @@ public class TemplateStateCache {
             valueCache.put(coordinates, value);
         }
 
-        public void put(Resolvable resolvable, Object value) {
+        public void put(Resolvable<?> resolvable, Object value) {
             valueCache.put(template.getCoordinates(resolvable), value);
         }
 
-        @Override
         public Object get(String coordinates) throws DocumentNotMappedException {
             logger.trace("GET {}", coordinates);
             Object v = valueCache.get(coordinates);
@@ -104,8 +101,7 @@ public class TemplateStateCache {
             return coordinates.substring(0, lastDotIdx);
         }
 
-        @Override
-        public Object get(Resolvable resolvable) throws DocumentNotMappedException {
+        public Object get(Resolvable<?> resolvable) throws DocumentNotMappedException {
             logger.trace("GET for resolvable {}", resolvable);
             if (template.isStateCachingRequired()) {
                 String coordinates = template.getCoordinates(resolvable);
@@ -114,7 +110,7 @@ public class TemplateStateCache {
                     return get(coordinates);
                 }
             }
-            return resolvable.resolve();
+            return resolvable.resolveFully();
         }
     }
 

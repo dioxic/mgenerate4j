@@ -2,8 +2,10 @@ package uk.dioxic.mgenerate.core.codec;
 
 import org.bson.Document;
 import org.bson.Transformer;
+import uk.dioxic.mgenerate.core.VariableCache;
 import uk.dioxic.mgenerate.core.operator.OperatorFactory;
 import uk.dioxic.mgenerate.core.resolver.PatternResolver;
+import uk.dioxic.mgenerate.core.resolver.VariableResolver;
 import uk.dioxic.mgenerate.core.util.FakerUtil;
 
 import java.util.Map;
@@ -21,14 +23,14 @@ public class OperatorTransformer implements Transformer {
                     return OperatorFactory.create(key, entry.getValue());
                 }
             }
-        }
-        else if (objectToTransform instanceof String) {
+        } else if (objectToTransform instanceof String) {
             String value = (String) objectToTransform;
             if (OperatorFactory.canHandle(value)) {
                 return OperatorFactory.create(value);
-            }
-            else if (PatternResolver.canHandle(value)) {
+            } else if (PatternResolver.canHandle(value)) {
                 return new PatternResolver(value, FakerUtil.instance());
+            } else if (VariableCache.canHandle(value)) {
+                return new VariableResolver(value);
             }
         }
 
