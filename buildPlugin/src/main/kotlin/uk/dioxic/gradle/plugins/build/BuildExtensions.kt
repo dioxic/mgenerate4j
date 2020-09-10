@@ -133,7 +133,7 @@ internal fun Project.fatJar(mainClass: String) {
     apply(plugin = Plugins.shadow.pluginId)
 
     tasks.withType<ShadowJar> {
-        archiveBaseName.set("shadow")
+        //archiveBaseName.set("shadow")
         mergeServiceFiles()
         manifest {
             attributes(mapOf("Main-Class" to mainClass))
