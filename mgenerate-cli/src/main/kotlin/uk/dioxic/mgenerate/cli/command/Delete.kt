@@ -19,6 +19,7 @@ import com.mongodb.client.model.DeleteOneModel
 import com.mongodb.client.model.DeleteOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import uk.dioxic.mgenerate.cli.extension.applyTemplateCodecRegistry
 import uk.dioxic.mgenerate.cli.extension.templateOf
 import uk.dioxic.mgenerate.cli.options.*
@@ -44,6 +45,7 @@ class Delete : CliktCommand(help = "Delete data in MongoDB") {
 
     @FlowPreview
     @ExperimentalTime
+    @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
     override fun run() {
         val client = MongoClients.create(MongoClientSettings.builder()
