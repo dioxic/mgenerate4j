@@ -1,9 +1,6 @@
 package uk.dioxic.mgenerate.cli.extension
 
 import com.mongodb.MongoClientSettings
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Encoder
 import org.apache.commons.math3.stat.StatUtils
 import org.bson.codecs.Codec
 import org.bson.codecs.EncoderContext
