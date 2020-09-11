@@ -15,7 +15,7 @@ public class Array extends AbstractOperator<List<?>> {
     private static final int DEFAULT_NUMBER = 5;
 
     @OperatorProperty(required = true)
-    Resolvable of;
+    Resolvable<?> of;
 
     @OperatorProperty
     Resolvable<Integer> number = Wrapper.wrap(DEFAULT_NUMBER);
