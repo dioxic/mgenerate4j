@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.0.7] - 2020-09-14Z
 ### Added
 - file-based variables can now be referred to in a template
 - probability parameter added to $boolean operator
@@ -27,6 +29,7 @@
 
 ## [0.0.5] - 2019-10-04
 
-[Unreleased]: https://github.com/dioxic/dioxic/compare/v0.0.6...HEAD
+[Unreleased]: https://github.com/dioxic/dioxic/compare/v0.0.7...HEAD
+[0.0.7]: https://github.com/dioxic/dioxic/releases/tag/v0.0.7
 [0.0.6]: https://github.com/dioxic/dioxic/releases/tag/v0.0.6
 [0.0.5]:      https://github.com/dioxic/mgenerate4j/releases/tag/v0.0.5

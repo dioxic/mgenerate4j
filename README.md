@@ -53,14 +53,14 @@ To import as a maven dependency:
 <dependency>
     <groupId>uk.dioxic.mgenerate</groupId>
     <artifactId>mgenerate-core</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
 </dependency>
 ```
 
 To import as a gradle dependency:
 ```groovy
 dependencies {
-    compile 'uk.dioxic.mgenerate:mgenerate-core:0.0.6'
+    compile 'uk.dioxic.mgenerate:mgenerate-core:0.0.7'
 }
 ```
 
