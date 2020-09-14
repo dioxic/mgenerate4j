@@ -1,11 +1,11 @@
 # Quickstart
 
-Assuming git and [Maven](https://maven.apache.org/) is installed:
+Assuming git is installed:
 
 ```bash
 $ git clone https://github.com/dioxic/mgenerate4j.git
-$ mvn clean package
-$ java -jar mgenerate-core/target/mgenerate.jar example-template.json
+$ ./gradlew shadowJar
+$ java -jar mgenerate-cli/build/lib/mgenerate-cli-0.0.6-all.jar template.json
 ```
 
 To import as a maven dependency:

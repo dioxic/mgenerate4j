@@ -3,23 +3,28 @@
 ## Standalone
 
 ```
-Usage: mgenerate [-h] [--debug] [-n=<number>] [-o=<output>] TEMPLATE
-      TEMPLATE            template file path
-      --debug             debug logging
-  -h, --help              display a help message
-  -n, --number=<number>   number of documents to generate (default: 10)
-  -o, --out=<output>      output file path
+Usage: cli [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  -h, --help  Show this message and exit
+
+Commands:
+  generate  Generate data and output to a file or stdout
+  load      Load data directly into MongoDB
+  update    Update data in MongoDB
+  delete    Delete data in MongoDB
+  sample    Sample data in MongoDB
 ```
 
 ```
-java -jar mgenerate.jar template.json
+java -jar mgenerate.jar load template.json
 ```
 
 ## Library
 
 ```java
 MongoClientSettings mcs = MongoClientSettings.builder()
-        .codecRegistry(MgenDocumentCodec.getCodecRegistry())
+        .codecRegistry(CodecRegistries.fromRegistries(CodecRegistries.fromCodecs(new TemplateCodec()), MgenDocumentCodec.getCodecRegistry()))
         .build();
 
 MongoCollection<Template> collection = MongoClients.create(mcs)

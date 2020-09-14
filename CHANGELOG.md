@@ -1,6 +1,17 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- file-based variables can now be referred to in a template
+- probability parameter added to $boolean operator
+- delete and update commands added to CLI
+- sample command added to CLI
+
+### Changed
+- bump to Gradle 6.6.1
+
+### Fixed
+- LongSequence operator alias incorrectly referred to 'intSequence'
 
 ## [0.0.6] - 2020-08-17Z
 ### Added
