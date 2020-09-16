@@ -68,8 +68,13 @@ fun <T> Writer.writeJson(value: T, jws: JsonWriterSettings, codec: Codec<T>) =
 
 @ExperimentalTime
 fun measureTimedResultMetric(batchSize: Int, block: () -> Any): ResultMetric {
-    val timedValue = measureTimedValue { block() }
-    return ResultMetric.create(timedValue.value).with(timedValue.duration, batchSize)
+    val timedValue = measureTimedValue { ResultMetric.create(block()) }
+    val metric = timedValue.value
+
+    metric.duration = timedValue.duration
+    metric.operationCount = batchSize
+
+    return metric
 }
 
 fun <T> lockVariableState(block: () -> T): T {

@@ -23,7 +23,7 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 import uk.dioxic.mgenerate.cli.extension.applyTemplateCodecRegistry
 import uk.dioxic.mgenerate.cli.extension.templateOf
 import uk.dioxic.mgenerate.cli.options.*
-import uk.dioxic.mgenerate.cli.runner.Runner
+import uk.dioxic.mgenerate.cli.runner.BatchRunner
 import uk.dioxic.mgenerate.core.Template
 import kotlin.math.roundToInt
 import kotlin.time.ExperimentalTime
@@ -64,7 +64,7 @@ class Delete : CliktCommand(help = "Delete data in MongoDB") {
         val bulkWriteOptions = BulkWriteOptions().ordered(ordered)
         val deleteOptions = DeleteOptions()
 
-        val duration = Runner(
+        val duration = BatchRunner(
                 count = number,
                 parallelism = parallelism,
                 batchSize = batchSize,

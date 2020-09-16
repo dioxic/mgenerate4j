@@ -9,8 +9,11 @@ import kotlinx.coroutines.selects.select
 import uk.dioxic.mgenerate.cli.internal.RingBuffer
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.time.*
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 import kotlin.time.TimeSource
+import kotlin.time.TimedValue
+import kotlin.time.milliseconds
 
 @Suppress("UNCHECKED_CAST")
 @ExperimentalCoroutinesApi
@@ -287,16 +290,13 @@ fun <T> flowOf(number: Long, block: () -> T): Flow<T> = flow {
 @ExperimentalCoroutinesApi
 fun <T, R> Flow<T>.fanOut(
         parallelism: Int,
-        batchSize: Int,
         targetTps: Int = -1,
-        transform: (List<T>) -> R
+        transform: (T) -> R
 ): Flow<R> {
 
     val productionDelay = 1000.milliseconds / targetTps
 
-    return buffer(batchSize * 2)
-            .chunked(batchSize)
-            .onEach { delay((productionDelay * it.size).toLongMilliseconds()) }
+    return onEach { delay(productionDelay.toLongMilliseconds()) }
             .mapParallel(parallelism) {
                 transform(it)
             }

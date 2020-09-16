@@ -22,7 +22,7 @@ import kotlinx.coroutines.ObsoleteCoroutinesApi
 import uk.dioxic.mgenerate.cli.extension.applyTemplateCodecRegistry
 import uk.dioxic.mgenerate.cli.extension.templateOf
 import uk.dioxic.mgenerate.cli.options.*
-import uk.dioxic.mgenerate.cli.runner.Runner
+import uk.dioxic.mgenerate.cli.runner.BatchRunner
 import uk.dioxic.mgenerate.core.Template
 import uk.dioxic.mgenerate.core.VariableCache
 import kotlin.math.roundToInt
@@ -71,7 +71,7 @@ class Load : CliktCommand(help = "Load data directly into MongoDB") {
 
         val insertManyOptions = InsertManyOptions().ordered(ordered)
 
-        val duration = Runner(
+        val duration = BatchRunner(
                 count = number,
                 parallelism = parallelism,
                 batchSize = batchSize,

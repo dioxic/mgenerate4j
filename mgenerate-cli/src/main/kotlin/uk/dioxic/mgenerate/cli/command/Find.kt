@@ -15,22 +15,21 @@ import com.github.ajalt.clikt.parameters.types.long
 import com.github.ajalt.clikt.parameters.types.path
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClients
-import com.mongodb.client.model.BulkWriteOptions
-import com.mongodb.client.model.UpdateOneModel
-import com.mongodb.client.model.UpdateOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import org.bson.RawBsonDocument
 import uk.dioxic.mgenerate.cli.extension.applyTemplateCodecRegistry
 import uk.dioxic.mgenerate.cli.extension.templateOf
+import uk.dioxic.mgenerate.cli.metric.ResultMetric
 import uk.dioxic.mgenerate.cli.options.*
-import uk.dioxic.mgenerate.cli.runner.BatchRunner
+import uk.dioxic.mgenerate.cli.runner.Runner
 import uk.dioxic.mgenerate.core.Template
 import uk.dioxic.mgenerate.core.VariableCache
 import kotlin.math.roundToInt
 import kotlin.time.ExperimentalTime
 
-class Update : CliktCommand(help = "Update data in MongoDB") {
+class Find : CliktCommand(help = "Find documents in MongoDB") {
     init {
         context { helpFormatter = CliktHelpFormatter(showDefaultValues = true) }
     }
@@ -38,15 +37,12 @@ class Update : CliktCommand(help = "Update data in MongoDB") {
     private val authOptions by AuthOptions().cooccurring()
     private val connOptions by ConnectionOptions()
     private val namespaceOptions by NamespaceOptions()
-    private val number by option("-n", "--number", help = "number of documents to update").long().default(1)
-    private val batchSize by option("-b", "--batchsize", help = "number of operations to batch together").int().default(100)
-    private val parallelism by option(help = "parallelism of write operations").int().default(4)
-    private val drop by option(help = "drop collection before load").flag()
-    private val ordered by option(help = "enable ordered writes").flag()
-    private val upsert by option(help = "enable upsert for updates").flag()
+    private val number by option("-n", "--number", help = "number of documents to load").long().default(1)
+    private val tps by option(help = "target transactions per second").int().default(-1)
+    private val parallelism by option(help = "parallelism of read operations").int().default(4)
     private val variables by option("-v", "--variables", help = "input variables file").path(mustExist = true, canBeDir = false)
-    private val filterTemplate by argument("FILTER").convert { templateOf(it) }
-    private val updateTemplate by argument("UPDATE").convert { templateOf(it) }
+    private val deserialize by option(help = "deserialize the results").flag()
+    private val template by argument().convert { templateOf(it) }
 
     @FlowPreview
     @ExperimentalTime
@@ -70,28 +66,21 @@ class Update : CliktCommand(help = "Update data in MongoDB") {
                 .getDatabase(namespaceOptions)
                 .getCollection(namespaceOptions, Template::class.java)
 
-        if (drop) collection.drop()
-
-        val bulkWriteOptions = BulkWriteOptions().ordered(ordered)
-        val updateOptions = UpdateOptions().upsert(upsert)
-        val batchSizeActual = if (variables != null) 1 else batchSize
-
-        val duration = BatchRunner(
+        val duration = Runner(
                 count = number,
                 parallelism = parallelism,
-                batchSize = batchSizeActual,
-                producer = {
-                    UpdateOneModel<Template>(
-                            filterTemplate,
-                            updateTemplate,
-                            updateOptions
-                    )
-                },
-                consumer = { collection.bulkWrite(it, bulkWriteOptions) }
+                targetTps = tps,
+                producer = { template },
+                consumer = {
+                    if (deserialize) {
+                        collection.find(it, RawBsonDocument::class.java)
+                    } else {
+                        ResultMetric(resultCount = collection.countDocuments(it))
+                    }
+                }
         ).call()
 
-        println("Completed in $duration (${(number / duration.inSeconds).roundToInt()} updates/s)")
-
+        println("Completed in $duration (${(number / duration.inSeconds).roundToInt()} inserts/s)")
     }
 
 }

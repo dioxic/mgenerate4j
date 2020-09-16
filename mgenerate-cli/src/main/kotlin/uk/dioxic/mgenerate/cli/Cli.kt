@@ -9,5 +9,5 @@ class Cli : CliktCommand() {
 }
 
 fun main(args: Array<String>) = Cli()
-        .subcommands(Generate(), Load(), Update(), Delete(), Sample())
+        .subcommands(Generate(), Load(), Update(), Delete(), Find(), Sample())
         .main(args)

@@ -1,6 +1,7 @@
 package uk.dioxic.mgenerate.cli.extension
 
 import com.mongodb.bulk.BulkWriteResult
+import com.mongodb.client.MongoIterable
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.InsertManyResult
 import com.mongodb.client.result.InsertOneResult
@@ -45,6 +46,11 @@ fun BulkWriteResult.toMetric() = ResultMetric(
         upsertCount = upserts.size)
 
 @ExperimentalTime
+fun <T> MongoIterable<T>.toMetric(): ResultMetric {
+    return ResultMetric(resultCount = count().toLong())
+}
+
+@ExperimentalTime
 typealias TimedResultMetricBatch = TimedValue<List<ResultMetric>>
 
 typealias SummaryFields = List<Pair<String, Any>>
@@ -67,7 +73,6 @@ internal fun summarizeLoadFactor(metrics: TimedResultMetricBatch): SummaryFields
             "load factor" to (workingDuration percentOf metrics.duration)
     )
 }
-
 
 @ExperimentalTime
 internal fun summarizeCounts(metrics: TimedResultMetricBatch): SummaryFields {
