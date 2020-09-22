@@ -12,7 +12,7 @@ import uk.dioxic.mgenerate.core.util.FakerUtil;
 @Operator({"bin", "mgenBinary"})
 public class Binary extends AbstractOperator<BsonBinary> {
 
-    @OperatorProperty
+    @OperatorProperty(primary = true)
     Resolvable<Integer> size = Wrapper.wrap(1024);
 
     @OperatorProperty
