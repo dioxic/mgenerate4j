@@ -1,0 +1,657 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Mgenerate: a simple JSON templating engine designed for MongoDB">
+      
+      
+      
+        <meta name="author" content="Dioxic">
+      
+      
+      <link rel="shortcut icon" href="../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.4">
+    
+    
+      
+        <title>Custom Operators - MGenerate</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.15aa0b43.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.75751829.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="mongodb" data-md-color-primary="" data-md-color-accent="">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#custom-operators" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="MGenerate" class="md-header-nav__button md-logo" aria-label="MGenerate">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            MGenerate
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Custom Operators
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/dioxic/mgenerate/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dioxic/mgenerate
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MGenerate" class="md-nav__button md-logo" aria-label="MGenerate">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    MGenerate
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/dioxic/mgenerate/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    dioxic/mgenerate
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href=".." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../quickstart/" class="md-nav__link">
+      Quickstart
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  
+  <li class="md-nav__item md-nav__item--nested">
+    
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+    
+    <label class="md-nav__link" for="nav-3">
+      Template Syntax
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Template Syntax" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Template Syntax
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../operators/" class="md-nav__link">
+      Operators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+
+  <li class="md-nav__item">
+    <a href="../placeholders/" class="md-nav__link">
+      Placeholders
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../operator-reference/" class="md-nav__link">
+      Operator Reference
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../usage/" class="md-nav__link">
+      Usage
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+
+  <li class="md-nav__item">
+    <a href="../changelog/" class="md-nav__link">
+      Change Log
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basics" class="md-nav__link">
+    Basics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aliasing" class="md-nav__link">
+    Aliasing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arguments" class="md-nav__link">
+    Arguments
+  </a>
+  
+    <nav class="md-nav" aria-label="Arguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-arguments" class="md-nav__link">
+    Dynamic Arguments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-values" class="md-nav__link">
+    Default Values
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/dioxic/mgenerate/edit/master/docs/custom-operators.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="custom-operators">Custom Operators<a class="headerlink" href="#custom-operators" title="Permanent link">&para;</a></h1>
+<p>If the out-of-the-box operators don&rsquo;t meet your needs, you can create your own.</p>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
+<p>mgenerate4j uses compile-time annotation processing so you will need to enable this:</p>
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Maven</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+        <span class="nt">&lt;plugin&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;configuration&gt;</span>
+                <span class="nt">&lt;annotationProcessorPaths&gt;</span>
+                    <span class="nt">&lt;path&gt;</span>
+                        <span class="nt">&lt;groupId&gt;</span>uk.dioxic.mgenerate<span class="nt">&lt;/groupId&gt;</span>
+                        <span class="nt">&lt;artifactId&gt;</span>mgenerate-apt<span class="nt">&lt;/artifactId&gt;</span>
+                        <span class="nt">&lt;version&gt;</span>0.0.5<span class="nt">&lt;/version&gt;</span>
+                    <span class="nt">&lt;/path&gt;</span>
+                <span class="nt">&lt;/annotationProcessorPaths&gt;</span>
+            <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Gradle</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">annotationProcessor</span> <span class="s1">&#39;uk.dioxic.mgenerate:mgenerate-apt:0.0.5&#39;</span>
+    <span class="n">compile</span> <span class="s1">&#39;uk.dioxic.mgenerate:mgenerate-core:0.0.5&#39;</span>
+<span class="o">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">Gradle KT</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="n">dependencies</span> <span class="p">{</span>
+    <span class="n">annotationProcessor</span><span class="p">(</span><span class="s">&quot;uk.dioxic.mgenerate:mgenerate-apt:0.0.5&quot;</span><span class="p">)</span>
+    <span class="n">compile</span><span class="p">(</span><span class="s">&quot;uk.dioxic.mgenerate:mgenerate-core:0.0.5&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">&para;</a></h2>
+<p>Creating a new operator is easy, in 3 simple steps:</p>
+<ol>
+<li>Create a new class</li>
+<li>Implement the <code>Resolvable</code> interface or extend the <code>AbstractOperator</code> class</li>
+<li>Annotate with <code>@Operator</code></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nd">@Operator</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="kd">extends</span> <span class="n">AbstractOperator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">resolveInternal</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s">&quot;hello world!&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The annotation processor will automatically create a builder class for your operator at compile-time in the same package.</p>
+<p>You then add the builder to the <code>OperatorFactory</code> by either giving it the builder class or it&rsquo;s package.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="p">{</span>
+        <span class="c1">// add single operator builder</span>
+        <span class="n">OperatorFactory</span><span class="p">.</span><span class="na">addBuilder</span><span class="p">(</span><span class="n">HelloBuilder</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+        <span class="c1">// add all operator builders under this package signature</span>
+        <span class="n">OperatorFactory</span><span class="p">.</span><span class="na">addBuilder</span><span class="p">(</span><span class="s">&quot;com.example&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Your custom operator can then be used just like any other operator.</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Template</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> 
+    <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;$hello&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Output</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world!&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="aliasing">Aliasing<a class="headerlink" href="#aliasing" title="Permanent link">&para;</a></h2>
+<p>By default, the operator name will be the same as the lower-case class name but it can be given one or more aliases
+by specifying the value attribute on the <code>@Operator</code> annotation.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Operator</span><span class="p">({</span><span class="s">&quot;greet&quot;</span><span class="p">,</span> <span class="s">&quot;sayhello&quot;</span><span class="p">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="kd">extends</span> <span class="n">AbstractOperator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">resolveInternal</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s">&quot;hello world!&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Template</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> 
+    <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;$hello&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;greeting2&quot;</span><span class="p">:</span> <span class="s2">&quot;$greeting&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;greeting3&quot;</span><span class="p">:</span> <span class="s2">&quot;$sayhello&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Output</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world!&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;greeting2&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world!&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;greeting3&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world!&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="arguments">Arguments<a class="headerlink" href="#arguments" title="Permanent link">&para;</a></h2>
+<p>If you want to pass arguments into your operator you can annotation either a class-level variable or method with
+the <code>@OperatorProperty</code> annotation. These will need to be either package-protected or public.</p>
+<p>If the property is required, set the required attribute on the annotation.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Operator</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Greet</span> <span class="kd">extends</span> <span class="n">AbstractOperator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="nd">@OperatorProperty</span><span class="p">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">resolveInternal</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">&quot;hello &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Template</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;$greet&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span> <span class="p">}</span> <span class="p">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Output</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Bob!&quot;</span> <span class="p">}</span>
+</code></pre></div>
+<p>```</p>
+</div>
+</div>
+<h3 id="dynamic-arguments">Dynamic Arguments<a class="headerlink" href="#dynamic-arguments" title="Permanent link">&para;</a></h3>
+<p>We can pass another operator into our <code>customGreeting</code> property and this will work fine, however, in this mode,
+the input operator will be hydrated only once. So, every document generated will have the same value.</p>
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Template</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;$greet&quot;</span><span class="p">:</span> <span class="s2">&quot;$first&quot;</span> <span class="p">}</span> <span class="p">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Output</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Bob!&quot;</span> <span class="p">}</span>
+<span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Bob!&quot;</span> <span class="p">}</span>
+<span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Bob!&quot;</span> <span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<p>If we want the input operator to be resolved separately for every generated document then we need the input variable
+to be a <code>Resolvable</code> type and resolve it in our <code>resolveInternal</code> method.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Operator</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Greet</span> <span class="kd">extends</span> <span class="n">AbstractOperator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="nd">@OperatorProperty</span><span class="p">(</span><span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="n">Resolvable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">name</span><span class="p">;</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">resolveInternal</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s">&quot;hello &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">.</span><span class="na">resolve</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Template</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;$greet&quot;</span><span class="p">:</span> <span class="s2">&quot;$first&quot;</span> <span class="p">}</span> <span class="p">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Output</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Bob!&quot;</span> <span class="p">}</span>
+<span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Mike!&quot;</span> <span class="p">}</span>
+<span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Stavros!&quot;</span> <span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+<h3 id="default-values">Default Values<a class="headerlink" href="#default-values" title="Permanent link">&para;</a></h3>
+<p>We can set defaults for our operator properties. If we are using <code>Resolvable</code> types then we need to wrap them using the <code>Wrapper</code> helper.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Operator</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Greet</span> <span class="kd">extends</span> <span class="n">AbstractOperator</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="nd">@OperatorProperty</span>
+    <span class="n">String</span> <span class="n">greeting</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span><span class="p">;</span>
+
+    <span class="nd">@OperatorProperty</span>
+    <span class="n">Resolvable</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">name</span> <span class="o">=</span> <span class="n">Wrapper</span><span class="p">.</span><span class="na">wrap</span><span class="p">(</span><span class="s">&quot;Bob&quot;</span><span class="p">);</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">resolveInternal</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">greeting</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">.</span><span class="na">resolve</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Template</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;$greet&quot;</span>
+<span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;$greet&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;bonjour&quot;</span><span class="p">,</span> <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Stavros&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">}</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">Output</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;hello Bob!&quot;</span> <span class="p">}</span>
+<span class="p">{</span> <span class="nt">&quot;greeting&quot;</span><span class="p">:</span> <span class="s2">&quot;bonjour Stavros!&quot;</span> <span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 Dioxic
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.93c04032.min.js"></script>
+      <script src="../assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

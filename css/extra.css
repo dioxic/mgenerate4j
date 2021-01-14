@@ -1,0 +1,19 @@
+/*
+.md-header-nav__topic {
+    color: transparent;
+}
+*/
+
+/*
+.md-header-nav__button.md-logo img {
+    width: 150px;
+}
+*/
+
+[data-md-color-scheme="mongodb"] {
+  --md-primary-fg-color:        #13AA52;
+  --md-primary-fg-color--light: #83DBA7;
+  --md-primary-fg-color--dark:  #116149;
+
+  --md-accent-fg-color:        #13AA52;
+}
