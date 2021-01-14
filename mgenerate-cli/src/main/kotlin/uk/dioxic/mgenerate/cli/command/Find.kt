@@ -80,7 +80,7 @@ class Find : CliktCommand(help = "Find documents in MongoDB") {
                 }
         ).call()
 
-        println("Completed in $duration (${(number / duration.inSeconds).roundToInt()} inserts/s)")
+        println("Completed in $duration (${(number / duration.inSeconds).roundToInt()} find/s)")
     }
 
 }
