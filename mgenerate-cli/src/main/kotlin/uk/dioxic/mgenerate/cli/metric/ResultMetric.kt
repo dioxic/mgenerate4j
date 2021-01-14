@@ -1,7 +1,6 @@
 package uk.dioxic.mgenerate.cli.metric
 
 import com.mongodb.bulk.BulkWriteResult
-import com.mongodb.client.FindIterable
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.InsertManyResult
 import com.mongodb.client.result.InsertOneResult
@@ -45,7 +44,7 @@ data class ResultMetric(
                     is InsertManyResult -> value.toMetric()
                     is DeleteResult -> value.toMetric()
                     is UpdateResult -> value.toMetric()
-                    is FindIterable<*> -> value.toMetric()
+//                    is FindIterable<*> -> value.toMetric()
                     else -> {
                         throw UnsupportedOperationException("Cannot create a ResultMetric from ${value!!::class.simpleName} class type")
                     }
