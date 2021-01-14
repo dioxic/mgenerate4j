@@ -16,5 +16,5 @@ hs_err_pid*
 .idea
 site
 .gradle
-*/build
+**/build
 
