@@ -1,6 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+- bump to Gradle 6.8
+- bump to Kotlin 1.4.21
+
+### Fixed
 
 ## [0.0.7] - 2020-09-14Z
 ### Added
